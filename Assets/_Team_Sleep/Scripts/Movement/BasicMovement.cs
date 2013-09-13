@@ -16,20 +16,8 @@ public class BasicMovement : MonoBehaviour {
 	}
 	
 	void FixedUpdate(){
-		
-		Vector3 curPos = transform.position;
-		if(Input.GetKey(KeyCode.W)){
-			curPos.y += Speed;
-		}		
-		if(Input.GetKey(KeyCode.S)){
-			curPos.y -= Speed;
-		}
-		if(Input.GetKey(KeyCode.D)){
-			curPos.x += Speed;
-		}		
-		if(Input.GetKey(KeyCode.A)){
-			curPos.x -= Speed;
-		}			
-		transform.position = curPos;
+		Vector3 direction = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0);
+		direction.Normalize();
+		transform.position += direction * Speed;
 	}
 }
