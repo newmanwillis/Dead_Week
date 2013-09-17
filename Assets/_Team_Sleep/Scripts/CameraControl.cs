@@ -24,6 +24,7 @@ public class CameraControl : MonoBehaviour {
 	
 	// called for GRAPHICS frames and not physics timesteps. GUI methods are only allowed in here.
 	void OnGUI() {
+		GUI.depth = 0;
 		int health = playerHealth();
 		for (int heart = 1; heart <= player.maxHealth/2; heart++) {
 			int x = 10 + 50*heart;
@@ -36,6 +37,22 @@ public class CameraControl : MonoBehaviour {
 				drawSpriteAt(x, y, heartSpriteEmpty);
 			}
 		}
+	}
+	
+	public void drawSpriteInWorld(Texture sprite, float x, float y) {
+		Vector2 pixels = ConvertWorldToPixels(new Vector2(x, y));
+		drawSpriteAt((int)(pixels.x - sprite.width/2), (int)(pixels.y - sprite.height/2), sprite);
+	}
+	
+	Vector2 ConvertWorldToPixels(Vector2 world) {
+		float x = world.x;
+		float y = world.y;
+		x -= transform.position.x;
+		y -= transform.position.y;
+		y *= -1;
+		x += Screen.width/2;
+		y += Screen.height/2;
+		return new Vector2(x, y);
 	}
 	
 	/*

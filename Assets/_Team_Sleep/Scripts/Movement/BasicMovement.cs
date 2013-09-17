@@ -5,9 +5,11 @@ public class BasicMovement : MonoBehaviour {
 	
 	float Speed = 5.0f;
 	
+	GroundControl ground;
+	
 	// Use this for initialization
 	void Start () {
-	
+		ground = GameObject.Find("Player").GetComponent<GroundControl>();
 	}
 	
 	// Update is called once per frame
@@ -18,6 +20,11 @@ public class BasicMovement : MonoBehaviour {
 	void FixedUpdate(){
 		Vector3 direction = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0);
 		direction.Normalize();
-		transform.position += direction * Speed;
+		Vector3 newPos = transform.position + direction * Speed;
+		if (ground.pointPathable(newPos)) {
+			transform.position = newPos;
+		} else {
+			Debug.Log("Unpathable");
+		}
 	}
 }

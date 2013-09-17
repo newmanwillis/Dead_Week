@@ -12,7 +12,7 @@ public class PlayerScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		transform.localScale = new Vector3(sprite.width*scale, 1, sprite.height*scale);
-		Debug.Log("width: " + sprite.width + " height: " + sprite.height);
+		//Debug.Log("width: " + sprite.width + " height: " + sprite.height);
 		
 		health = maxHealth;
 	}
@@ -29,5 +29,10 @@ public class PlayerScript : MonoBehaviour {
 		if (poisonCounter == 0) {
 			health--;
 		}
+	}
+	
+	void OnGUI() {
+		GUI.depth = 0;
+		Camera.main.GetComponent<CameraControl>().drawSpriteInWorld(sprite, transform.position.x, transform.position.y);
 	}
 }
