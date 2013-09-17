@@ -19,7 +19,6 @@ public class PlayerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Debug.Log("Health: "+health+" poison: "+poisonCounter);
 		if (health <= 0) {
 			Destroy (gameObject);
 		}
@@ -28,6 +27,10 @@ public class PlayerScript : MonoBehaviour {
 		poisonCounter = (poisonCounter + 1) % 300;
 		if (poisonCounter == 0) {
 			health--;
+		}
+		
+		if (Input.GetButton("Jump")) {
+			Debug.Log("Pressed space");
 		}
 	}
 	
