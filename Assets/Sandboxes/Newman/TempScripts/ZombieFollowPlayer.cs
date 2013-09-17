@@ -36,8 +36,6 @@ public class ZombieFollowPlayer : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider other){
-		Debug.Log("In Colliderr Enter");
-		print ("in collider");
 		if(other.tag == "Player"){
 			player = other.transform;
 			foundPlayer = true;
