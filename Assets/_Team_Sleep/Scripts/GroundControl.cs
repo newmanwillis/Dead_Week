@@ -6,13 +6,12 @@ public class GroundControl : MonoBehaviour {
 	public Texture[] sprites;
 	public bool[] pathable;
 	public int[,] groundTypes = {
-		{0, 0, 0, 0, 0},
-		{0, 1, 2, 1, 0},
-		{0, 2, 1, 2, 0},
-		{0, 1, 2, 1, 0},
-		{0, 2, 1, 2, 0},
-		{0, 1, 2, 1, 0},
-		{0, 0, 0, 0, 0}
+		{0, 0, 0, 0, 0, 0},
+		{0, 1, 2, 1, 2, 0},
+		{0, 2, 1, 2, 1, 0},
+		{0, 1, 2, 1, 2, 0},
+		{0, 2, 1, 2, 1, 0},
+		{0, 0, 0, 0, 0, 0}
 	};
 	
 	
@@ -20,8 +19,8 @@ public class GroundControl : MonoBehaviour {
 	int height;
 	int totalWidth;
 	int totalHeight;
-	int upperRightX;
-	int upperRightY;
+	int upperLeftX;
+	int upperLeftY;
 	
 	CameraControl drawer;
 	// Use this for initialization
@@ -30,10 +29,12 @@ public class GroundControl : MonoBehaviour {
 		
 		width = sprites[0].width;
 		height = sprites[0].height;
-		totalWidth = width * groundTypes.GetLength(0);
-		totalHeight = height * groundTypes.GetLength(1);
-		upperRightX = -totalWidth/2;
-		upperRightY = totalHeight/2;
+		totalWidth = width * groundTypes.GetLength(1);
+		totalHeight = height * groundTypes.GetLength(0);
+		upperLeftX = -totalWidth/2;
+		upperLeftY = totalHeight/2;
+		Debug.Log("Upper left: " + upperLeftX+" "+upperLeftY);
+		Debug.Log("Lower right: "+(upperLeftX+totalWidth)+" "+(upperLeftY-totalHeight));
 	}
 	
 	// Update is called once per frame
@@ -52,7 +53,7 @@ public class GroundControl : MonoBehaviour {
 	}
 	
 	Vector3 worldCenterOf(int row, int col) {
-		return new Vector3(upperRightX+(width*col), upperRightY+(-height*row), 0);
+		return new Vector3(upperLeftX+(width*col)+(width/2), upperLeftY+(-height*row)-(height/2), 0);
 	}
 	
 	Rect worldRectOf(int row, int col) {
