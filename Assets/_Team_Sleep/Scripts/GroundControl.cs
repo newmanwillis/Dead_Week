@@ -11,6 +11,24 @@ public class GroundControl : MonoBehaviour {
 	
 	public Texture[] sprites;
 	public bool[] pathable;
+	public int[,] pathableGrid = {
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+		{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+		{0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+		{0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+		{0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+		{0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+		{0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+	};
 	public int[,] groundTypes = {
 		{2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5},
 		{6, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 6},
@@ -53,7 +71,7 @@ public class GroundControl : MonoBehaviour {
 		Debug.Log("Lower right: "+(upperLeftX+totalWidth)+" "+(upperLeftY-totalHeight));
 		
 		
-		for (int r = 0; r < groundTypes.GetLength(0); r++) {
+/*		for (int r = 0; r < groundTypes.GetLength(0); r++) {
 			for (int c = 0; c < groundTypes.GetLength(1); c++) {
 				Vector3 worldCenter = worldCenterOf(r, c);
 				//drawer.drawSpriteInWorld(sprites[groundTypes[r,c]], worldCenter.x, worldCenter.y);
@@ -62,7 +80,7 @@ public class GroundControl : MonoBehaviour {
 				sprite.transform.position += new Vector3(0, 0, 5);
 				//tk2dSprite. spriteCollection
 			}
-		}
+		}*/
 	}
 	
 	// Update is called once per frame
@@ -92,7 +110,7 @@ public class GroundControl : MonoBehaviour {
 	public bool pointPathable(Vector3 pos) {
 		for (int r = 0; r < groundTypes.GetLength(0); r++) {
 			for (int c = 0; c < groundTypes.GetLength(1); c++) {
-				if (!pathable[groundTypes[r,c]]) {
+				if (pathableGrid[r,c] == 0) {
 					if (worldRectOf(r, c).Contains(pos)) {
 						return false;
 					}

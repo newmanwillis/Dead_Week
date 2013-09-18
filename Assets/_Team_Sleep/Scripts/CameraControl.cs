@@ -37,6 +37,12 @@ public class CameraControl : MonoBehaviour {
 				drawSpriteAt(x, y, heartSpriteEmpty);
 			}
 		}
+		
+		if (GameObject.FindGameObjectsWithTag("Zombie").Length == 0) {
+			GUI.Label(new Rect(Screen.width/2-50, Screen.height/2-20, 200, 200), "YOU WIN");
+		} else if (playerHealth() <= 0) {
+			GUI.Label(new Rect(Screen.width/2-50, Screen.height/2-20, 200, 200), "YOU LOSE");
+		};
 	}
 	
 	public void drawSpriteInWorld(Texture sprite, float x, float y) {
