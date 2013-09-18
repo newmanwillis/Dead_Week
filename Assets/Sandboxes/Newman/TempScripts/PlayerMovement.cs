@@ -155,7 +155,7 @@ public class PlayerMovement : MonoBehaviour {
 	
 	
 	IEnumerator FinishAttackAnimation(Transform sword){
-		yield return new WaitForSeconds(0.2f);
+		yield return new WaitForSeconds(0.1f);
 		//swordAttacking = null;
 		Destroy(sword.gameObject);
 		isAttacking = false;
