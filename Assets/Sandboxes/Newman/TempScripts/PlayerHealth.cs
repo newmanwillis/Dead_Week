@@ -1,36 +1,39 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraControl : MonoBehaviour {
+public class PlayerHealth : MonoBehaviour {
 	GameObject playerObject;
 	PlayerScript player;
+	
+	public float scale;
+	public int maxHealth;
+	public int health;	
 	
 	public Texture heartSpriteFull;
 	public Texture heartSpriteHalf;
 	public Texture heartSpriteEmpty;
 	
-	public Texture winMessage;
-	public Texture loseMessage;
-	public Texture blackBox;
-	
 	// Use this for initialization
 	void Start () {
 		//camera.orthographic = true;
-		//camera.orthographicSize = Screen.height/4;
+		//camera.orthographicSize = Screen.height/2;
 		
-		playerObject = GameObject.Find("Player");
-		player = playerObject.GetComponent<PlayerScript>();
+		//playerObject = GameObject.Find("Player");
+		//player = playerObject.GetComponent<PlayerScript>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if (health <= 0) {
+			Destroy (gameObject);
+		}		
 	}
 	
 	// called for GRAPHICS frames and not physics timesteps. GUI methods are only allowed in here.
 	void OnGUI() {
 		GUI.depth = 0;
 		int health = playerHealth();
-		for (int heart = 1; heart <= player.maxHealth/2; heart++) {
+		for (int heart = 1; heart <= maxHealth/2; heart++) {
 			int x = 10 + 50*heart;
 			int y = 10;
 			if (health >= 2*heart) {
@@ -41,16 +44,6 @@ public class CameraControl : MonoBehaviour {
 				drawSpriteAt(x, y, heartSpriteEmpty);
 			}
 		}
-		
-		if (GameObject.FindGameObjectsWithTag("Zombie").Length == 0) {
-			Rect position = new Rect(Screen.width/2-winMessage.width/2, Screen.height/2-winMessage.height/2, winMessage.width, winMessage.height);
-			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), blackBox);
-			GUI.DrawTexture(position, winMessage);
-		} else if (playerHealth() <= 0) {
-			Rect position = new Rect(Screen.width/2-loseMessage.width/2, Screen.height/2-loseMessage.height/2, loseMessage.width, loseMessage.height);
-			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), blackBox);
-			GUI.Label(position, loseMessage);
-		};
 	}
 	
 	public void drawSpriteInWorld(Texture sprite, float x, float y) {
@@ -79,9 +72,9 @@ public class CameraControl : MonoBehaviour {
 	}
 	
 	int playerHealth() {
-		if (playerObject == null) { // this is apparently overloaded to check whether it has been destroyed
-			return -1;
-		}
-		return player.health;
+		//if (playerObject == null) { // this is apparently overloaded to check whether it has been destroyed
+		//	return -1;
+		//}
+		return health;
 	}
 }

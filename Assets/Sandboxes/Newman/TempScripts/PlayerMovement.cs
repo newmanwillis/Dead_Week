@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour {
 	tk2dSpriteAnimator curAnim;
 	
 	GroundControl ground;
+	int biteDelay = 50;
+	int biteTick = 0;
 	
 	Vector3 facingAngle = Vector3.up;
 	//Transform swordAttacking;
@@ -131,11 +133,23 @@ public class PlayerMovement : MonoBehaviour {
 		GetComponent<CharacterController>().Move(moveAmount);
 	}
 	
-	void OnTriggerEnter(Collider other){
-		if(other.tag == "ZombieAttack"){
+
+	/*void OnTriggerEnter(Collider other){
+		if(other.tag == "Zombie"){
 			//Vector3 zombieDirection = other.transform.position - transform.position;
 			Debug.Log("bite");
 			gameObject.GetComponent<PlayerHealth>().health -= 1;
+		}	
+	}*/
+	
+	void OnTriggerStay(Collider other){
+		if(other.tag == "ZombieAttack"){
+			//Vector3 zombieDirection = other.transform.position - transform.position;
+			//Debug.Log("biteStay");
+			if (biteTick == 0) {
+				gameObject.GetComponent<PlayerScript>().health -= 1;
+			}
+			biteTick = (biteTick + 1) % biteDelay;
 		}	
 	}
 	

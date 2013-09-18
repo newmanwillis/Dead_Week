@@ -18,7 +18,8 @@ public class PlayerScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (health <= 0) {
-			Destroy (gameObject);
+			//Destroy (gameObject);
+			gameObject.renderer.enabled = false;
 		}
 		
 		if (Input.GetButton("Jump")) {
