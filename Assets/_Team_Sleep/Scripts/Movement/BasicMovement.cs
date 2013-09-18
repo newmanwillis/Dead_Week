@@ -25,6 +25,7 @@ public class BasicMovement : MonoBehaviour {
 		//transform.position += direction * Speed;
 		Vector3 newPos = transform.position + direction * Speed;
 		if (ground.pointPathable(newPos)) {
+			Debug.Log("pathable");
 			transform.position = newPos;
 		} else {
 			Debug.Log("Unpathable");

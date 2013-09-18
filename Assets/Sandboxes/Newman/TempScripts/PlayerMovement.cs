@@ -13,12 +13,14 @@ public class PlayerMovement : MonoBehaviour {
 	private bool isAttacking = false;
 	tk2dSprite curSprite;
 	
+	GroundControl ground;
+	
 	Vector3 facingAngle = Vector3.up;
 	//Transform swordAttacking;
 	
 	// Use this for initialization
 	void Start () {
-		
+		ground = GameObject.Find("Ground").GetComponent<GroundControl>();
 	
 	}
 	
@@ -91,7 +93,9 @@ public class PlayerMovement : MonoBehaviour {
 			facingAngle = Vector3.left;
 		}	
 	
-		transform.position = curPos;
+		if (ground.pointPathable(curPos)) {
+			transform.position = curPos;
+		}
 	}
 	
 	void OnTriggerEnter(Collider other){
