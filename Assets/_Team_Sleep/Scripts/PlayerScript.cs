@@ -7,8 +7,6 @@ public class PlayerScript : MonoBehaviour {
 	public int maxHealth;
 	public int health;
 	
-	int poisonCounter = 0;
-	
 	// Use this for initialization
 	void Start () {
 		//transform.localScale = new Vector3(sprite.width*scale, 1, sprite.height*scale);
@@ -21,12 +19,6 @@ public class PlayerScript : MonoBehaviour {
 	void Update () {
 		if (health <= 0) {
 			Destroy (gameObject);
-		}
-		
-		// since there are no enemies, we'll just have the player be poisoned
-		poisonCounter = (poisonCounter + 1) % 300;
-		if (poisonCounter == 0) {
-			health--;
 		}
 		
 		if (Input.GetButton("Jump")) {

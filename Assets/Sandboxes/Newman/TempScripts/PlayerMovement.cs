@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour {
 	
-	public int health = 100;
+	//public int health = 100;
 	public float Speed = 0.5f;
 	public Transform swordAttack;
 	public Transform bullet;
@@ -108,7 +108,8 @@ public class PlayerMovement : MonoBehaviour {
 	void OnTriggerEnter(Collider other){
 		if(other.tag == "Zombie"){
 			//Vector3 zombieDirection = other.transform.position - transform.position;
-			health -= 20;
+			Debug.Log("bite");
+			gameObject.GetComponent<PlayerScript>().health -= 1;
 		}	
 	}
 	
