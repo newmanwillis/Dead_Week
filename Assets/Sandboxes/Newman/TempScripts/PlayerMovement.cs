@@ -16,6 +16,10 @@ public class PlayerMovement : MonoBehaviour {
 	Vector3 facingAngle = Vector3.up;
 	//Transform swordAttacking;
 	
+	void Awake () {
+		curSprite = GetComponent<tk2dSprite>();	
+	}
+	
 	// Use this for initialization
 	void Start () {
 		
@@ -51,6 +55,8 @@ public class PlayerMovement : MonoBehaviour {
 			curPos.x += Speed;
 			attackAngle = 315;
 			facingAngle = new Vector3(1, 1, 0);
+			
+			curSprite.SetSprite("Zombie");
 			//Debug.Log("tk2d sprite: " + GetComponent<tk2dSprite>().name);
 		}
 		else if(Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A)){

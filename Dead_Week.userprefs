@@ -1,12 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Sandboxes\Newman\TempScripts\PlayerMovement.cs">
-    <Files>
-      <File FileName="Assets\Sandboxes\Newman\TempScripts\ZombieFollowPlayer.cs" Line="38" Column="38" />
-      <File FileName="Assets\Sandboxes\Newman\TempScripts\PlayerMovement.cs" Line="81" Column="3" />
-      <File FileName="Assets\Sandboxes\Newman\TempScripts\ZombieHealth.cs" Line="37" Column="5" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
