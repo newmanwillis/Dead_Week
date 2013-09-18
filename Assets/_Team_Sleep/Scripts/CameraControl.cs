@@ -9,6 +9,10 @@ public class CameraControl : MonoBehaviour {
 	public Texture heartSpriteHalf;
 	public Texture heartSpriteEmpty;
 	
+	public Texture winMessage;
+	public Texture loseMessage;
+	public Texture blackBox;
+	
 	// Use this for initialization
 	void Start () {
 		camera.orthographic = true;
@@ -39,9 +43,13 @@ public class CameraControl : MonoBehaviour {
 		}
 		
 		if (GameObject.FindGameObjectsWithTag("Zombie").Length == 0) {
-			GUI.Label(new Rect(Screen.width/2-50, Screen.height/2-20, 200, 200), "YOU WIN");
+			Rect position = new Rect(Screen.width/2-winMessage.width/2, Screen.height/2-winMessage.height/2, winMessage.width, winMessage.height);
+			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), blackBox);
+			GUI.DrawTexture(position, winMessage);
 		} else if (playerHealth() <= 0) {
-			GUI.Label(new Rect(Screen.width/2-50, Screen.height/2-20, 200, 200), "YOU LOSE");
+			Rect position = new Rect(Screen.width/2-loseMessage.width/2, Screen.height/2-loseMessage.height/2, loseMessage.width, loseMessage.height);
+			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), blackBox);
+			GUI.Label(position, loseMessage);
 		};
 	}
 	
