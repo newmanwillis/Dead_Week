@@ -7,25 +7,27 @@ public class GroundControl : MonoBehaviour {
 	 * 
 	 */
 	
+	public tk2dSpriteCollection spriteCollection;
+	
 	public Texture[] sprites;
 	public bool[] pathable;
 	public int[,] groundTypes = {
-		{2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5},
-		{4, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 4},
-		{4, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 4},
-		{4, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 4},
-		{4, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 4},
-		{4, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 4},
-		{4, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 4},
-		{4, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 4},
-		{4, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 4},
+		{2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5},
+		{6, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 6},
+		{6, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 6},
+		{6, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 6},
+		{6, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 6},
+		{6, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 6},
+		{6, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 6},
+		{6, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 6},
+		{6, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 6},
 		{9, 9, 9, 2, 4, 4, 4, 4, 4, 4, 4, 4, 5, 9, 9, 9},
-		{9, 9, 9, 4, 0, 1, 0, 1, 1, 0, 1, 0, 4, 9, 9, 9},
-		{9, 9, 9, 4, 1, 0, 1, 0, 0, 1, 0, 1, 4, 9, 9, 9},
-		{9, 9, 9, 4, 0, 1, 0, 1, 1, 0, 1, 0, 4, 9, 9, 9},
-		{9, 9, 9, 4, 1, 0, 1, 0, 0, 1, 0, 1, 4, 9, 9, 9},
-		{9, 9, 9, 4, 0, 1, 0, 1, 1, 0, 1, 0, 4, 9, 9, 9},
-		{9, 9, 9, 4, 1, 0, 1, 0, 0, 1, 0, 1, 4, 9, 9, 9}
+		{9, 9, 9, 6, 0, 1, 0, 1, 1, 0, 1, 0, 6, 9, 9, 9},
+		{9, 9, 9, 6, 1, 0, 1, 0, 0, 1, 0, 1, 6, 9, 9, 9},
+		{9, 9, 9, 6, 0, 1, 0, 1, 1, 0, 1, 0, 6, 9, 9, 9},
+		{9, 9, 9, 6, 1, 0, 1, 0, 0, 1, 0, 1, 6, 9, 9, 9},
+		{9, 9, 9, 6, 0, 1, 0, 1, 1, 0, 1, 0, 6, 9, 9, 9},
+		{9, 9, 9, 6, 1, 0, 1, 0, 0, 1, 0, 1, 6, 9, 9, 9}
 	};
 	
 	
@@ -55,12 +57,10 @@ public class GroundControl : MonoBehaviour {
 			for (int c = 0; c < groundTypes.GetLength(1); c++) {
 				Vector3 worldCenter = worldCenterOf(r, c);
 				//drawer.drawSpriteInWorld(sprites[groundTypes[r,c]], worldCenter.x, worldCenter.y);
-				if (!pathable[groundTypes[r,c]]) {
-					GameObject obj = new GameObject("Wall");
-					obj.AddComponent("BoxCollider");
-					obj.transform.position = worldCenter;
-					obj.transform.localScale = new Vector3(width, height, 5);
-				}
+				GameObject sprite = tk2dBaseSprite.CreateFromTexture<tk2dSprite>(sprites[groundTypes[r,c]], tk2dSpriteCollectionSize.PixelsPerMeter(1), new Rect(0,0,width,height), new Vector2(0,0));
+				sprite.transform.position = worldCenterOf(r, c);
+				sprite.transform.position += new Vector3(0, 0, 5);
+				//tk2dSprite. spriteCollection
 			}
 		}
 	}

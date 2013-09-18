@@ -24,11 +24,11 @@ public class BasicMovement : MonoBehaviour {
 		//oldPos = transform.position;
 		//transform.position += direction * Speed;
 		Vector3 newPos = transform.position + direction * Speed;
-		//if (ground.pointPathable(newPos)) {
+		if (ground.pointPathable(newPos)) {
 			transform.position = newPos;
-		//} else {
-		//	Debug.Log("Unpathable");
-		//}
+		} else {
+			Debug.Log("Unpathable");
+		}
 	}
 	
 	void OnCollisionEnter(Collision other) {
