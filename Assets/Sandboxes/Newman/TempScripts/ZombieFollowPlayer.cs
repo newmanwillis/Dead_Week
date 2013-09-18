@@ -20,18 +20,43 @@ public class ZombieFollowPlayer : MonoBehaviour {
 	
 	void FixedUpdate(){
 		if(foundPlayer){
+			
+
+			
+			//player = GameObject.Find("Player").transform;
+			//Vector3 distance = player.position - transform.position;
+			//transform.Find("ZombieSprite").LookAt(player); // enemy looks to you
+			//transform.Translate(Vector3.forward * moveSpeed); // enemy walks to you
+			
+			
+			
 			Vector3 newPos = transform.position;
+			
+			//player = GameObject.Find("Player").transform;
+			
+			Vector3 move = new Vector3(0,0,0);
+			
 			Vector3 distance = transform.position - player.transform.position;
 			if(distance.x > moveSpeed)
-				newPos.x -= moveSpeed;
+				//newPos.x -= moveSpeed;
+				move.x = -1 * moveSpeed;
+				
 			else if(distance.x < -moveSpeed)
-				newPos.x += moveSpeed;
-			if(distance.y > moveSpeed)
-				newPos.y -= moveSpeed;
-			else if(distance.y < -moveSpeed)
-				newPos.y += moveSpeed;			
+				//newPos.x += moveSpeed;
 			
-			transform.position = newPos;
+				move.x = 1 * moveSpeed;
+			if(distance.y > moveSpeed)
+				//newPos.y -= moveSpeed;
+				move.y = -1 * moveSpeed;
+			else if(distance.y < -moveSpeed)
+				//newPos.y += moveSpeed;			
+				move.y = 1 * moveSpeed;
+			
+			
+			//transform.position = newPos;
+			transform.parent.GetComponent<CharacterController>().Move(move);
+			// GetComponent<CharacterController>().Move(move);
+			
 		}
 	}
 	

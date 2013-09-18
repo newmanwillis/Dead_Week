@@ -19,7 +19,7 @@ public class ZombieHealth : MonoBehaviour {
 		if(other.tag == "Attack"){
 			health -= 50;
 			if(health <= 0){
-				Destroy(transform.parent.parent.gameObject);	
+				Destroy(transform.parent.gameObject);	
 			}
 			else{
 				//Knockback();
