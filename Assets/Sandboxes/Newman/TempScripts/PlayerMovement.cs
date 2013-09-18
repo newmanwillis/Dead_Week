@@ -51,6 +51,7 @@ public class PlayerMovement : MonoBehaviour {
 			curPos.x += Speed;
 			attackAngle = 315;
 			facingAngle = new Vector3(1, 1, 0);
+			//Debug.Log("tk2d sprite: " + GetComponent<tk2dSprite>().name);
 		}
 		else if(Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A)){
 			curPos.y += Speed;
