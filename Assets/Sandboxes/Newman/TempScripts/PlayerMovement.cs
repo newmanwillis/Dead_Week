@@ -14,10 +14,6 @@ public class PlayerMovement : MonoBehaviour {
 	tk2dSprite curSprite;
 	tk2dSpriteAnimator curAnim;
 	
-	GroundControl ground;
-	int biteDelay = 50;
-	int biteTick = 0;
-	
 	Vector3 facingAngle = Vector3.up;
 	//Transform swordAttacking;
 	
@@ -28,7 +24,6 @@ public class PlayerMovement : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		//ground = GameObject.Find("Ground").GetComponent<GroundControl>();
 	
 	}
 	
@@ -131,28 +126,7 @@ public class PlayerMovement : MonoBehaviour {
 		Vector3 moveAmount = new Vector3(transH, transV, 0);
 		//Debug.Log("moveAmount: " + moveAmount);
 		GetComponent<CharacterController>().Move(moveAmount);
-	}
-	
-
-	/*void OnTriggerEnter(Collider other){
-		if(other.tag == "Zombie"){
-			//Vector3 zombieDirection = other.transform.position - transform.position;
-			Debug.Log("bite");
-			gameObject.GetComponent<PlayerHealth>().health -= 1;
-		}	
-	}*/
-	
-	void OnTriggerStay(Collider other){
-		if(other.tag == "ZombieAttack"){
-			//Vector3 zombieDirection = other.transform.position - transform.position;
-			//Debug.Log("biteStay");
-			if (biteTick == 0) {
-				gameObject.GetComponent<PlayerScript>().health -= 1;
-			}
-			biteTick = (biteTick + 1) % biteDelay;
-		}	
-	}
-	
+	}	
 	
 	IEnumerator FinishAttackAnimation(Transform sword){
 		yield return new WaitForSeconds(0.1f);
