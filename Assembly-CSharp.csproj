@@ -44,7 +44,6 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Sandboxes\Newman\TempScripts\BulletLife.cs" />
      <Compile Include="Assets\Sandboxes\Newman\TempScripts\PlayerHealth.cs" />
      <Compile Include="Assets\Sandboxes\Newman\TempScripts\PlayerMovement.cs" />
      <Compile Include="Assets\Sandboxes\Newman\TempScripts\WallBreak.cs" />
@@ -118,6 +117,7 @@
      <Compile Include="Assets\TK2DROOT\tk2d_demo\tk2dDemoReloadController.cs" />
      <Compile Include="Assets\TK2DROOT\tk2d_demo\tk2dDemoRuntimeSpriteController.cs" />
      <Compile Include="Assets\_Team_Sleep\Scripts\CameraControl.cs" />
+     <Compile Include="Assets\_Team_Sleep\Scripts\PlayerProjectile.cs" />
      <Compile Include="Assets\_Team_Sleep\Scripts\PlayerScript.cs" />
      <Compile Include="Assets\_Team_Sleep\Scripts\Pointless.cs" />
      <Compile Include="Assets\_Team_Sleep\Scripts\ZombieAttack.cs" />

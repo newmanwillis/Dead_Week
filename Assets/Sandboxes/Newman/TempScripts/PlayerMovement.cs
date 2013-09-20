@@ -7,7 +7,8 @@ public class PlayerMovement : MonoBehaviour {
 	public float Speed = 0.1f;
 	public Transform swordAttack;
 	public Transform bullet;
-	public Transform lazerBeamObj;
+	public Transform lazerBeam;
+	Transform currentlyFiringLazer = null;
 	                                                                                            
 	
 	float attackAngle = 0f;	
@@ -42,17 +43,18 @@ public class PlayerMovement : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.R)){  // shoot
 			Transform shootingBullet = (Transform)Instantiate(bullet, transform.position, Quaternion.identity);
 			shootingBullet.rigidbody.AddForce(facingAngle * 8000);
-			
-			
-			//StartCoroutine( FinishBulletAnimation(shootingBullet));
-
 		}
 		if (Input.GetKeyDown(KeyCode.F)) {
-			Transform lazerBeam = (Transform)Instantiate(lazerBeamObj, transform.position, Quaternion.identity);
-			//lazerBeam.transform.position += new Vector3(45, 0, 0);
-			lazerBeam.Rotate(0, 0, attackAngle + 90);
-			lazerBeam.parent = transform;
-			StartCoroutine(FinishAttackAnimation(lazerBeam));
+			currentlyFiringLazer = (Transform)Instantiate(lazerBeam, transform.position, Quaternion.identity);
+			currentlyFiringLazer.Rotate(0, 0, attackAngle + 90);
+			currentlyFiringLazer.parent = transform;
+			//StartCoroutine(FinishAttackAnimation(currentlyFiringLazer));
+		}
+		if (Input.GetKeyUp(KeyCode.F)) {
+			if (currentlyFiringLazer == null) {
+				Debug.LogError("we should be firing a lazer");
+			}
+			Destroy(currentlyFiringLazer.gameObject);
 		}
 	}
 	
@@ -141,12 +143,5 @@ public class PlayerMovement : MonoBehaviour {
 		//swordAttacking = null;
 		Destroy(sword.gameObject);
 		isAttacking = false;
-	}
-	
-	IEnumerator FinishBulletAnimation (Transform bullet){
-		yield return new WaitForSeconds(2f);
-		Destroy(bullet.gameObject);
 	}	
-	
-	
 }

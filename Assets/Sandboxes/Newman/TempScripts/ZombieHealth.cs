@@ -12,18 +12,8 @@ public class ZombieHealth : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
-	
-	void OnTriggerEnter(Collider other){
-		if(other.tag == "Attack"){
-			health -= 50;
-			if(health <= 0){
-				Destroy(transform.parent.gameObject);	
-			}
-			else{
-				//Knockback();
-			}
+		if(health <= 0){
+			Destroy(transform.parent.gameObject);	
 		}
 	}
 	
