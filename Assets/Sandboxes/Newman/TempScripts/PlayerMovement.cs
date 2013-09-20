@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour {
 	public float Speed = 0.1f;
 	public Transform swordAttack;
 	public Transform bullet;
+	public Transform lazerBeamObj;
 	                                                                                            
 	
 	float attackAngle = 0f;	
@@ -45,6 +46,13 @@ public class PlayerMovement : MonoBehaviour {
 			
 			//StartCoroutine( FinishBulletAnimation(shootingBullet));
 
+		}
+		if (Input.GetKeyDown(KeyCode.F)) {
+			Transform lazerBeam = (Transform)Instantiate(lazerBeamObj, transform.position, Quaternion.identity);
+			//lazerBeam.transform.position += new Vector3(45, 0, 0);
+			lazerBeam.Rotate(0, 0, attackAngle + 90);
+			lazerBeam.parent = transform;
+			StartCoroutine(FinishAttackAnimation(lazerBeam));
 		}
 	}
 	
