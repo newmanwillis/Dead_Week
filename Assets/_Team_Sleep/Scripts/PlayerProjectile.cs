@@ -23,7 +23,8 @@ public class PlayerProjectile : MonoBehaviour {
 			other.GetComponent<ZombieHealth>().health -= damage;
 			dealtDamage = true;
 		}
-		if(other.tag != "Player" && other.tag != "Attack" && other.tag != "ZombieDetectionRange" && other.tag != "ZombieAttack"){
+		if (other.tag == "Zombie" || other.tag == "Wall") {
+		//if(other.tag != "Player" && other.tag != "Attack" && other.tag != "ZombieDetectionRange" && other.tag != "ZombieAttack"){
 			if (disappearOnCollide) {
 				if (spawnOther != null) {
 					Instantiate(spawnOther, transform.position, Quaternion.identity);
