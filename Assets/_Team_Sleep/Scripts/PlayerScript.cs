@@ -21,10 +21,6 @@ public class PlayerScript : MonoBehaviour {
 			//Destroy (gameObject);
 			gameObject.renderer.enabled = false;
 		}
-		
-		if (Input.GetButton("Jump")) {
-			Debug.Log("Pressed space");
-		}
 	}
 	
 	void OnGUI() {

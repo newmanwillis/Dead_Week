@@ -8,6 +8,10 @@ public class PlayerMovement : MonoBehaviour {
 	public Transform swordAttack;
 	public Transform bullet;
 	public Transform lazerBeam;
+	
+	public float lazerBeamChargeTime;  // time it takes the lazer to charge
+	bool chargingLazer = false;
+	float lazerChargedAtTime;  // time at which the lazer will be charged
 	Transform currentlyFiringLazer = null;
 	                                                                                            
 	
@@ -30,7 +34,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 	
 	void Update () {
-		if(Input.GetKeyDown(KeyCode.Space) && !isAttacking){
+		if(Input.GetKeyDown(KeyCode.Space) && !isAttacking && !chargingLazer){
 			isAttacking = true;
 			if(swordAttack){  // melee
 
@@ -40,22 +44,45 @@ public class PlayerMovement : MonoBehaviour {
 				StartCoroutine( FinishAttackAnimation(swordAttacking));
 			}
 		}
-		if(Input.GetKeyDown(KeyCode.R)){  // shoot
-			Transform shootingBullet = (Transform)Instantiate(bullet, transform.position, Quaternion.identity);
-			shootingBullet.rigidbody.AddForce(facingAngle * 8000);
+		
+		// handle lazers:
+		if(Input.GetKeyDown(KeyCode.R)){
+			chargingLazer = true;
+			lazerChargedAtTime = Time.time + lazerBeamChargeTime;
 		}
-		if (Input.GetKeyDown(KeyCode.F)) {
-			currentlyFiringLazer = (Transform)Instantiate(lazerBeam, transform.position, Quaternion.identity);
-			currentlyFiringLazer.Rotate(0, 0, attackAngle + 90);
-			currentlyFiringLazer.parent = transform;
-			//StartCoroutine(FinishAttackAnimation(currentlyFiringLazer));
-		}
-		if (Input.GetKeyUp(KeyCode.F)) {
-			if (currentlyFiringLazer == null) {
-				Debug.LogError("we should be firing a lazer");
+		if (Input.GetKeyUp(KeyCode.R)) {
+			chargingLazer = false;
+			if (Time.time < lazerChargedAtTime) {
+				fireBullet();
+			} else {
+				stopBeamLazer();
 			}
-			Destroy(currentlyFiringLazer.gameObject);
 		}
+		if (chargingLazer) {
+			if (Time.time >= lazerChargedAtTime) {
+				fireBeamLazer();
+				chargingLazer = false;
+			}
+		}
+	}
+	
+	void fireBullet() {
+		Transform shootingBullet = (Transform)Instantiate(bullet, transform.position, Quaternion.identity);
+		shootingBullet.rigidbody.AddForce(facingAngle * 8000);
+	}
+	
+	void fireBeamLazer() {
+		currentlyFiringLazer = (Transform)Instantiate(lazerBeam, transform.position, Quaternion.identity);
+		currentlyFiringLazer.Rotate(0, 0, attackAngle + 90);
+		currentlyFiringLazer.parent = transform;
+	}
+	
+	void stopBeamLazer() {
+		if (currentlyFiringLazer == null) {
+			Debug.LogError("we should be firing a lazer");
+		}
+		Destroy(currentlyFiringLazer.gameObject);
+		currentlyFiringLazer = null;
 	}
 	
 	// Update is called once per frame
