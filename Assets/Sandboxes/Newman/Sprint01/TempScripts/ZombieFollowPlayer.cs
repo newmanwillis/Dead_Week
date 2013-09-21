@@ -10,7 +10,7 @@ public class ZombieFollowPlayer : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-	
+		
 	}
 	
 	// Update is called once per frame
@@ -19,7 +19,7 @@ public class ZombieFollowPlayer : MonoBehaviour {
 	}
 	
 	void FixedUpdate(){
-		if(foundPlayer){
+		if(foundPlayer && !gameObject.transform.parent.gameObject.GetComponent<ZombieHealth>().IsStunned){
 			
 
 			

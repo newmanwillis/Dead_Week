@@ -5,6 +5,7 @@ public class PlayerProjectile : MonoBehaviour {
 	public int damage;
 	public bool disappearOnCollide;
 	public bool dealDamageOnce;
+	public Transform spawnOther;
 	bool dealtDamage = false;
 
 	// Use this for initialization
@@ -24,6 +25,9 @@ public class PlayerProjectile : MonoBehaviour {
 		}
 		if(other.tag != "Player" && other.tag != "Attack" && other.tag != "ZombieDetectionRange" && other.tag != "ZombieAttack"){
 			if (disappearOnCollide) {
+				if (spawnOther != null) {
+					Instantiate(spawnOther, transform.position, Quaternion.identity);
+				}
 				Destroy(gameObject);
 			}	
 		}

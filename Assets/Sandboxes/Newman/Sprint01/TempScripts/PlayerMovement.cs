@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour {
 	public Transform swordAttack;
 	public Transform bullet;
 	public Transform lazerBeam;
+	public Transform stunBullet;
 	
 	public float lazerBeamChargeTime;  // time it takes the lazer to charge
 	bool chargingLazer = false;
@@ -53,7 +54,7 @@ public class PlayerMovement : MonoBehaviour {
 		if (Input.GetKeyUp(KeyCode.R)) {
 			chargingLazer = false;
 			if (Time.time < lazerChargedAtTime) {
-				fireBullet();
+				fireBullet(bullet);
 			} else {
 				stopBeamLazer();
 			}
@@ -64,10 +65,14 @@ public class PlayerMovement : MonoBehaviour {
 				chargingLazer = false;
 			}
 		}
+		
+		if (Input.GetKeyDown(KeyCode.F)) {
+			fireBullet(stunBullet);
+		}
 	}
 	
-	void fireBullet() {
-		Transform shootingBullet = (Transform)Instantiate(bullet, transform.position, Quaternion.identity);
+	void fireBullet(Transform bulletTypeToFire) {
+		Transform shootingBullet = (Transform)Instantiate(bulletTypeToFire, transform.position, Quaternion.identity);
 		shootingBullet.rigidbody.AddForce(facingAngle * 8000);
 	}
 	

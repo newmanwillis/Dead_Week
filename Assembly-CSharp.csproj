@@ -121,6 +121,7 @@
      <Compile Include="Assets\_Team_Sleep\Scripts\PlayerProjectile.cs" />
      <Compile Include="Assets\_Team_Sleep\Scripts\PlayerScript.cs" />
      <Compile Include="Assets\_Team_Sleep\Scripts\Pointless.cs" />
+     <Compile Include="Assets\_Team_Sleep\Scripts\StunExplosion.cs" />
      <Compile Include="Assets\_Team_Sleep\Scripts\ZombieAttack.cs" />
      <None Include="Assets\TK2DROOT\tk2dUI\Shaders\DepthMask.shader" />
      <None Include="Assets\TK2DROOT\tk2dUI_demo\Assets\Font\OldSansBlack\OldSansBlack.fnt" />

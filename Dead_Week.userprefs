@@ -1,22 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-<<<<<<< HEAD
-  <MonoDevelop.Ide.Workbench />
-=======
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Standard Assets\Character Controllers\Sources\Scripts\CharacterMotor.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_Team_Sleep\Scripts\PlayerProjectile.cs">
     <Files>
-      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\CharacterMotor.js" Line="1" Column="1" />
-      <File FileName="Assets\_Team_Sleep\Scripts\CameraControl.cs" Line="1" Column="1" />
-      <File FileName="Assets\Sandboxes\Newman\TempScripts\BulletLife.cs" Line="1" Column="1" />
-      <File FileName="Assets\Sandboxes\Newman\TempScripts\ZombieFollowPlayer.cs" Line="1" Column="1" />
-      <File FileName="Assets\Sandboxes\Newman\TempScripts\PlayerMovement.cs" Line="1" Column="1" />
-      <File FileName="Assets\Sandboxes\Newman\TempScripts\ZombieHealth.cs" Line="1" Column="1" />
-      <File FileName="Assets\_Team_Sleep\Scripts\PlayerScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Sandboxes\Newman\TempScripts\PlayerHealth.cs" Line="1" Column="1" />
-      <File FileName="Assets\Sandboxes\Newman\TempScripts\WallBreak.cs" Line="1" Column="1" />
+      <File FileName="Assets\TK2DROOT\tk2d\Editor\Sprites\tk2dSpriteCollectionBuilder.cs" Line="464" Column="1" />
+      <File FileName="Assets\Sandboxes\Newman\Sprint01\TempScripts\PlayerMovement.cs" Line="70" Column="25" />
+      <File FileName="Assets\_Team_Sleep\Scripts\PlayerScript.cs" Line="23" Column="4" />
+      <File FileName="Assets\_Team_Sleep\Scripts\ZombieAttack.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Team_Sleep\Scripts\PlayerProjectile.cs" Line="29" Column="17" />
     </Files>
   </MonoDevelop.Ide.Workbench>
->>>>>>> Merge from Sprint 1
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
