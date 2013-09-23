@@ -183,7 +183,13 @@ public class PlayerMovement : MonoBehaviour {
 		Vector3 moveAmount = new Vector3(transH, transV, 0);
 		//Debug.Log("moveAmount: " + moveAmount);
 		GetComponent<CharacterController>().Move(moveAmount);
-	}	
+	}
+	
+	void OnTriggerStay(Collider other) {
+		if (other.tag == "ChargingStation") {
+			PhoneCharge = Mathf.Min(PhoneCharge + 1, phoneMaxCharge);
+		}
+	}
 	
 	IEnumerator FinishAttackAnimation(Transform sword){
 		yield return new WaitForSeconds(0.1f);
