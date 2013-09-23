@@ -13,6 +13,8 @@ public class CameraControl : MonoBehaviour {
 	public Texture loseMessage;
 	public Texture blackBox;
 	
+	public Texture healthBar;
+	
 	// Use this for initialization
 	void Start () {
 		//camera.orthographic = true;
@@ -41,6 +43,8 @@ public class CameraControl : MonoBehaviour {
 				drawSpriteAt(x, y, heartSpriteEmpty);
 			}
 		}
+		
+		GUI.DrawTexture(new Rect(10, 100, healthBar.width*2, healthBar.height*2), healthBar, ScaleMode.ScaleAndCrop);
 		
 		if (GameObject.FindGameObjectsWithTag("Zombie").Length == 0) {
 			Rect position = new Rect(Screen.width/2-winMessage.width/2, Screen.height/2-winMessage.height/2, winMessage.width, winMessage.height);
