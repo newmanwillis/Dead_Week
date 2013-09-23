@@ -12,6 +12,7 @@ public class CameraControl : MonoBehaviour {
 	public Texture winMessage;
 	public Texture loseMessage;
 	public Texture blackBox;
+	public Texture blueBox;
 	
 	public Texture healthBar;
 	
@@ -44,7 +45,12 @@ public class CameraControl : MonoBehaviour {
 			}
 		}
 		
-		GUI.DrawTexture(new Rect(10, 100, healthBar.width*2, healthBar.height*2), healthBar, ScaleMode.ScaleAndCrop);
+		// draw energy bar:
+		int energy = playerObject.GetComponent<PlayerMovement>().PhoneCharge;
+		int energyMax = playerObject.GetComponent<PlayerMovement>().phoneMaxCharge;
+		float percent = ((float) energy) / energyMax;
+		GUI.DrawTexture(new Rect(Screen.width - 200, 10, 150, 20), blackBox);
+		GUI.DrawTexture(new Rect(Screen.width - 200 + 5, 10 + 5, (150 - (5*2))*percent, 10), blueBox);
 		
 		if (GameObject.FindGameObjectsWithTag("Zombie").Length == 0) {
 			Rect position = new Rect(Screen.width/2-winMessage.width/2, Screen.height/2-winMessage.height/2, winMessage.width, winMessage.height);

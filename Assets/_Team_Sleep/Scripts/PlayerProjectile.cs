@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlayerProjectile : MonoBehaviour {
 	public int damage;
+	public int energyCost;
 	public bool disappearOnCollide;
 	public bool dealDamageOnce;
 	public Transform spawnOther;
