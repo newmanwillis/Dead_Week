@@ -142,28 +142,28 @@ public class PlayerMovement : MonoBehaviour {
 			attackAngle = 0;
 			facingAngle = Vector3.up;
 			curAnim.Resume();
-			curAnim.Play("WalkingBackward");			
+			curAnim.Play("walkingBackward");			
 		}		
 		else if(Input.GetKey(KeyCode.S)){
 			//curPos.y -= Speed;
 			attackAngle = 180;
 			facingAngle = Vector3.down;
 			curAnim.Resume();
-			curAnim.Play("WalkingForward");			
+			curAnim.Play("walkingForward");			
 		}
 		else if(Input.GetKey(KeyCode.D)){
 			//curPos.x += Speed;
 			attackAngle = 270;
 			facingAngle = Vector3.right;
 			curAnim.Resume();
-			curAnim.Play("WalkingRight");			
+			curAnim.Play("walkingRight");			
 		}		
 		else if(Input.GetKey(KeyCode.A)){
 			//curPos.x -= Speed;
 			attackAngle = 90;		
 			facingAngle = Vector3.left;
 			curAnim.Resume();
-			curAnim.Play("WalkingLeft");
+			curAnim.Play("walkingLeft");
 				//= curAnim.Library.GetClipByName("PlayerWalkingLeft");
 		}	
 		
