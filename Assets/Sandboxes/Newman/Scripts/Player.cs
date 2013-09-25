@@ -78,7 +78,11 @@ public class Player : MonoBehaviour {
 			attackAngle = 135;
 			facingAngle = new Vector3(-1, -1, 0);
 		}			
-		else */if(Input.GetKey(KeyCode.UpArrow)){
+		else */
+		
+		// change to enum/switch statements
+		
+		if(Input.GetKey(KeyCode.UpArrow)){
 			curDirection = FacingDirection.Up;
 			attackAngle = 0;
 			facingAngle = Vector3.up;
@@ -118,6 +122,8 @@ public class Player : MonoBehaviour {
 	}
 	
 	void AttackInput(){
+		
+		// change to enum/switch 
 		
 		// Sword Attack
 		if(Input.GetKey(KeyCode.A)){			
