@@ -101,28 +101,28 @@ public class Player : MonoBehaviour {
 			// attackAngle = 0;
 			// facingAngle = Vector3.up;
 			curAnim.Resume();
-			curAnim.Play("PlayerWalkingBack");			
+			curAnim.Play("walkingBackward");			
 		}		
 		else if(Input.GetKey(KeyCode.DownArrow)){
 			curDirection = FacingDirection.Down;
 			// attackAngle = 180;
 			// facingAngle = Vector3.down;
 			curAnim.Resume();
-					curAnim.Play("PlayerWalkingFront");			
+					curAnim.Play("walkingForward");			
 		}
 		else if(Input.GetKey(KeyCode.RightArrow)){
 			curDirection = FacingDirection.Right;
 			// attackAngle = 270;
 			// facingAngle = Vector3.right;
 			curAnim.Resume();
-			curAnim.Play("PlayerWalkingRight");			
+			curAnim.Play("walkingRight");			
 		}		
 		else if(Input.GetKey(KeyCode.LeftArrow)){
 			curDirection = FacingDirection.Left;
 			// attackAngle = 90;		
 			// facingAngle = Vector3.left;
 			curAnim.Resume();
-			curAnim.Play("PlayerWalkingLeft");
+			curAnim.Play("walkingLeft");
 		}	
 				
 		// Pauses walking animation when nothing is happening.
@@ -136,7 +136,7 @@ public class Player : MonoBehaviour {
 		// change to enum/switch 
 		
 		// Sword Attack
-		if(Input.GetKey(KeyCode.A)){			
+		if(Input.GetKey(KeyCode.A)){	/*		
 			curState = PlayerState.SwordAttack;
 			print ("curState in attack: " + curState); 
 			switch(curDirection)
@@ -156,7 +156,7 @@ public class Player : MonoBehaviour {
 				
 			}
 			curAnim.Resume();
-			StartCoroutine(waitForAnimationtoEnd());
+			StartCoroutine(waitForAnimationtoEnd());*/
 		}
 		// Phone Bullet/Beam
 		else if(Input.GetKey(KeyCode.S)){ // change this
@@ -178,16 +178,16 @@ public class Player : MonoBehaviour {
 		switch(curDirection)
 		{		
 			case FacingDirection.Up:
-			curAnim.Play("PlayerWalkingLeft");				
+			curAnim.Play("walkingLeft");				
 			break;
 			case FacingDirection.Left:
-			curAnim.Play("PlayerWalkingLeft");
+			curAnim.Play("walkingLeft");
 			break;
 			case FacingDirection.Down:
-			curAnim.Play("PlayerWalkingFront");				
+			curAnim.Play("walkingForward");				
 			break;
 			case FacingDirection.Right:
-			curAnim.Play("PlayerWalkingRight");				
+			curAnim.Play("walkingBackward");				
 			break;	
 		}	
 	}
