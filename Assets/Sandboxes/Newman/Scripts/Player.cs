@@ -28,6 +28,7 @@ public class Player : MonoBehaviour {
 	private PlayerState curState;
 	private FacingDirection curDirection;
 	private tk2dSpriteAnimator curAnim;
+	private Transform playerSprite;
 	public int curPhoneCharge {get; private set;}
 	public int curHealth {get; set;}
 	int curStamina;
@@ -47,6 +48,8 @@ public class Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		
+		playerSprite = transform.FindChild("PlayerSprite");
 		
 		curState = PlayerState.PlayerInput;
 		curDirection = FacingDirection.Down;
@@ -217,35 +220,35 @@ public class Player : MonoBehaviour {
 		} else if (Input.GetKeyDown(KeyCode.F)) {
 			fireBullet(phoneStunBullet);
 		} else if(Input.GetKey(KeyCode.A)){
-			curState = PlayerState.SwordAttack;
+			/*curState = PlayerState.SwordAttack;
 			if(swordAttack){  // melee
 
 				Transform swordAttacking = (Transform)Instantiate(swordAttack, transform.position, Quaternion.identity);
 				swordAttacking.Rotate(0,0,(int)curDirection);
 				swordAttacking.parent = transform;
 				StartCoroutine( FinishAttackAnimation(swordAttacking));
-			}
-			/*		
+			}*/
+			
+					
 			curState = PlayerState.SwordAttack;
-			print ("curState in attack: " + curState); 
 			switch(curDirection)
 			{
 				case FacingDirection.Up:
-				curAnim.Play("PlayerAttackBackLeft");				
+				curAnim.Play("swordLeft");				
 				break;
 				case FacingDirection.Left:
-				curAnim.Play("PlayerAttackFrontLeft");
+				curAnim.Play("swordLeft");
 				break;
 				case FacingDirection.Down:
-				curAnim.Play("PlayerAttackFrontLeft");				
+				curAnim.Play("swordRight");				
 				break;
 				case FacingDirection.Right:
-				curAnim.Play("PlayerAttackFrontRight");				
+				curAnim.Play("swordRight");				
 				break;				
 				
 			}
 			curAnim.Resume();
-			StartCoroutine(waitForAnimationtoEnd());*/
+			StartCoroutine(waitForAnimationtoEnd());
 		}
 		// Phone Bullet/Beam
 		else if(Input.GetKey(KeyCode.S)){ // change this
@@ -256,13 +259,13 @@ public class Player : MonoBehaviour {
 			
 		}	
 	}
-	
+	/*
 	IEnumerator FinishAttackAnimation(Transform sword){
 		yield return new WaitForSeconds(0.1f);
 		//swordAttacking = null;
 		Destroy(sword.gameObject);
 		curState = PlayerState.PlayerInput;
-	}
+	}*/
 	
 	IEnumerator waitForAnimationtoEnd(){
 		
@@ -270,6 +273,7 @@ public class Player : MonoBehaviour {
 			yield return null;
 		}
 		curState = PlayerState.PlayerInput;
+		Destroy(playerSprite.collider);
 		// curAnim.Pause();
 		switch(curDirection)
 		{		
