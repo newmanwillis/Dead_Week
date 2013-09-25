@@ -193,6 +193,7 @@ public class Player : MonoBehaviour {
 			Debug.Log("Not enough battery");
 		} else {
 			Transform shootingBullet = (Transform)Instantiate(bulletTypeToFire, transform.position, Quaternion.identity);
+			shootingBullet.Rotate(0, 0, (int)curDirection - 270);
 			shootingBullet.rigidbody.AddForce(directionToVector(curDirection) * 8000);
 			curPhoneCharge -= cost;
 		}
