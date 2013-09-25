@@ -10,6 +10,7 @@ public class StunExplosion : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		startTime = Time.time;
+		transform.position += new Vector3(0, 0, 1);  // make this show up behind zombies
 	}
 	
 	// Update is called once per frame

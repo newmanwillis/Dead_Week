@@ -2,8 +2,9 @@
 using System.Collections;
 
 public class PlayerMovement : MonoBehaviour {
+	public int phoneMaxCharge;
+	public int PhoneCharge {get; private set;}
 	
-	//public int health = 100;
 	public float Speed = 0.1f;
 	public Transform swordAttack;
 	public Transform bullet;
@@ -31,7 +32,7 @@ public class PlayerMovement : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-	
+		PhoneCharge = phoneMaxCharge;
 	}
 	
 	void Update () {
@@ -65,6 +66,14 @@ public class PlayerMovement : MonoBehaviour {
 				chargingLazer = false;
 			}
 		}
+		if (currentlyFiringLazer != null) {
+			int beamCost = currentlyFiringLazer.GetComponentInChildren<PlayerProjectile>().energyCost;
+			if (PhoneCharge < beamCost) {
+				stopBeamLazer();
+			} else {
+				PhoneCharge -= beamCost;
+			}
+		}
 		
 		if (Input.GetKeyDown(KeyCode.F)) {
 			fireBullet(stunBullet);
@@ -72,8 +81,15 @@ public class PlayerMovement : MonoBehaviour {
 	}
 	
 	void fireBullet(Transform bulletTypeToFire) {
-		Transform shootingBullet = (Transform)Instantiate(bulletTypeToFire, transform.position, Quaternion.identity);
-		shootingBullet.rigidbody.AddForce(facingAngle * 8000);
+		int cost = bulletTypeToFire.GetComponent<PlayerProjectile>().energyCost;
+		if (PhoneCharge < cost) {
+			// TODO: replace this with a sound effect
+			Debug.Log("Not enough battery");
+		} else {
+			Transform shootingBullet = (Transform)Instantiate(bulletTypeToFire, transform.position, Quaternion.identity);
+			shootingBullet.rigidbody.AddForce(facingAngle * 8000);
+			PhoneCharge -= cost;
+		}
 	}
 	
 	void fireBeamLazer() {
@@ -83,11 +99,10 @@ public class PlayerMovement : MonoBehaviour {
 	}
 	
 	void stopBeamLazer() {
-		if (currentlyFiringLazer == null) {
-			Debug.LogError("we should be firing a lazer");
+		if (currentlyFiringLazer != null) {
+			Destroy(currentlyFiringLazer.gameObject);
+			currentlyFiringLazer = null;
 		}
-		Destroy(currentlyFiringLazer.gameObject);
-		currentlyFiringLazer = null;
 	}
 	
 	// Update is called once per frame
@@ -127,28 +142,28 @@ public class PlayerMovement : MonoBehaviour {
 			attackAngle = 0;
 			facingAngle = Vector3.up;
 			curAnim.Resume();
-			curAnim.Play("PlayerWalkingBack");			
+			curAnim.Play("WalkingBackward");			
 		}		
 		else if(Input.GetKey(KeyCode.S)){
 			//curPos.y -= Speed;
 			attackAngle = 180;
 			facingAngle = Vector3.down;
 			curAnim.Resume();
-			curAnim.Play("PlayerWalkingFront");			
+			curAnim.Play("WalkingForward");			
 		}
 		else if(Input.GetKey(KeyCode.D)){
 			//curPos.x += Speed;
 			attackAngle = 270;
 			facingAngle = Vector3.right;
 			curAnim.Resume();
-			curAnim.Play("PlayerWalkingRight");			
+			curAnim.Play("WalkingRight");			
 		}		
 		else if(Input.GetKey(KeyCode.A)){
 			//curPos.x -= Speed;
 			attackAngle = 90;		
 			facingAngle = Vector3.left;
 			curAnim.Resume();
-			curAnim.Play("PlayerWalkingLeft");
+			curAnim.Play("WalkingLeft");
 				//= curAnim.Library.GetClipByName("PlayerWalkingLeft");
 		}	
 		
@@ -168,7 +183,13 @@ public class PlayerMovement : MonoBehaviour {
 		Vector3 moveAmount = new Vector3(transH, transV, 0);
 		//Debug.Log("moveAmount: " + moveAmount);
 		GetComponent<CharacterController>().Move(moveAmount);
-	}	
+	}
+	
+	void OnTriggerStay(Collider other) {
+		if (other.tag == "ChargingStation") {
+			PhoneCharge = Mathf.Min(PhoneCharge + 1, phoneMaxCharge);
+		}
+	}
 	
 	IEnumerator FinishAttackAnimation(Transform sword){
 		yield return new WaitForSeconds(0.1f);
