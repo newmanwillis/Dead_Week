@@ -4,29 +4,36 @@ using System.Collections;
 public class Player : MonoBehaviour {
 	
 	public float movementSpeed = 0.1f;
-	public int health = 100;
-	public int phoneEnergy = 100;
-	public int stamina = 100;
+	public int maxHealth = 100;
+	public int maxPhoneEnergy = 100;
+	public int maxStamina = 100;
 	
-	public enum PlayerState {PlayerInput, SwordAttack, PhoneAttack, Dead, Cutscene};
+	public enum PlayerState {PlayerInput, SwordAttack, PhoneAttack, TakingDamage, Dead, Cutscene, Menu};
 	//public enum FacingDirection {Up = 0, UpLeft = 45, Left = 90, DownLeft = 135, Down = 180, RightDown = 215, Right = 270, UpRight = 315};
 	public enum FacingDirection {Up = 0, Left = 90, Down = 180, Right = 270};
 	
 	private PlayerState curState;
 	private FacingDirection curDirection;
-	// private int curState;
 	private tk2dSpriteAnimator curAnim;
+	int curHealth;
+	int curPhoneEnergy;
+	int curStamina;
 	
-	private float attackAngle = 0;		// change to enum?
-	private Vector3 facingAngle = Vector3.up;		// REMOVE?
+	Transform phoneBullet;
+	Transform phoneBeam;	
+	
+	// private float attackAngle = 0;		// change to enum?
+	// private Vector3 facingAngle = Vector3.up;		// REMOVE?
 
 	// Use this for initialization
 	void Start () {
 		
 		curState = PlayerState.PlayerInput;
 		curDirection = FacingDirection.Down;
-		//curState = (int) PlayerStates.PlayerInput;
 		curAnim = transform.FindChild("PlayerSprite").GetComponent<tk2dSpriteAnimator>();
+		curHealth = maxHealth;
+		curPhoneEnergy = maxPhoneEnergy;
+		curStamina = maxStamina;
 	}
 	
 	// Update is called once per frame
@@ -47,8 +54,15 @@ public class Player : MonoBehaviour {
 	
 	void FixedUpdate () {
 		
-		if(curState == PlayerState.PlayerInput) // change
-			MovementInput();
+		switch( curState)
+		{
+			case PlayerState.PlayerInput:
+			MovementInput();  // Check for player movement
+			break;
+		}		
+		
+		//if(curState == PlayerState.PlayerInput) // change
+		//	MovementInput();
 		
 	}
 	
@@ -84,40 +98,36 @@ public class Player : MonoBehaviour {
 		
 		if(Input.GetKey(KeyCode.UpArrow)){
 			curDirection = FacingDirection.Up;
-			attackAngle = 0;
-			facingAngle = Vector3.up;
+			// attackAngle = 0;
+			// facingAngle = Vector3.up;
 			curAnim.Resume();
 			curAnim.Play("PlayerWalkingBack");			
 		}		
 		else if(Input.GetKey(KeyCode.DownArrow)){
 			curDirection = FacingDirection.Down;
-			attackAngle = 180;
-			facingAngle = Vector3.down;
+			// attackAngle = 180;
+			// facingAngle = Vector3.down;
 			curAnim.Resume();
 					curAnim.Play("PlayerWalkingFront");			
 		}
 		else if(Input.GetKey(KeyCode.RightArrow)){
 			curDirection = FacingDirection.Right;
-			attackAngle = 270;
-			facingAngle = Vector3.right;
+			// attackAngle = 270;
+			// facingAngle = Vector3.right;
 			curAnim.Resume();
 			curAnim.Play("PlayerWalkingRight");			
 		}		
 		else if(Input.GetKey(KeyCode.LeftArrow)){
 			curDirection = FacingDirection.Left;
-			attackAngle = 90;		
-			facingAngle = Vector3.left;
+			// attackAngle = 90;		
+			// facingAngle = Vector3.left;
 			curAnim.Resume();
 			curAnim.Play("PlayerWalkingLeft");
 		}	
 				
 		// Pauses walking animation when nothing is happening.
 		if(!(Input.GetKey(KeyCode.UpArrow)) && !(Input.GetKey(KeyCode.LeftArrow)) && !(Input.GetKey(KeyCode.DownArrow)) && !(Input.GetKey(KeyCode.RightArrow))){
-			//curAnim.Stop();
-			curAnim.StopAndResetFrame();
-			// CHANGE to reset the animation
-			// CHANGE so this doesnt stop when animating attack, etc...
-			// curAnim.Pause();			
+			curAnim.StopAndResetFrame();			
 		}
 	}
 	
@@ -164,7 +174,7 @@ public class Player : MonoBehaviour {
 			yield return null;
 		}
 		curState = PlayerState.PlayerInput;
-		curAnim.Pause();
+		// curAnim.Pause();
 		switch(curDirection)
 		{		
 			case FacingDirection.Up:
