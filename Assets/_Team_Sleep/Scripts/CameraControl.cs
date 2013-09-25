@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CameraControl : MonoBehaviour {
 	GameObject playerObject;
-	PlayerScript player;
+	Player player;
 	
 	public Texture heartSpriteFull;
 	public Texture heartSpriteHalf;
@@ -22,7 +22,7 @@ public class CameraControl : MonoBehaviour {
 		//camera.orthographicSize = Screen.height/4;
 		
 		playerObject = GameObject.Find("Player");
-		player = playerObject.GetComponent<PlayerScript>();
+		player = playerObject.GetComponent<Player>();
 	}
 	
 	// Update is called once per frame
@@ -46,8 +46,8 @@ public class CameraControl : MonoBehaviour {
 		}
 		
 		// draw energy bar:
-		int energy = playerObject.GetComponent<PlayerMovement>().PhoneCharge;
-		int energyMax = playerObject.GetComponent<PlayerMovement>().phoneMaxCharge;
+		int energy = player.curPhoneCharge;
+		int energyMax = player.maxPhoneCharge;
 		float percent = ((float) energy) / energyMax;
 		GUI.DrawTexture(new Rect(Screen.width - 200, 10, 150, 20), blackBox);
 		GUI.DrawTexture(new Rect(Screen.width - 200 + 5, 10 + 5, (150 - (5*2))*percent, 10), blueBox);
@@ -92,6 +92,6 @@ public class CameraControl : MonoBehaviour {
 		if (playerObject == null) { // this is apparently overloaded to check whether it has been destroyed
 			return -1;
 		}
-		return player.health;
+		return player.curHealth;
 	}
 }
