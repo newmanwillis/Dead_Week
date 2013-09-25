@@ -19,7 +19,7 @@ public class ZombieAttack : MonoBehaviour {
 	void OnTriggerStay(Collider other){
 		if(other.tag == "Player" && canAttack && !gameObject.transform.parent.GetComponent<ZombieHealth>().IsStunned){
 			Debug.Log("trigger on player");
-			other.GetComponent<PlayerScript>().health -= attackDamage;
+			other.GetComponent<Player>().curHealth -= attackDamage;
 			canAttack = false;
 			StartCoroutine(BiteCooldown());
 		}	

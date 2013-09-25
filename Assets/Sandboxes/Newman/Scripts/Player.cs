@@ -5,22 +5,42 @@ public class Player : MonoBehaviour {
 	
 	public float movementSpeed = 0.1f;
 	public int maxHealth = 100;
-	public int maxPhoneEnergy = 100;
+	public int maxPhoneCharge = 100;
 	public int maxStamina = 100;
 	
-	public enum PlayerState {PlayerInput, SwordAttack, PhoneAttack, TakingDamage, Dead, Cutscene, Menu};
+	public enum PlayerState {PlayerInput, SwordAttack, PhoneAttack, TakingDamage, Dead, Cutscene, Menu, chargingLazer, firingLazer};
 	//public enum FacingDirection {Up = 0, UpLeft = 45, Left = 90, DownLeft = 135, Down = 180, RightDown = 215, Right = 270, UpRight = 315};
 	public enum FacingDirection {Up = 0, Left = 90, Down = 180, Right = 270};
-	
+	public static Vector3 directionToVector(FacingDirection direction) {
+		switch(direction) {
+		case FacingDirection.Up:
+			return new Vector3(0, 1, 0);
+		case FacingDirection.Left:
+			return new Vector3(-1, 0, 0);
+		case FacingDirection.Down:
+			return new Vector3(0, -1, 0);
+		case FacingDirection.Right:
+			return new Vector3(1, 0, 0);
+		}
+		return new Vector3(0, 0, 0);
+	}
+		
 	private PlayerState curState;
 	private FacingDirection curDirection;
 	private tk2dSpriteAnimator curAnim;
-	int curHealth;
-	int curPhoneEnergy;
+	public int curPhoneCharge {get; private set;}
+	public int curHealth {get; set;}
 	int curStamina;
 	
-	Transform phoneBullet;
-	Transform phoneBeam;	
+	public float lazerBeamChargeTime;  // time it takes the lazer to charge
+	bool chargingLazer = false;
+	float lazerChargedAtTime;  // time at which the lazer will be charged
+	Transform currentlyFiringLazer = null;
+	
+	public Transform swordAttack;
+	public Transform phoneBullet;
+	public Transform phoneLazerBeam;
+	public Transform phoneStunBullet;
 	
 	// private float attackAngle = 0;		// change to enum?
 	// private Vector3 facingAngle = Vector3.up;		// REMOVE?
@@ -32,7 +52,7 @@ public class Player : MonoBehaviour {
 		curDirection = FacingDirection.Down;
 		curAnim = transform.FindChild("PlayerSprite").GetComponent<tk2dSpriteAnimator>();
 		curHealth = maxHealth;
-		curPhoneEnergy = maxPhoneEnergy;
+		curPhoneCharge = maxPhoneCharge;
 		curStamina = maxStamina;
 	}
 	
@@ -43,6 +63,11 @@ public class Player : MonoBehaviour {
 		{
 			case PlayerState.PlayerInput:
 			AttackInput();  // Check for player attacks
+			break;
+			
+			case PlayerState.firingLazer:  // deliberate fallthrough
+			case PlayerState.chargingLazer:
+				handleLazer();
 			break;
 		}
 		
@@ -57,7 +82,7 @@ public class Player : MonoBehaviour {
 		switch( curState)
 		{
 			case PlayerState.PlayerInput:
-			MovementInput();  // Check for player movement
+				MovementInput();  // Check for player movement
 			break;
 		}		
 		
@@ -131,12 +156,76 @@ public class Player : MonoBehaviour {
 		}
 	}
 	
+	// called every tick that the player is firing or charging the lazer
+	void handleLazer() {
+		if (Input.GetKeyUp(KeyCode.R)) {
+			curState = PlayerState.PlayerInput;
+			if (Time.time < lazerChargedAtTime) {
+				fireBullet(phoneBullet);
+			} else {
+				stopBeamLazer();
+			}
+		}
+		if (curState == PlayerState.chargingLazer) {
+			if (Time.time >= lazerChargedAtTime) {
+				fireBeamLazer();
+				curState = PlayerState.firingLazer;
+			}
+		}
+		if (curState == PlayerState.firingLazer) {
+			int beamCost = currentlyFiringLazer.GetComponentInChildren<PlayerProjectile>().energyCost;
+			if (curPhoneCharge < beamCost) {
+				curState = PlayerState.PlayerInput;
+				stopBeamLazer();
+			} else {
+				curPhoneCharge -= beamCost;
+			}
+		}
+	}
+	
+	void fireBullet(Transform bulletTypeToFire) {
+		int cost = bulletTypeToFire.GetComponent<PlayerProjectile>().energyCost;
+		if (curPhoneCharge < cost) {
+			// TODO: replace this with a sound effect
+			Debug.Log("Not enough battery");
+		} else {
+			Transform shootingBullet = (Transform)Instantiate(bulletTypeToFire, transform.position, Quaternion.identity);
+			shootingBullet.rigidbody.AddForce(directionToVector(curDirection) * 8000);
+			curPhoneCharge -= cost;
+		}
+	}
+	
+	void fireBeamLazer() {
+		currentlyFiringLazer = (Transform)Instantiate(phoneLazerBeam, transform.position, Quaternion.identity);
+		currentlyFiringLazer.Rotate(0, 0, (int)curDirection + 90);
+		currentlyFiringLazer.parent = transform;
+	}
+	
+	void stopBeamLazer() {
+		if (currentlyFiringLazer != null) {
+			Destroy(currentlyFiringLazer.gameObject);
+			currentlyFiringLazer = null;
+		}
+	}
+	
 	void AttackInput(){
 		
 		// change to enum/switch 
-		
-		// Sword Attack
-		if(Input.GetKey(KeyCode.A)){	/*		
+		if(Input.GetKeyDown(KeyCode.R)){
+			curState = PlayerState.chargingLazer;
+			lazerChargedAtTime = Time.time + lazerBeamChargeTime;
+		} else if (Input.GetKeyDown(KeyCode.F)) {
+			fireBullet(phoneStunBullet);
+		} else if(Input.GetKey(KeyCode.A)){
+			curState = PlayerState.SwordAttack;
+			if(swordAttack){  // melee
+
+				Transform swordAttacking = (Transform)Instantiate(swordAttack, transform.position, Quaternion.identity);
+				swordAttacking.Rotate(0,0,(int)curDirection);
+				swordAttacking.parent = transform;
+				StartCoroutine( FinishAttackAnimation(swordAttacking));
+			}
+			/*		
 			curState = PlayerState.SwordAttack;
 			print ("curState in attack: " + curState); 
 			switch(curDirection)
@@ -168,6 +257,13 @@ public class Player : MonoBehaviour {
 		}	
 	}
 	
+	IEnumerator FinishAttackAnimation(Transform sword){
+		yield return new WaitForSeconds(0.1f);
+		//swordAttacking = null;
+		Destroy(sword.gameObject);
+		curState = PlayerState.PlayerInput;
+	}
+	
 	IEnumerator waitForAnimationtoEnd(){
 		
 		while(curAnim.Playing){
@@ -190,5 +286,11 @@ public class Player : MonoBehaviour {
 			curAnim.Play("walkingBackward");				
 			break;	
 		}	
+	}
+	
+	void OnTriggerStay(Collider other) {
+		if (other.tag == "ChargingStation") {
+			curPhoneCharge = Mathf.Min(curPhoneCharge + 1, maxPhoneCharge);
+		}
 	}
 }
