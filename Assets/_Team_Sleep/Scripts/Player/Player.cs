@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
 	
-	public float movementSpeed = 0.1f;
+	public float movementSpeed = 0.8f;
 	public int maxHealth = 100;
 	public int maxPhoneCharge = 100;
 	public int maxStamina = 100;
@@ -37,14 +37,10 @@ public class Player : MonoBehaviour {
 	bool chargingLazer = false;
 	float lazerChargedAtTime;  // time at which the lazer will be charged
 	Transform currentlyFiringLazer = null;
-	
-	public Transform swordAttack;
-	public Transform phoneBullet;
-	public Transform phoneLazerBeam;
-	public Transform phoneStunBullet;
-	
-	// private float attackAngle = 0;		// change to enum?
-	// private Vector3 facingAngle = Vector3.up;		// REMOVE?
+
+	private Transform phoneBullet;
+	private Transform phoneLazerBeam;
+	private Transform phoneStunBullet;
 
 	// Use this for initialization
 	void Start () {
@@ -74,10 +70,6 @@ public class Player : MonoBehaviour {
 			break;
 		}
 		
-		//if(curState == PlayerStates.PlayerInput){
-		//	AttackInput();
-		//}
-		
 	}
 	
 	void FixedUpdate () {
@@ -88,10 +80,6 @@ public class Player : MonoBehaviour {
 				MovementInput();  // Check for player movement
 			break;
 		}		
-		
-		//if(curState == PlayerState.PlayerInput) // change
-		//	MovementInput();
-		
 	}
 	
 	void MovementInput(){
@@ -126,42 +114,34 @@ public class Player : MonoBehaviour {
 		
 		if(Input.GetKey(KeyCode.UpArrow)){
 			curDirection = FacingDirection.Up;
-			// attackAngle = 0;
-			// facingAngle = Vector3.up;
 			curAnim.Resume();
 			curAnim.Play("walkingBackward");			
 		}		
 		else if(Input.GetKey(KeyCode.DownArrow)){
 			curDirection = FacingDirection.Down;
-			// attackAngle = 180;
-			// facingAngle = Vector3.down;
 			curAnim.Resume();
 					curAnim.Play("walkingForward");			
 		}
 		else if(Input.GetKey(KeyCode.RightArrow)){
 			curDirection = FacingDirection.Right;
-			// attackAngle = 270;
-			// facingAngle = Vector3.right;
 			curAnim.Resume();
 			curAnim.Play("walkingRight");			
 		}		
 		else if(Input.GetKey(KeyCode.LeftArrow)){
 			curDirection = FacingDirection.Left;
-			// attackAngle = 90;		
-			// facingAngle = Vector3.left;
 			curAnim.Resume();
 			curAnim.Play("walkingLeft");
 		}	
 				
-		// Pauses walking animation when nothing is happening.
+		// Stops walking animation when nothing is happening.
 		if(!(Input.GetKey(KeyCode.UpArrow)) && !(Input.GetKey(KeyCode.LeftArrow)) && !(Input.GetKey(KeyCode.DownArrow)) && !(Input.GetKey(KeyCode.RightArrow))){
 			curAnim.StopAndResetFrame();			
 		}
 	}
 	
-	// called every tick that the player is firing or charging the lazer
+	// Called every tick that the player is firing or charging the lazer
 	void handleLazer() {
-		if (Input.GetKeyUp(KeyCode.R)) {
+		if (Input.GetKeyUp(KeyCode.S)) {
 			curState = PlayerState.PlayerInput;
 			if (Time.time < lazerChargedAtTime) {
 				fireBullet(phoneBullet);
@@ -215,22 +195,12 @@ public class Player : MonoBehaviour {
 	void AttackInput(){
 		
 		// change to enum/switch 
-		if(Input.GetKeyDown(KeyCode.R)){
+		if(Input.GetKeyDown(KeyCode.S)){			// Phone bullet
 			curState = PlayerState.chargingLazer;
 			lazerChargedAtTime = Time.time + lazerBeamChargeTime;
-		} else if (Input.GetKeyDown(KeyCode.F)) {
+		} else if (Input.GetKeyDown(KeyCode.D)) {	// Phone stun
 			fireBullet(phoneStunBullet);
-		} else if(Input.GetKey(KeyCode.A)){
-			/*curState = PlayerState.SwordAttack;
-			if(swordAttack){  // melee
-
-				Transform swordAttacking = (Transform)Instantiate(swordAttack, transform.position, Quaternion.identity);
-				swordAttacking.Rotate(0,0,(int)curDirection);
-				swordAttacking.parent = transform;
-				StartCoroutine( FinishAttackAnimation(swordAttacking));
-			}*/
-			
-					
+		} else if(Input.GetKey(KeyCode.A)){			// Sword Attack
 			curState = PlayerState.SwordAttack;
 			switch(curDirection)
 			{
@@ -245,28 +215,12 @@ public class Player : MonoBehaviour {
 				break;
 				case FacingDirection.Right:
 				curAnim.Play("swordRight");				
-				break;				
-				
+				break;					
 			}
 			curAnim.Resume();
 			StartCoroutine(waitForAnimationtoEnd());
 		}
-		// Phone Bullet/Beam
-		else if(Input.GetKey(KeyCode.S)){ // change this
-			// play sprite
-		}
-		//Phone Stun
-		else if(Input.GetKey(KeyCode.D)){
-			
-		}	
 	}
-	/*
-	IEnumerator FinishAttackAnimation(Transform sword){
-		yield return new WaitForSeconds(0.1f);
-		//swordAttacking = null;
-		Destroy(sword.gameObject);
-		curState = PlayerState.PlayerInput;
-	}*/
 	
 	IEnumerator waitForAnimationtoEnd(){
 		
