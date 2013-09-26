@@ -20,11 +20,14 @@ public class PlayerProjectile : MonoBehaviour {
 	}
 	
 	void OnTriggerStay(Collider other) {
+		print ("TAG: " + other.tag);
 		if (other.tag == "Zombie" && !(dealDamageOnce && dealtDamage)) {
+			//print ("in first");
 			other.GetComponent<ZombieHealth>().health -= damage;
 			dealtDamage = true;
 		}
 		if (other.tag == "Zombie" || other.tag == "Wall") {
+			//print ("in 2nd");
 		//if(other.tag != "Player" && other.tag != "Attack" && other.tag != "ZombieDetectionRange" && other.tag != "ZombieAttack"){
 			if (disappearOnCollide) {
 				if (spawnOther != null) {
