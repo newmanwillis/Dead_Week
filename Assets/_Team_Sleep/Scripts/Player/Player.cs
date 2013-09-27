@@ -38,9 +38,9 @@ public class Player : MonoBehaviour {
 	float lazerChargedAtTime;  // time at which the lazer will be charged
 	Transform currentlyFiringLazer = null;
 
-	private Transform phoneBullet;
-	private Transform phoneLazerBeam;
-	private Transform phoneStunBullet;
+	public Transform phoneBullet;
+	public Transform phoneLazerBeam;
+	public Transform phoneStunBullet;
 
 	// Use this for initialization
 	void Start () {
