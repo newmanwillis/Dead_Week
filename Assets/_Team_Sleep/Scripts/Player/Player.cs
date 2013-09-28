@@ -41,6 +41,11 @@ public class Player : MonoBehaviour {
 	public Transform phoneBullet;
 	public Transform phoneLazerBeam;
 	public Transform phoneStunBullet;
+	
+	public bool hasSword;
+	public bool hasPhoneBullet;
+	public bool hasPhoneLazer;
+	public bool hasPhoneStun;
 
 	// Use this for initialization
 	void Start () {
@@ -144,7 +149,9 @@ public class Player : MonoBehaviour {
 		if (Input.GetKeyUp(KeyCode.S)) {
 			curState = PlayerState.PlayerInput;
 			if (Time.time < lazerChargedAtTime) {
-				fireBullet(phoneBullet);
+				if (hasPhoneBullet) {
+					fireBullet(phoneBullet);
+				}
 			} else {
 				stopBeamLazer();
 			}
@@ -196,11 +203,15 @@ public class Player : MonoBehaviour {
 		
 		// change to enum/switch 
 		if(Input.GetKeyDown(KeyCode.S)){			// Phone bullet
-			curState = PlayerState.chargingLazer;
-			lazerChargedAtTime = Time.time + lazerBeamChargeTime;
-		} else if (Input.GetKeyDown(KeyCode.D)) {	// Phone stun
+			if (hasPhoneLazer) {
+				curState = PlayerState.chargingLazer;
+				lazerChargedAtTime = Time.time + lazerBeamChargeTime;
+			} else if (hasPhoneBullet) {
+				fireBullet(phoneBullet);
+			}
+		} else if (Input.GetKeyDown(KeyCode.D) && hasPhoneStun) {	// Phone stun
 			fireBullet(phoneStunBullet);
-		} else if(Input.GetKey(KeyCode.A)){			// Sword Attack
+		} else if(Input.GetKey(KeyCode.A) && hasSword){			// Sword Attack
 			curState = PlayerState.SwordAttack;
 			switch(curDirection)
 			{
@@ -250,6 +261,18 @@ public class Player : MonoBehaviour {
 	void OnTriggerStay(Collider other) {
 		if (other.tag == "ChargingStation") {
 			curPhoneCharge = Mathf.Min(curPhoneCharge + 1, maxPhoneCharge);
+		} else if (other.tag == "SwordPickup") {
+			hasSword = true;
+			Destroy(other.gameObject);
+		} else if (other.tag == "PhoneBulletPickup") {
+			hasPhoneBullet = true;
+			Destroy(other.gameObject);
+		} else if (other.tag == "PhoneLazerPickup") {
+			hasPhoneLazer = true;
+			Destroy(other.gameObject);
+		} else if (other.tag == "PhoneStunPickup") {
+			hasPhoneStun = true;
+			Destroy(other.gameObject);
 		}
 	}
 }
