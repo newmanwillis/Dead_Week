@@ -48,6 +48,7 @@ public class Player : MonoBehaviour {
 	public bool hasPhoneStun;
 	
 	private Transform flashLight;
+	private bool flashLightOn = false;
 
 	// Use this for initialization
 	void Start () {
@@ -58,6 +59,7 @@ public class Player : MonoBehaviour {
 		curState = PlayerState.PlayerInput;
 		curDirection = FacingDirection.Down;
 		flashLight.transform.Rotate(35, 0, 0);
+		flashLight.GetComponent<Light>().intensity = 0;
 		curAnim = transform.FindChild("PlayerSprite").GetComponent<tk2dSpriteAnimator>();
 		curHealth = maxHealth;
 		curPhoneCharge = maxPhoneCharge;
@@ -242,6 +244,14 @@ public class Player : MonoBehaviour {
 			}
 			curAnim.Resume();
 			StartCoroutine(waitForAnimationtoEnd());
+		} else if (Input.GetKeyDown(KeyCode.F)) {    // flashlight
+			if (flashLightOn) {
+				flashLightOn = false;
+				flashLight.GetComponent<Light>().intensity = 0;
+			} else {
+				flashLightOn = true;
+				flashLight.GetComponent<Light>().intensity = 6;
+			}
 		}
 	}
 	
