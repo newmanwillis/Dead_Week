@@ -46,14 +46,18 @@ public class Player : MonoBehaviour {
 	public bool hasPhoneBullet;
 	public bool hasPhoneLazer;
 	public bool hasPhoneStun;
+	
+	private Transform flashLight;
 
 	// Use this for initialization
 	void Start () {
 		
 		playerSprite = transform.FindChild("PlayerSprite");
+		flashLight = transform.FindChild("FlashLight");
 		
 		curState = PlayerState.PlayerInput;
 		curDirection = FacingDirection.Down;
+		flashLight.transform.Rotate(35, 0, 0);
 		curAnim = transform.FindChild("PlayerSprite").GetComponent<tk2dSpriteAnimator>();
 		curHealth = maxHealth;
 		curPhoneCharge = maxPhoneCharge;
@@ -119,21 +123,29 @@ public class Player : MonoBehaviour {
 		
 		if(Input.GetKey(KeyCode.UpArrow)){
 			curDirection = FacingDirection.Up;
+			flashLight.transform.localRotation = Quaternion.identity;
+			flashLight.transform.Rotate(-35, 0, 0);
 			curAnim.Resume();
 			curAnim.Play("walkingBackward");			
 		}		
 		else if(Input.GetKey(KeyCode.DownArrow)){
 			curDirection = FacingDirection.Down;
+			flashLight.transform.localRotation = Quaternion.identity;
+			flashLight.transform.Rotate(35, 0, 0);
 			curAnim.Resume();
-					curAnim.Play("walkingForward");			
+			curAnim.Play("walkingForward");			
 		}
 		else if(Input.GetKey(KeyCode.RightArrow)){
 			curDirection = FacingDirection.Right;
+			flashLight.transform.localRotation = Quaternion.identity;
+			flashLight.transform.Rotate(0, 35, 0);
 			curAnim.Resume();
 			curAnim.Play("walkingRight");			
 		}		
 		else if(Input.GetKey(KeyCode.LeftArrow)){
 			curDirection = FacingDirection.Left;
+			flashLight.transform.localRotation = Quaternion.identity;
+			flashLight.transform.Rotate(0, -35, 0);
 			curAnim.Resume();
 			curAnim.Play("walkingLeft");
 		}	
