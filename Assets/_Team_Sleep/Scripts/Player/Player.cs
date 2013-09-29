@@ -273,6 +273,9 @@ public class Player : MonoBehaviour {
 		} else if (other.tag == "PhoneStunPickup") {
 			hasPhoneStun = true;
 			Destroy(other.gameObject);
+		} else if (other.tag == "TextMessage") {
+			Camera.main.GetComponent<CameraControl>().pauseAndDrawTextMessage(other.GetComponent<TextMessage>().message);
+			Destroy(other.gameObject);
 		}
 	}
 }

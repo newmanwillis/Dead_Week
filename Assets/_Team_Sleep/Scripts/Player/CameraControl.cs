@@ -13,8 +13,12 @@ public class CameraControl : MonoBehaviour {
 	public Texture loseMessage;
 	public Texture blackBox;
 	public Texture blueBox;
+	public Texture textMessageBox;
 	
 	public Texture healthBar;
+	
+	private bool isPaused;
+	private string currentMessage;
 	
 	// Use this for initialization
 	void Start () {
@@ -23,6 +27,8 @@ public class CameraControl : MonoBehaviour {
 		
 		playerObject = GameObject.Find("Player");
 		player = playerObject.GetComponent<Player>();
+		
+		isPaused = false;
 	}
 	
 	// Update is called once per frame
@@ -31,6 +37,21 @@ public class CameraControl : MonoBehaviour {
 	
 	// called for GRAPHICS frames and not physics timesteps. GUI methods are only allowed in here.
 	void OnGUI() {
+		if (Event.current.isKey && Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Space) {
+			if (isPaused) {
+				isPaused = false;
+				Time.timeScale = 1;
+			} else {
+				isPaused = true;
+				currentMessage = "You paused the game!";
+				Time.timeScale = 0;
+			}
+		}
+		
+		if (isPaused) {
+			drawTextMessage(currentMessage);
+		}
+		
 		GUI.depth = 0;
 		int health = playerHealth();
 		for (int heart = 1; heart <= player.maxHealth/2; heart++) {
@@ -77,6 +98,21 @@ public class CameraControl : MonoBehaviour {
 		x += Screen.width/2;
 		y += Screen.height/2;
 		return new Vector2(x, y);
+	}
+	
+	public void pauseAndDrawTextMessage(string message) {
+		currentMessage = message;
+		isPaused = true;
+		Time.timeScale = 0;
+	}
+	
+	void drawTextMessage(string message) {
+		GUIStyle style = new GUIStyle();
+		style.normal.textColor = Color.black;
+		int upperLeftY = Screen.height - textMessageBox.height;
+		int upperLeftX = (Screen.width - textMessageBox.width) / 2;
+		GUI.DrawTexture(new Rect(upperLeftX, upperLeftY, textMessageBox.width, textMessageBox.height), textMessageBox);
+		GUI.Label(new Rect(upperLeftX + 85, upperLeftY + 85, 370, (319-85)), message, style);
 	}
 	
 	/*
