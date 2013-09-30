@@ -38,9 +38,9 @@ public class Player : MonoBehaviour {
 	float lazerChargedAtTime;  // time at which the lazer will be charged
 	Transform currentlyFiringLazer = null;
 
-	public Transform phoneBullet;
-	public Transform phoneLazerBeam;
-	public Transform phoneStunBullet;
+	private Transform phoneBullet;
+	private Transform phoneLazerBeam;
+	private Transform phoneStunBullet;
 	
 	public bool hasSword;
 	public bool hasPhoneBullet;
@@ -52,6 +52,11 @@ public class Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		
+		// Loads Prefabs directly from Resources Folder
+		phoneBullet = ((GameObject) Resources.Load("Phone Attacks/Bullet")).transform;
+		phoneLazerBeam = ((GameObject) Resources.Load("Phone Attacks/LazerBeam")).transform;
+		phoneStunBullet = ((GameObject) Resources.Load("Phone Attacks/StunBullet")).transform;
 		
 		playerSprite = transform.FindChild("PlayerSprite");
 		flashLight = transform.FindChild("FlashLight");
@@ -216,13 +221,16 @@ public class Player : MonoBehaviour {
 		
 		// change to enum/switch 
 		if(Input.GetKeyDown(KeyCode.S)){			// Phone bullet
+			PhoneAttackAnimation();
 			if (hasPhoneLazer) {
 				curState = PlayerState.chargingLazer;
 				lazerChargedAtTime = Time.time + lazerBeamChargeTime;
 			} else if (hasPhoneBullet) {
 				fireBullet(phoneBullet);
+
 			}
 		} else if (Input.GetKeyDown(KeyCode.D) && hasPhoneStun) {	// Phone stun
+			PhoneAttackAnimation();
 			fireBullet(phoneStunBullet);
 		} else if(Input.GetKey(KeyCode.A) && hasSword){			// Sword Attack
 			curState = PlayerState.SwordAttack;
@@ -278,6 +286,26 @@ public class Player : MonoBehaviour {
 			break;	
 		}	
 	}
+	
+	void PhoneAttackAnimation(){
+		switch(curDirection)
+		{		
+			case FacingDirection.Up:
+			curAnim.Play("phoneBack (1 Frame)");
+			break;
+			case FacingDirection.Left:
+			curAnim.Play("phoneLeft (1 Frame)");
+			break;
+			case FacingDirection.Down:
+			curAnim.Play("phoneFront (1 Frame)");			
+			break;
+			case FacingDirection.Right:
+			curAnim.Play("phoneRight (1 Frame)");				
+			break;	
+		}				
+	}
+	
+	
 	
 	void OnTriggerStay(Collider other) {
 		if (other.tag == "ChargingStation") {

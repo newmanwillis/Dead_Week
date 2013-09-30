@@ -11,11 +11,11 @@ using System.Collections;
 public class ZombieWander : MonoBehaviour {
 	
 	public float _wanderSpeed = 9f;
-	public bool _canWander = true;	//  can make it so specific zombies do not wander
+	public bool _canWander = true;										//  can make it so specific zombies do not wander
 	public enum Direction {up, down, left, right};
 	
 	private Zombie zombieScript;
-	private tk2dSpriteAnimator curAnim;  // current animation for zombie	
+	private tk2dSpriteAnimator curAnim;  								// current animation for zombie	
 	
 	// Use this for initialization
 	void Start () {
@@ -30,7 +30,7 @@ public class ZombieWander : MonoBehaviour {
 	}	
 	
 	IEnumerator StandStill(){
-		float waitTime = CalculateTimer(0.5f, 2, 10);  // makes Zombies stand still for 1 to 5 seconds	
+		float waitTime = CalculateTimer(0.5f, 2, 10);  					// makes Zombies stand still for 1 to 5 seconds	
 		// print("Stand Still Time: " + (waitTime - Time.time));
 		while(Time.time < waitTime){
 			if(zombieScript.curState != Zombie.ZombieState.wandering){  // Stops process if zombie state changes
@@ -44,7 +44,7 @@ public class ZombieWander : MonoBehaviour {
 	IEnumerator Wander(){
 		Direction moveDirection = CalculateDirection();	
 		ChooseDirectionAnimation(moveDirection);
-		float moveTime = CalculateTimer(0.2f, 5, 15);  // makes Zombies wander for 1 to 3 seconds
+		float moveTime = CalculateTimer(0.2f, 5, 15);  					// makes Zombies wander for 1 to 3 seconds
 		// print("Wander Time: " + (moveTime - Time.time));
 		while(Time.time < moveTime){
 			if(zombieScript.curState != Zombie.ZombieState.wandering){  // Stops process if zombie state changes
@@ -68,8 +68,8 @@ public class ZombieWander : MonoBehaviour {
 			GetComponent<CharacterController>().Move(moveAmount);				
 			yield return null;
 		}
-		curAnim.StopAndResetFrame();	// stop animation
-		StartCoroutine(StandStill());	// start cycle over again, keep wandering	
+		curAnim.StopAndResetFrame();									// stop animation
+		StartCoroutine(StandStill());									// start cycle over again, keep wandering	
 	}
 	
 	private float CalculateTimer(float multiplier, int min, int max){
@@ -79,7 +79,7 @@ public class ZombieWander : MonoBehaviour {
 
 	private Direction CalculateDirection(){
 		int directionEnumLength = System.Enum.GetNames(typeof( Direction)).Length;
-		int randomDirection = Random.Range(0, directionEnumLength - 1);
+		int randomDirection = Random.Range(0, directionEnumLength);
 		Direction randDir = (Direction) randomDirection;
 		return randDir;
 	}		
