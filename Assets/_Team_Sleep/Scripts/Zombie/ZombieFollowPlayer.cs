@@ -8,9 +8,11 @@ public class ZombieFollowPlayer : MonoBehaviour {
 	bool foundPlayer = false;
 	Transform player;
 	
+	private ZombieHealth zombieHealthScript;
+	
 	// Use this for initialization
 	void Start () {
-		
+		zombieHealthScript = transform.parent.GetComponent<ZombieHealth>();
 	}
 	
 	// Update is called once per frame
@@ -19,7 +21,7 @@ public class ZombieFollowPlayer : MonoBehaviour {
 	}
 	
 	void FixedUpdate(){
-		if(foundPlayer && !gameObject.transform.parent.gameObject.GetComponent<ZombieHealth>().IsStunned){
+		if(foundPlayer && !gameObject.transform.parent.gameObject.GetComponent<ZombieHealth>().IsStunned && !zombieHealthScript.isDead){
 			
 
 			
