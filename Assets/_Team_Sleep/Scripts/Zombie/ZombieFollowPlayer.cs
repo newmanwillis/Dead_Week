@@ -21,7 +21,7 @@ public class ZombieFollowPlayer : MonoBehaviour {
 	}
 	
 	void FixedUpdate(){
-		if(foundPlayer && !gameObject.transform.parent.gameObject.GetComponent<ZombieHealth>().IsStunned && !zombieHealthScript.isDead){
+		if(foundPlayer && !zombieHealthScript.IsStunned && !zombieHealthScript.isDead){
 			
 
 			
