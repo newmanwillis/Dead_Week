@@ -229,6 +229,7 @@ Library/metadata
 /Temp
 
 *.csproj
+*.unityproj
 Dead_Week-csharp.sln
 Dead_Week.sln
 Dead_Week.userprefs
