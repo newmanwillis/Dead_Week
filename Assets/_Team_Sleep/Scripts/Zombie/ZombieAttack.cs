@@ -17,10 +17,13 @@ public class ZombieAttack : MonoBehaviour {
 	}
 	
 	void OnTriggerStay(Collider other){
-		if(other.tag == "Player" && canAttack && !gameObject.transform.parent.GetComponent<ZombieHealth>().IsStunned){
-			other.GetComponent<Player>().curHealth -= attackDamage;
-			canAttack = false;
-			StartCoroutine(BiteCooldown());
+		if(other.tag == "Player" && canAttack) {
+			ZombieHealth myHealth = gameObject.transform.parent.GetComponent<ZombieHealth>();
+			if (!(myHealth.IsStunned || myHealth.isDead)) {
+				other.GetComponent<Player>().curHealth -= attackDamage;
+				canAttack = false;
+				StartCoroutine(BiteCooldown());
+			}
 		}	
 	}
 	

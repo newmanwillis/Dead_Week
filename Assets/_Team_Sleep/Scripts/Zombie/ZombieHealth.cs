@@ -52,12 +52,6 @@ public class ZombieHealth : MonoBehaviour {
 		
 	}
 	
-	void OnTriggerEnter(Collider other){
-		if(other.tag == "PlayerAttack"){
-			health -= 50;
-		}
-	}
-	
 	IEnumerator waitForAnimationToEnd(){
 		
 		while(curAnim.Playing){

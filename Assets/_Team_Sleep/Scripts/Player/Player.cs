@@ -49,7 +49,11 @@ public class Player : MonoBehaviour {
 	
 	private Transform flashLight;
 	private bool flashLightOn = false;
-
+	
+	
+	private PlayerAttackHitbox leftSideHitbox;
+	private PlayerAttackHitbox rightSideHitbox;
+	
 	// Use this for initialization
 	void Start () {
 		
@@ -69,6 +73,9 @@ public class Player : MonoBehaviour {
 		curHealth = maxHealth;
 		curPhoneCharge = maxPhoneCharge;
 		curStamina = maxStamina;
+		
+		rightSideHitbox = GameObject.Find("RightSideAttackHitbox").GetComponent<PlayerAttackHitbox>();
+		leftSideHitbox = GameObject.Find("LeftSideAttackHitbox").GetComponent<PlayerAttackHitbox>();
 	}
 	
 	// Update is called once per frame
@@ -237,15 +244,19 @@ public class Player : MonoBehaviour {
 			switch(curDirection)
 			{
 				case FacingDirection.Up:
+				swordAttack(leftSideHitbox);
 				curAnim.Play("swordLeft");				
 				break;
 				case FacingDirection.Left:
+				swordAttack(leftSideHitbox);
 				curAnim.Play("swordLeft");
 				break;
 				case FacingDirection.Down:
+				swordAttack(rightSideHitbox);
 				curAnim.Play("swordRight");				
 				break;
 				case FacingDirection.Right:
+				swordAttack(rightSideHitbox);
 				curAnim.Play("swordRight");				
 				break;					
 			}
@@ -259,6 +270,22 @@ public class Player : MonoBehaviour {
 				flashLightOn = true;
 				flashLight.GetComponent<Light>().intensity = 6;
 			}
+		}
+	}
+	
+	void swordAttack(PlayerAttackHitbox hitbox) {
+		Debug.Log("num: " + hitbox.zombies.Keys.Count);
+		ArrayList deadZombies = new ArrayList();
+		foreach (Collider col in hitbox.zombies.Keys) {
+			if (col) {
+				col.GetComponent<ZombieHealth>().health -= 50;
+			} else {
+				deadZombies.Add(col);  // this zombie died while in range
+			}
+		}
+		
+		foreach (Collider col in deadZombies) {
+			hitbox.zombies.Remove(col);
 		}
 	}
 	
