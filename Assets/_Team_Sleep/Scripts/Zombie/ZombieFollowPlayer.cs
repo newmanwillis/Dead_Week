@@ -8,6 +8,8 @@ public class ZombieFollowPlayer : MonoBehaviour {
 	bool foundPlayer = false;
 	Transform player;
 	
+	public Player.FacingDirection curDirection;
+	
 	private ZombieHealth zombieHealthScript;
 	
 	// Use this for initialization
@@ -38,6 +40,10 @@ public class ZombieFollowPlayer : MonoBehaviour {
 			
 			Vector3 move = new Vector3(0,0,0);
 			
+			Vector3 direction = player.transform.position - transform.position;
+			direction = direction.normalized;
+			curDirection = findFacingDir(direction);
+			
 			Vector3 distance = transform.position - player.transform.position;
 			if(distance.x > moveSpeed)
 				//newPos.x -= moveSpeed;
@@ -59,6 +65,25 @@ public class ZombieFollowPlayer : MonoBehaviour {
 			transform.parent.GetComponent<CharacterController>().Move(move);
 			// GetComponent<CharacterController>().Move(move);
 			
+		}
+	}
+	
+	Player.FacingDirection findFacingDir(Vector3 direction) {
+		Vector3 abs = new Vector3(0, 0, 0) + direction;  // want a copy, not a reference to the same one
+		abs.x = Mathf.Abs(abs.x);
+		abs.y = Mathf.Abs(abs.y);
+		if (abs.y > abs.x) {
+			if (direction.y > 0) {
+				return Player.FacingDirection.Up;
+			} else {
+				return Player.FacingDirection.Down;
+			}
+		} else {
+			if (direction.x > 0) {
+				return Player.FacingDirection.Right;
+			} else {
+				return Player.FacingDirection.Left;
+			}
 		}
 	}
 	
