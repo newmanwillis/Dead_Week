@@ -44,9 +44,9 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Sandboxes\Newman\Scripts\Zombie.cs" />
      <Compile Include="Assets\Sandboxes\Newman\Scripts\ZombieChase.cs" />
      <Compile Include="Assets\Sandboxes\Newman\Scripts\ZombieMovement.cs" />
+     <Compile Include="Assets\Sandboxes\Newman\Scripts\ZombieState.cs" />
      <Compile Include="Assets\Sandboxes\Newman\Scripts\ZombieWander.cs" />
      <Compile Include="Assets\Sandboxes\Newman\Sprint01\TempScripts\BulletLife.cs" />
      <Compile Include="Assets\Sandboxes\Newman\Sprint01\TempScripts\PlayerHealth.cs" />

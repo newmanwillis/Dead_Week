@@ -10,22 +10,25 @@ using System.Collections;
 
 public class ZombieWander : MonoBehaviour {
 	
+	public bool _isWandering	= false;								// ZombieState continuously checks this variable
 	public float _wanderSpeed = 9f;
 	public bool _canWander = true;										//  can make it so specific zombies do not wander
 	public enum Direction {up, down, left, right};
 	
-	private Zombie zombieScript;
+	private ZombieState _state;
 	private tk2dSpriteAnimator curAnim;  								// current animation for zombie	
 	
 	// Use this for initialization
 	void Start () {
-		zombieScript = GetComponent<Zombie>();
-		curAnim = transform.FindChild("ZombieSprite").GetComponent<tk2dSpriteAnimator>();
+		_state = GetComponent<ZombieState>();
+		//curAnim = transform.FindChild("ZombieSprite").GetComponent<tk2dSpriteAnimator>();
+		curAnim = GetComponent<tk2dSpriteAnimator>();
 	}
 
 	public void StartWanderProcess(){		
-		zombieScript.curState = Zombie.ZombieState.wandering;
-		if(_canWander)
+		//_state.curState = Zombie.ZombieState.Wander;
+		if(!_isWandering && _canWander)
+			_isWandering = true;
 			StartCoroutine(StandStill());
 	}	
 	
@@ -33,7 +36,8 @@ public class ZombieWander : MonoBehaviour {
 		float waitTime = CalculateTimer(0.5f, 2, 10);  					// makes Zombies stand still for 1 to 5 seconds	
 		// print("Stand Still Time: " + (waitTime - Time.time));
 		while(Time.time < waitTime){
-			if(zombieScript.curState != Zombie.ZombieState.wandering){  // Stops process if zombie state changes
+			if(_state.curState != ZombieState.State.Wander){  // Stops process if zombie state changes
+				_isWandering = false;
 				yield break;	
 			}		
 			yield return null;
@@ -47,7 +51,8 @@ public class ZombieWander : MonoBehaviour {
 		float moveTime = CalculateTimer(0.2f, 5, 15);  					// makes Zombies wander for 1 to 3 seconds
 		// print("Wander Time: " + (moveTime - Time.time));
 		while(Time.time < moveTime){
-			if(zombieScript.curState != Zombie.ZombieState.wandering){  // Stops process if zombie state changes
+			if(_state.curState != ZombieState.State.Wander){  // Stops process if zombie state changes
+				_isWandering = false;
 				yield break;	
 			}		
 			Vector3 moveAmount = new Vector3(0, 0, 0);

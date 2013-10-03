@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Zombie : MonoBehaviour {
+public class ZombieState : MonoBehaviour {
 	
-	public enum ZombieState {calculateWander, wandering, chasing, attacking, dying}
-	//public static ZombieState accessZombieState
-	public ZombieState curState;
+	public enum State {Wander, Chase, Attack, Die}
+	//public static State accessState
+	public State curState;
 	
 	public float wanderSpeed = 0.25f;
 	public float chaseSpeed = 0.5f;
 	public int health = 100;
 	
 	// scripts on Zombie
-	public ZombieWander zombieWander;
+	private ZombieWander _wander;
 	
 	
 
@@ -20,9 +20,9 @@ public class Zombie : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//Debug.Log("in Zombie Start");		
-		zombieWander = transform.GetComponent<ZombieWander>();
+		_wander = transform.GetComponent<ZombieWander>();
 		
-		curState = ZombieState.calculateWander;
+		curState = State.Wander;
 		
 	}
 	
@@ -30,10 +30,9 @@ public class Zombie : MonoBehaviour {
 	void Update () {
 		//print("in Zombie Update");
 		switch(curState){
-			case ZombieState.calculateWander:
-				zombieWander.StartWanderProcess();
-				break;
-			case ZombieState.wandering:
+			case State.Wander:
+				if(!_wander._isWandering)
+					_wander.StartWanderProcess();
 				break;  // Do nothing, let ZombieWander script continue
 			
 				
