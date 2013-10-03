@@ -24,7 +24,8 @@ public class Player : MonoBehaviour {
 		}
 		return new Vector3(0, 0, 0);
 	}
-		
+	
+	private AudioSource footStepsAudio;
 	private PlayerState curState;
 	private FacingDirection curDirection;
 	private tk2dSpriteAnimator curAnim;
@@ -33,6 +34,7 @@ public class Player : MonoBehaviour {
 	public int curHealth {get; set;}
 	int curStamina;
 	
+	public bool footStepsAudioPlaying = false;
 	public float lazerBeamChargeTime;  // time it takes the lazer to charge
 	bool chargingLazer = false;
 	float lazerChargedAtTime;  // time at which the lazer will be charged
@@ -64,6 +66,7 @@ public class Player : MonoBehaviour {
 		
 		playerSprite = transform.FindChild("PlayerSprite");
 		flashLight = transform.FindChild("FlashLight");
+		footStepsAudio = GetComponent<AudioSource>();
 		
 		curState = PlayerState.PlayerInput;
 		curDirection = FacingDirection.Down;
@@ -105,7 +108,7 @@ public class Player : MonoBehaviour {
 	}
 	
 	void MovementInput(){
-		
+					
 		// Moves the player
 		float transH = Input.GetAxisRaw("Horizontal") * movementSpeed ;
 		float transV = Input.GetAxisRaw("Vertical") * movementSpeed;
@@ -165,7 +168,15 @@ public class Player : MonoBehaviour {
 				
 		// Stops walking animation when nothing is happening.
 		if(!(Input.GetKey(KeyCode.UpArrow)) && !(Input.GetKey(KeyCode.LeftArrow)) && !(Input.GetKey(KeyCode.DownArrow)) && !(Input.GetKey(KeyCode.RightArrow))){
-			curAnim.StopAndResetFrame();			
+			curAnim.StopAndResetFrame();	
+			footStepsAudio.Stop();
+			footStepsAudioPlaying = false;
+		}
+		else{
+			if(!footStepsAudioPlaying){
+				footStepsAudioPlaying = true;
+				footStepsAudio.Play();
+			}
 		}
 	}
 	
@@ -205,6 +216,7 @@ public class Player : MonoBehaviour {
 			Debug.Log("Not enough battery");
 		} else {
 			Transform shootingBullet = (Transform)Instantiate(bulletTypeToFire, transform.position, Quaternion.identity);
+			
 			shootingBullet.Rotate(0, 0, (int)curDirection - 270);
 			shootingBullet.rigidbody.AddForce(directionToVector(curDirection) * 8000);
 			curPhoneCharge -= cost;
