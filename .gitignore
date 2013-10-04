@@ -16,7 +16,7 @@ Library/ScriptMapper
 
 *.csproj
 *.unityproj
-
+*.pidb
 
 Dead_Week-csharp.sln
 Dead_Week.sln
