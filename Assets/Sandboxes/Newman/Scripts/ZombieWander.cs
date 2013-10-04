@@ -15,12 +15,12 @@ public class ZombieWander : MonoBehaviour {
 	public bool _canWander = true;										//  can make it so specific zombies do not wander
 	public enum Direction {up, down, left, right};
 	
-	private ZombieState _state;
+	private ZombieSM _state;
 	private tk2dSpriteAnimator curAnim;  								// current animation for zombie	
 	
 	// Use this for initialization
 	void Start () {
-		_state = GetComponent<ZombieState>();
+		_state = GetComponent<ZombieSM>();
 		//curAnim = transform.FindChild("ZombieSprite").GetComponent<tk2dSpriteAnimator>();
 		curAnim = GetComponent<tk2dSpriteAnimator>();
 	}
@@ -36,7 +36,7 @@ public class ZombieWander : MonoBehaviour {
 		float waitTime = CalculateTimer(0.5f, 2, 10);  					// makes Zombies stand still for 1 to 5 seconds	
 		// print("Stand Still Time: " + (waitTime - Time.time));
 		while(Time.time < waitTime){
-			if(_state.curState != ZombieState.State.Wander){  // Stops process if zombie state changes
+			if(_state.curState != ZombieSM.ZombieState.Wander){  // Stops process if zombie state changes
 				_isWandering = false;
 				yield break;	
 			}		
@@ -51,7 +51,7 @@ public class ZombieWander : MonoBehaviour {
 		float moveTime = CalculateTimer(0.2f, 5, 15);  					// makes Zombies wander for 1 to 3 seconds
 		// print("Wander Time: " + (moveTime - Time.time));
 		while(Time.time < moveTime){
-			if(_state.curState != ZombieState.State.Wander){  // Stops process if zombie state changes
+			if(_state.curState != ZombieSM.ZombieState.Wander){  // Stops process if zombie state changes
 				_isWandering = false;
 				yield break;	
 			}		

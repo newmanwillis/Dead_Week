@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ZombieState : MonoBehaviour {
+public class ZombieSM : MonoBehaviour {
 	
-	public enum State {Wander, Chase, Attack, Die}
+	public enum ZombieState {Wander, Chase, Attack, Die};
 	//public static State accessState
-	public State curState;
+	public ZombieState curState;
 	
 	public float wanderSpeed = 0.25f;
 	public float chaseSpeed = 0.5f;
@@ -22,7 +22,7 @@ public class ZombieState : MonoBehaviour {
 		//Debug.Log("in Zombie Start");		
 		_wander = transform.GetComponent<ZombieWander>();
 		
-		curState = State.Wander;
+		curState = ZombieState.Wander;
 		
 	}
 	
@@ -30,7 +30,7 @@ public class ZombieState : MonoBehaviour {
 	void Update () {
 		//print("in Zombie Update");
 		switch(curState){
-			case State.Wander:
+			case ZombieState.Wander:
 				if(!_wander._isWandering)
 					_wander.StartWanderProcess();
 				break;  // Do nothing, let ZombieWander script continue
