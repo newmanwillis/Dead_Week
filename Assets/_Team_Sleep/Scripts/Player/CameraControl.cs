@@ -81,7 +81,8 @@ public class CameraControl : MonoBehaviour {
 		if (hacking != null) {
 			float percent = hacking.hackSoFar / hacking.timeToHackSeconds;
 			// 200 wide, centered
-			drawPercentBar(Screen.width/2 - 100, (int)(Screen.height * (3.0/4.0)), 200, 40, percent);
+			// 40 high, starting 3/4 down the screen
+			drawPercentBar(Screen.width/2 - 100, (int)(Screen.height * (3.0/4.0)), 200, 40, percent, "Hacking...");
 		}
 		
 		if (GameObject.FindGameObjectsWithTag("Zombie").Length == 0) {
@@ -102,9 +103,15 @@ public class CameraControl : MonoBehaviour {
 		drawPercentBar(Screen.width - 200, 10, 150, 20, percent);
 	}
 	
-	void drawPercentBar(int topLeftX, int topLeftY, int length, int height, float percent) {
+	void drawPercentBar(int topLeftX, int topLeftY, int length, int height, float percent, string text = null) {
 		GUI.DrawTexture(new Rect(topLeftX, topLeftY, length, height), blackBox);
 		GUI.DrawTexture(new Rect(topLeftX + 5, topLeftY + 5, (length - (5*2))*percent, height - 5*2), blueBox);
+		if (text != null) {
+			GUIStyle style = new GUIStyle();
+			style.alignment = TextAnchor.MiddleCenter;
+			style.normal.textColor = Color.white;
+			GUI.Label(new Rect(topLeftX + 5, topLeftY + 5, length - 5*2, height - 5*2), text, style);
+		}
 	}
 	
 	HackableComputer findCurrentHack() {
