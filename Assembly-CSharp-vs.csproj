@@ -121,6 +121,7 @@
      <Compile Include="Assets\TK2DROOT\tk2d_demo\tk2dDemoCameraController.cs" />
      <Compile Include="Assets\TK2DROOT\tk2d_demo\tk2dDemoReloadController.cs" />
      <Compile Include="Assets\TK2DROOT\tk2d_demo\tk2dDemoRuntimeSpriteController.cs" />
+     <Compile Include="Assets\_Team_Sleep\Scripts\HackableComputer.cs" />
      <Compile Include="Assets\_Team_Sleep\Scripts\Player\CameraControl.cs" />
      <Compile Include="Assets\_Team_Sleep\Scripts\Player\Player.cs" />
      <Compile Include="Assets\_Team_Sleep\Scripts\Player\PlayerAttackHitbox.cs" />

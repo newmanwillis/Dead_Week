@@ -20,6 +20,8 @@ public class CameraControl : MonoBehaviour {
 	private bool isPaused;
 	private string currentMessage;
 	
+	private HackableComputer[] computerTerminals;
+	
 	// Use this for initialization
 	void Start () {
 		//camera.orthographic = true;
@@ -29,6 +31,12 @@ public class CameraControl : MonoBehaviour {
 		player = playerObject.GetComponent<Player>();
 		
 		isPaused = false;
+		
+		GameObject[] computers = GameObject.FindGameObjectsWithTag("ComputerTerminal");
+		computerTerminals = new HackableComputer[computers.Length];
+		for (int i = 0; i < computers.Length; i++) {
+			computerTerminals[i] = computers[i].GetComponent<HackableComputer>();
+		}
 	}
 	
 	// Update is called once per frame
@@ -66,12 +74,15 @@ public class CameraControl : MonoBehaviour {
 			}
 		}
 		
-		// draw energy bar:
-		int energy = player.curPhoneCharge;
-		int energyMax = player.maxPhoneCharge;
-		float percent = ((float) energy) / energyMax;
-		GUI.DrawTexture(new Rect(Screen.width - 200, 10, 150, 20), blackBox);
-		GUI.DrawTexture(new Rect(Screen.width - 200 + 5, 10 + 5, (150 - (5*2))*percent, 10), blueBox);
+		drawEnergyBar();
+		
+		// draw hack bar:
+		HackableComputer hacking = findCurrentHack();
+		if (hacking != null) {
+			float percent = hacking.hackSoFar / hacking.timeToHackSeconds;
+			// 200 wide, centered
+			drawPercentBar(Screen.width/2 - 100, (int)(Screen.height * (3.0/4.0)), 200, 40, percent);
+		}
 		
 		if (GameObject.FindGameObjectsWithTag("Zombie").Length == 0) {
 			Rect position = new Rect(Screen.width/2-winMessage.width/2, Screen.height/2-winMessage.height/2, winMessage.width, winMessage.height);
@@ -82,6 +93,27 @@ public class CameraControl : MonoBehaviour {
 			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), blackBox);
 			GUI.Label(position, loseMessage);
 		};
+	}
+	
+	void drawEnergyBar() {
+		int energy = player.curPhoneCharge;
+		int energyMax = player.maxPhoneCharge;
+		float percent = ((float) energy) / energyMax;
+		drawPercentBar(Screen.width - 200, 10, 150, 20, percent);
+	}
+	
+	void drawPercentBar(int topLeftX, int topLeftY, int length, int height, float percent) {
+		GUI.DrawTexture(new Rect(topLeftX, topLeftY, length, height), blackBox);
+		GUI.DrawTexture(new Rect(topLeftX + 5, topLeftY + 5, (length - (5*2))*percent, height - 5*2), blueBox);
+	}
+	
+	HackableComputer findCurrentHack() {
+		foreach (HackableComputer comp in computerTerminals) {
+			if (comp.beingHacked) {
+				return comp;
+			}
+		}
+		return null;
 	}
 	
 	public void drawSpriteInWorld(Texture sprite, float x, float y) {
