@@ -30,10 +30,12 @@ public class ZombieSM : MonoBehaviour {
 	void Update () {
 		//print("in Zombie Update");
 		switch(curState){
-			case ZombieState.Wander:
+			case ZombieState.Wander:	// Change this so it straight calls the same method being used, dont have to check this every time.
 				if(!_wander._isWandering)
 					_wander.StartWanderProcess();
 				break;  // Do nothing, let ZombieWander script continue
+			case ZombieState.Chase:
+				break;
 			
 				
 			

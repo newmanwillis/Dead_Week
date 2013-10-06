@@ -33,7 +33,7 @@ public class ZombieWander : MonoBehaviour {
 	}	
 	
 	IEnumerator StandStill(){
-		float waitTime = CalculateTimer(0.5f, 2, 10);  					// makes Zombies stand still for 1 to 5 seconds	
+		float waitTime = CalculateTimer(0.5f, 1, 7);  					// makes Zombies stand still for 0.5f to 3.5 seconds	
 		// print("Stand Still Time: " + (waitTime - Time.time));
 		while(Time.time < waitTime){
 			if(_state.curState != ZombieSM.ZombieState.Wander){  // Stops process if zombie state changes
@@ -48,7 +48,7 @@ public class ZombieWander : MonoBehaviour {
 	IEnumerator Wander(){
 		Direction moveDirection = CalculateDirection();	
 		ChooseDirectionAnimation(moveDirection);
-		float moveTime = CalculateTimer(0.2f, 5, 15);  					// makes Zombies wander for 1 to 3 seconds
+		float moveTime = CalculateTimer(0.2f, 5, 20);  					// makes Zombies wander for 1 to 4 seconds
 		// print("Wander Time: " + (moveTime - Time.time));
 		while(Time.time < moveTime){
 			if(_state.curState != ZombieSM.ZombieState.Wander){  // Stops process if zombie state changes
