@@ -1,18 +1,25 @@
-﻿// problems with constant raycasting if ontriggerstay & problem with not finding player sometimes with ontriggerenter
+﻿// This script requires objects to be labeled with correct tags and layers
+// Tags: Player, Wall
+// Layers: Default, Wall, Player
+
+// problems with constant raycasting if ontriggerstay & problem with not finding player sometimes with ontriggerenter
 
 using UnityEngine;
 using System.Collections;
 
 public class ZombieChase : MonoBehaviour {
 	
+	float _lookForPlayerTimer = 0.5f;
+	float _chasePlayerTimer;
 	
 	Transform Player;
-	
+	Transform Zombie;
 	private bool _foundPlayer = false;
+
 	
 	// Use this for initialization
 	void Start () {
-	
+		Zombie = transform.parent;
 	}
 	
 	// Update is called once per frame
@@ -20,27 +27,37 @@ public class ZombieChase : MonoBehaviour {
 	
 	}
 	
-	void OnTriggerEnter(Collider other){/*
-		print ("in ontriggeenter");	
-		// dont see them if behind wall
-		if(other.tag == "Player"){
-			print ("found player");	
-			if(!_foundPlayer){
-				print ("foundplayer check");					
-				RaycastHit hit;
-				Vector3 playerPos =  other.transform.position; //  transform.TransformDirection(Vector3.forward);
-        		if (Physics.Raycast(transform.position, playerPos, out hit, 100))	{
-					print ("in raycast");		
-					if(hit.collider.tag == "Wall"){
-						print ("wall in the way");	
-					}
-					else if(hit.collider.tag == "Player"){
-						print ("found Player");
-						Player = other.transform;					
-					}
+	void OnTriggerStay(Collider other){
+		
+		if(other.tag == "Player" && !_foundPlayer && _lookForPlayerTimer < Time.time){		// Keeps checking for player every 0.5 seconds if in detection range
+																							// but behind a wall. This is so it doesn't raycast every update.
+			int layerMask = ~(1 << 0);
+			//layerMask = ~layerMask;
+			
+			RaycastHit hit;
+			if(Physics.Raycast(Zombie.position, other.transform.position - Zombie.position, out hit, 40, layerMask)){
+				
+				if(hit.transform.tag == "Wall"){
+					_lookForPlayerTimer = Time.time + 0.5f;
+					print("hit wall");					
 				}
+				else if(hit.transform.tag == "Player"){
+					_foundPlayer = true;
+					
+					print("hit player");				
+				}
+				
+				
+				/*
+				if(hit.transform.gameObject.layer == LayerMask.NameToLayer( "Wall" )){
+					print("hit wall layer");
+				}
+				if(hit.transform.gameObject.layer == LayerMask.NameToLayer( "Player" )){
+					print("hit player layer");
+				}	*/		
 			}
-		}*/
+		}
+		
 	}
 	
 	void OnTriggerExit(Collider other){
