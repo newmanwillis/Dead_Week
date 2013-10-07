@@ -93,16 +93,16 @@ public class ZombieWander : MonoBehaviour {
 		curAnim.Resume();		
 		switch(moveDirection){
 			case Direction.up:
-				curAnim.Play("walkingBackward");
+				ZombieInfo.Animate.WalkUp(curAnim);
 				break;
 			case Direction.down:
-				curAnim.Play("walkingForward");
+				ZombieInfo.Animate.WalkDown(curAnim);
 				break;
 			case Direction.right:
-				curAnim.Play("walkingRight");
+				ZombieInfo.Animate.WalkRight(curAnim);
 				break;
 			case Direction.left:
-				curAnim.Play("walkingLeft");
+				ZombieInfo.Animate.WalkLeft(curAnim);
 				break;					
 			}		
 	}
