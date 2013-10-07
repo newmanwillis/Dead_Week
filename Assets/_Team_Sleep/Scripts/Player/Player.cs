@@ -366,4 +366,18 @@ public class Player : MonoBehaviour {
 			Destroy(other.gameObject);
 		}
 	}
+	
+	public void unlockUpgrade(string upgradeName) {
+		if (upgradeName == "SwordPickup") {
+			hasSword = true;
+		} else if (upgradeName == "PhoneBulletPickup") {
+			hasPhoneBullet = true;
+		} else if (upgradeName == "PhoneLazerPickup") {
+			hasPhoneLazer = true;
+		} else if (upgradeName == "PhoneStunPickup") {
+			hasPhoneStun = true;
+		} else {
+			Debug.LogError("Unknown unlockable: " + upgradeName);
+		}
+	}
 }

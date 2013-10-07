@@ -6,6 +6,9 @@ public class HackableComputer : MonoBehaviour {
 	
 	public bool beingHacked = false;
 	public float hackSoFar = 0;
+	
+	public string unlockUpgrade;
+	public string textMessage;
 	// Use this for initialization
 	void Start () {
 	
@@ -36,6 +39,13 @@ public class HackableComputer : MonoBehaviour {
 				beingHacked = false;
 				tk2dSprite mySprite = gameObject.GetComponent<tk2dSprite>();
 				mySprite.SetSprite("computerTerminalGreen");
+				
+				if (unlockUpgrade != null) {
+					GameObject.Find("Player").GetComponentInChildren<Player>().unlockUpgrade(unlockUpgrade);
+				}
+				if (textMessage != null) {
+					Camera.main.GetComponent<CameraControl>().pauseAndDrawTextMessage(textMessage);
+				}
 			}
 		}
 	}
