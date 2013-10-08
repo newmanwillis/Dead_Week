@@ -7,12 +7,19 @@ public class PlayerAnimationScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		curAnim = GetComponentInChildren<tk2dSpriteAnimator>();
-		curAnim.Play("walkingLeft");
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
+	}
+	
+	void cutscenWalkLeft() {
+		curAnim.Play("walkingLeft");
+	}
+	
+	void cutsceneWalkRight() {
+		curAnim.Play("walkingRight");
 	}
 	
 	void swordAttackAnimation() {

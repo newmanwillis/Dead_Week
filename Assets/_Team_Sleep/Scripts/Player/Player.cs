@@ -380,4 +380,12 @@ public class Player : MonoBehaviour {
 			Debug.LogError("Unknown unlockable: " + upgradeName);
 		}
 	}
+	
+	public void enterCutscene() {
+		curState = PlayerState.Cutscene;
+	}
+	
+	public void exitCutscene() {
+		curState = PlayerState.PlayerInput;
+	}
 }

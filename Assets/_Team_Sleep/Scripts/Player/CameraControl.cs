@@ -22,13 +22,16 @@ public class CameraControl : MonoBehaviour {
 	
 	private HackableComputer[] computerTerminals;
 	
+	public bool isCutscene;
+	
 	// Use this for initialization
 	void Start () {
 		//camera.orthographic = true;
 		//camera.orthographicSize = Screen.height/4;
-		
-		playerObject = GameObject.Find("Player");
-		player = playerObject.GetComponent<Player>();
+		if (!isCutscene) {
+			playerObject = GameObject.Find("Player");
+			player = playerObject.GetComponent<Player>();
+		}
 		
 		isPaused = false;
 		
@@ -60,40 +63,42 @@ public class CameraControl : MonoBehaviour {
 			drawTextMessage(currentMessage);
 		}
 		
-		GUI.depth = 0;
-		int health = playerHealth();
-		for (int heart = 1; heart <= player.maxHealth/2; heart++) {
-			int x = 10 + 50*heart;
-			int y = 10;
-			if (health >= 2*heart) {
-				drawSpriteAt(x, y, heartSpriteFull);
-			} else if (health == 2*heart - 1) {
-				drawSpriteAt(x, y, heartSpriteHalf);
-			} else {
-				drawSpriteAt(x, y, heartSpriteEmpty);
+		if (!isCutscene) {
+			GUI.depth = 0;
+			int health = playerHealth();
+			for (int heart = 1; heart <= player.maxHealth/2; heart++) {
+				int x = 10 + 50*heart;
+				int y = 10;
+				if (health >= 2*heart) {
+					drawSpriteAt(x, y, heartSpriteFull);
+				} else if (health == 2*heart - 1) {
+					drawSpriteAt(x, y, heartSpriteHalf);
+				} else {
+					drawSpriteAt(x, y, heartSpriteEmpty);
+				}
+			}
+		
+			drawEnergyBar();
+		
+			// draw hack bar:
+			HackableComputer hacking = findCurrentHack();
+			if (hacking != null) {
+				float percent = hacking.hackSoFar / hacking.timeToHackSeconds;
+				// 200 wide, centered
+				// 40 high, starting 3/4 down the screen
+				drawPercentBar(Screen.width/2 - 100, (int)(Screen.height * (3.0/4.0)), 200, 40, percent, "Hacking...");
+			}
+		
+			if (GameObject.FindGameObjectsWithTag("Zombie").Length == 0) {
+				Rect position = new Rect(Screen.width/2-winMessage.width/2, Screen.height/2-winMessage.height/2, winMessage.width, winMessage.height);
+				GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), blackBox);
+				GUI.DrawTexture(position, winMessage);
+			} else if (playerHealth() <= 0) {
+				Rect position = new Rect(Screen.width/2-loseMessage.width/2, Screen.height/2-loseMessage.height/2, loseMessage.width, loseMessage.height);
+				GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), blackBox);
+				GUI.Label(position, loseMessage);
 			}
 		}
-		
-		drawEnergyBar();
-		
-		// draw hack bar:
-		HackableComputer hacking = findCurrentHack();
-		if (hacking != null) {
-			float percent = hacking.hackSoFar / hacking.timeToHackSeconds;
-			// 200 wide, centered
-			// 40 high, starting 3/4 down the screen
-			drawPercentBar(Screen.width/2 - 100, (int)(Screen.height * (3.0/4.0)), 200, 40, percent, "Hacking...");
-		}
-		
-		if (GameObject.FindGameObjectsWithTag("Zombie").Length == 0) {
-			Rect position = new Rect(Screen.width/2-winMessage.width/2, Screen.height/2-winMessage.height/2, winMessage.width, winMessage.height);
-			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), blackBox);
-			GUI.DrawTexture(position, winMessage);
-		} else if (playerHealth() <= 0) {
-			Rect position = new Rect(Screen.width/2-loseMessage.width/2, Screen.height/2-loseMessage.height/2, loseMessage.width, loseMessage.height);
-			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), blackBox);
-			GUI.Label(position, loseMessage);
-		};
 	}
 	
 	void drawEnergyBar() {
