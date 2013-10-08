@@ -153,10 +153,12 @@ public class CameraControl : MonoBehaviour {
 	void drawTextMessage(string message) {
 		GUIStyle style = new GUIStyle();
 		style.normal.textColor = Color.black;
+		//style.clipping = TextClipping.Clip;
+		style.wordWrap = true;
 		int upperLeftY = Screen.height - textMessageBox.height;
 		int upperLeftX = (Screen.width - textMessageBox.width) / 2;
 		GUI.DrawTexture(new Rect(upperLeftX, upperLeftY, textMessageBox.width, textMessageBox.height), textMessageBox);
-		GUI.Label(new Rect(upperLeftX + 85, upperLeftY + 85, 370, (319-85)), message, style);
+		GUI.Label(new Rect(upperLeftX + 85, upperLeftY + 85, 370-5, (319-85)), message, style);
 	}
 	
 	/*
