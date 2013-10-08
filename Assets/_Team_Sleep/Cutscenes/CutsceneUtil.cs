@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class CutsceneUtil : MonoBehaviour {
-
+	public string speakerName;
 	// Use this for initialization
 	void Start () {
 	
@@ -14,7 +14,11 @@ public class CutsceneUtil : MonoBehaviour {
 	}
 	
 	void printText(string text) {
-		Camera.main.GetComponent<CameraControl>().pauseAndDrawTextMessage(text);
+		if (speakerName != null && speakerName != "") {
+			Camera.main.GetComponent<CameraControl>().pauseAndDrawTextMessage(speakerName + ":  " + text);
+		} else {
+			Camera.main.GetComponent<CameraControl>().pauseAndDrawTextMessage(text);
+		}
 	}
 	
 	void switchScene(string sceneName) {

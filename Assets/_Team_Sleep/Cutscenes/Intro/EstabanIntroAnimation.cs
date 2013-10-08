@@ -14,6 +14,6 @@ public class EstabanIntroAnimation : MonoBehaviour {
 	}
 	
 	void turnIntoZombie() {
-		GetComponent<tk2dSprite>().SetSprite("Zombie");
+		GetComponent<tk2dSprite>().SetSprite("standingfront");
 	}
 }
