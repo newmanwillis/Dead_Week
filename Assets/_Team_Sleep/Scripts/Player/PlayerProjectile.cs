@@ -23,8 +23,10 @@ public class PlayerProjectile : MonoBehaviour {
 		print ("TAG: " + other.tag);
 		if (other.tag == "Zombie" && !(dealDamageOnce && dealtDamage)) {
 			//print ("in first");
-			other.GetComponent<ZombieHealth>().health -= damage;
+			//other.GetComponent<ZombieHealth>().health -= damage;
+			other.GetComponent<ZombieHealth>().TakeDamage(damage);
 			dealtDamage = true;
+			Destroy(gameObject);
 		}
 		
 		if (other.tag == "Destructible" || other.tag == "Meltable") {

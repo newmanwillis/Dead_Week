@@ -14,7 +14,7 @@ public class ZombieChase : MonoBehaviour {
 	private float _lookForPlayerTimer = 0;	
 	private float _lookForPause = 0.5f;
 	private float _stopChaseTimer = 0;
-	private float _stopChaseDelay = 2.3f; 
+	private float _stopChaseDelay = 3.0f; 
 	private float _xOffset = 3f;
 	private float _yOffset = 7f;
 	
@@ -38,10 +38,8 @@ public class ZombieChase : MonoBehaviour {
 	}
 	
 	void OnTriggerStay(Collider other){
-		
 		if(!_foundPlayer){	
-			if(other.tag == "Player" && !_foundPlayer && _lookForPlayerTimer < Time.time && _state.curState != ZombieSM.ZombieState.Attack){		// Keeps checking for player every 0.5 seconds if in detection range
-																								// but behind a wall. This is so it doesn't raycast every update.
+			if(other.tag == "Player" && !_foundPlayer && _lookForPlayerTimer < Time.time && _state.curState != ZombieSM.ZombieState.Attack){		// Keeps checking for player every 0.5 seconds if in detection range														// but behind a wall. This is so it doesn't raycast every update.
 				int layerMask = ~(1 << 0);
 				RaycastHit hit;
 				if(Physics.Raycast(Zombie.position, other.transform.position - Zombie.position, out hit, 40, layerMask)){
@@ -68,9 +66,19 @@ public class ZombieChase : MonoBehaviour {
 		}
 	}
 	
+	public void PreCalculateChase(){	// called from other functions when switching back to chase state
+		if(!_foundPlayer){
+			_foundPlayer = true;
+			Player = GameObject.Find("Player").transform;
+		}
+		if(_outsideDetectionRange){
+			_outsideDetectionRange = false;
+		}
+		CalculateChase();	
+		
+	}
 	
 	void CalculateChase(){
-		
 		if(_outsideDetectionRange && _stopChaseTimer < Time.time){		// Stops Chasing player after they have gone out of detection range for long enough
 			_state.curState = ZombieSM.ZombieState.Wander;
 			_foundPlayer = false;
@@ -168,7 +176,7 @@ public class ZombieChase : MonoBehaviour {
 			
 			if(_state.curState != ZombieSM.ZombieState.Chase){
 				//print ("leaving chase");
-				_foundPlayer = false;
+				// _foundPlayer = false;
 				yield break;	
 			}			
 			

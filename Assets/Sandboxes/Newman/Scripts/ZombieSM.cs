@@ -13,6 +13,7 @@ public class ZombieSM : MonoBehaviour {
 	
 	// scripts on Zombie
 	private ZombieWander _wander;
+	private ZombieChase _chase;
 	
 	
 
@@ -21,9 +22,10 @@ public class ZombieSM : MonoBehaviour {
 	void Start () {
 		//Debug.Log("in Zombie Start");		
 		_wander = transform.GetComponent<ZombieWander>();
+		_chase = transform.FindChild("ZombieDetectionRange").GetComponent<ZombieChase>();
 		
 		curState = ZombieState.Wander;
-		
+		// Do the wander change in here, then add a "changeStateToWander" Function
 	}
 	
 	// Update is called once per frame
@@ -39,11 +41,14 @@ public class ZombieSM : MonoBehaviour {
 			case ZombieState.Attack:
 				break;			
 			// case ZombieState.TakingDamage:
-				
-				
 			
 		}
 		
+	}
+	
+	public void SetStateToChase(){
+		curState = ZombieState.Chase;
+		_chase.PreCalculateChase();
 	}
 	
 	

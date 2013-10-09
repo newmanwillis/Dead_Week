@@ -43,10 +43,14 @@ public class ZombieAttackSlash : MonoBehaviour {
 			else{						// RightAttack
 				Attack = (Transform)Instantiate(RightAttack, Player.position, Quaternion.identity);
 			}
+			Attack.parent = transform;
 			AttackAnim = Attack.GetComponent<tk2dSpriteAnimator>();
 			
 			// call coroutine to puase before attack
 			// check in ontriggerstay when its sone if play is in range
+			
+			
+			
 			
 			AttackAnim.Play();
 			_timeSinceLastAttack = Time.time + _attackDelay;				// Delays attack
@@ -77,8 +81,10 @@ public class ZombieAttackSlash : MonoBehaviour {
 		//print ("in movement pause");
 		yield return new WaitForSeconds(standTime);
 		//print ("goign back to chase");
-		curAnim.Stop();
-		_state.curState = ZombieSM.ZombieState.Chase;
+		// curAnim.StopAndResetFrame();
+		_state.SetStateToChase();
+		//_state.curState = ZombieSM.ZombieState.Chase;
+		
 	}
 	
 	

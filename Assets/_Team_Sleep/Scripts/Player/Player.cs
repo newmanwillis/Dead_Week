@@ -300,7 +300,8 @@ public class Player : MonoBehaviour {
 		ArrayList deadZombies = new ArrayList();
 		foreach (Collider col in hitbox.zombies.Keys) {
 			if (col) {
-				col.GetComponent<ZombieHealth>().health -= 50;
+				col.GetComponent<ZombieHealth>().TakeDamage(50);
+				//col.GetComponent<ZombieHealth>().health -= 50;
 			} else {
 				deadZombies.Add(col);  // this zombie died while in range
 			}
