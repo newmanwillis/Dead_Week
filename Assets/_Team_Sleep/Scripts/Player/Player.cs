@@ -27,6 +27,8 @@ public class Player : MonoBehaviour {
 		return new Vector3(0, 0, 0);
 	}
 	
+	public AudioClip swordAudio;
+	private AudioSource swordAudioChannel;  
 	private AudioSource footStepsAudio;
 	private PlayerState curState;
 	private PhonePower curPower;
@@ -75,6 +77,7 @@ public class Player : MonoBehaviour {
 			playerSprite = transform.FindChild("PlayerSprite");
 			flashLight = transform.FindChild("FlashLight");
 			footStepsAudio = GetComponent<AudioSource>();
+			
 		
 			curState = PlayerState.PlayerInput;
 			curDirection = FacingDirection.Down;
@@ -308,6 +311,9 @@ public class Player : MonoBehaviour {
 				curAnim.Play("swordRight");				
 				break;					
 			}
+			audio.PlayOneShot(swordAudio);
+			//swordAudioChannel.clip = swordAudio;
+			//swordAudioChannel.Play();
 			curAnim.Resume();
 			StartCoroutine(waitForAnimationtoEnd());
 		} else if (Input.GetKeyDown(KeyCode.F)) {    // flashlight
