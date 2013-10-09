@@ -378,7 +378,12 @@ public class Player : MonoBehaviour {
 			hasPhoneStun = true;
 			Destroy(other.gameObject);
 		} else if (other.tag == "TextMessage") {
-			Camera.main.GetComponent<CameraControl>().pauseAndDrawTextMessage(other.GetComponent<TextMessage>().message);
+			TextMessage message = other.GetComponent<TextMessage>();
+			if (message.message != null && message.message != "") {
+				Camera.main.GetComponent<CameraControl>().pauseAndDrawTextMessage(message.message);
+			} else {
+				Camera.main.GetComponent<CameraControl>().pauseAndDrawInfoCard(message.infocard);
+			}
 			Destroy(other.gameObject);
 		}
 	}

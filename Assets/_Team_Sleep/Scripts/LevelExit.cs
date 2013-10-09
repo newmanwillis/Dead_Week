@@ -1,11 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TextMessage : MonoBehaviour {
-	
-	public string message;
-	public Texture infocard;
-	
+public class LevelExit : MonoBehaviour {
+
 	// Use this for initialization
 	void Start () {
 	
@@ -14,5 +11,11 @@ public class TextMessage : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+	
+	void OnTriggerEnter(Collider other) {
+		if (other.tag == "Player") {
+			Destroy(this.gameObject);
+		}
 	}
 }

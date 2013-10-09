@@ -9,6 +9,7 @@ public class HackableComputer : MonoBehaviour {
 	
 	public string unlockUpgrade;
 	public string textMessage;
+	public Texture infoCard;
 	// Use this for initialization
 	void Start () {
 	
@@ -40,11 +41,14 @@ public class HackableComputer : MonoBehaviour {
 				tk2dSprite mySprite = gameObject.GetComponent<tk2dSprite>();
 				mySprite.SetSprite("computerTerminalGreen");
 				
-				if (unlockUpgrade != null) {
+				if (unlockUpgrade != null && unlockUpgrade != "") {
 					GameObject.Find("Player").GetComponentInChildren<Player>().unlockUpgrade(unlockUpgrade);
 				}
-				if (textMessage != null) {
+				if (textMessage != null && textMessage != "") {
 					Camera.main.GetComponent<CameraControl>().pauseAndDrawTextMessage(textMessage);
+				}
+				if (infoCard != null) {
+					Camera.main.GetComponent<CameraControl>().pauseAndDrawInfoCard(infoCard);
 				}
 			}
 		}

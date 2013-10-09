@@ -19,6 +19,7 @@ public class CameraControl : MonoBehaviour {
 	private bool isPaused;
 	private string currentMessage;
 	private Texture currentSpeakerFace;
+	private Texture currentInfoCard;
 	private bool faceIsToTheLeft;
 	
 	private HackableComputer[] computerTerminals;
@@ -61,7 +62,11 @@ public class CameraControl : MonoBehaviour {
 		}
 		
 		if (isPaused) {
-			drawTextMessage(currentMessage);
+			if (currentMessage != null) {
+				drawTextMessage(currentMessage);
+			} else if (currentInfoCard != null) {
+				drawInfoCard(currentInfoCard);
+			}
 		}
 		
 		if (!isCutscene) {
@@ -82,7 +87,7 @@ public class CameraControl : MonoBehaviour {
 				drawPercentBar(Screen.width/2 - 100, (int)(Screen.height * (3.0/4.0)), 200, 40, percent, blueBox, "Hacking...");
 			}
 		
-			if (GameObject.FindGameObjectsWithTag("Zombie").Length == 0) {
+			if (GameObject.FindGameObjectsWithTag("LevelExit").Length == 0) {
 				Rect position = new Rect(Screen.width/2-winMessage.width/2, Screen.height/2-winMessage.height/2, winMessage.width, winMessage.height);
 				GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), blackBox);
 				GUI.DrawTexture(position, winMessage);
@@ -108,7 +113,7 @@ public class CameraControl : MonoBehaviour {
 		if (text != null) {
 			GUIStyle style = new GUIStyle();
 			style.alignment = TextAnchor.MiddleCenter;
-			style.normal.textColor = Color.white;
+			style.normal.textColor = Color.black;
 			GUI.Label(new Rect(topLeftX + margin, topLeftY + margin, length - margin*2, height - margin*2), text, style);
 		}
 	}
@@ -145,10 +150,22 @@ public class CameraControl : MonoBehaviour {
 		currentSpeakerFace = null;
 	}
 	
+	public void pauseAndDrawInfoCard(Texture infoCard) {
+		currentMessage = null;
+		isPaused = true;
+		Time.timeScale = 0;
+		currentInfoCard = infoCard;
+	}
+	
 	public void pauseAndDrawTextMessage(string message, Texture face, bool faceToTheLeft) {
 		pauseAndDrawTextMessage(message);
 		currentSpeakerFace = face;
 		faceIsToTheLeft = faceToTheLeft;
+	}
+	
+	void drawInfoCard(Texture infoCard) {
+		Rect pos = new Rect((Screen.width - infoCard.width)/2, (Screen.height - infoCard.height)/2, infoCard.width, infoCard.height);
+		GUI.DrawTexture(pos, infoCard);
 	}
 	
 	void drawTextMessage(string message) {
