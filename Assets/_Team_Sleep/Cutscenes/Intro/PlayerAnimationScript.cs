@@ -18,6 +18,10 @@ public class PlayerAnimationScript : MonoBehaviour {
 		curAnim.Play("walkingLeft");
 	}
 	
+	void cutsceneWalkDown() {
+		curAnim.Play("walkingForward");
+	}
+	
 	void cutsceneWalkRight() {
 		curAnim.Play("walkingRight");
 	}

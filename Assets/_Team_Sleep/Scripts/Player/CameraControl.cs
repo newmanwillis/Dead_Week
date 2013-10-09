@@ -5,17 +5,16 @@ public class CameraControl : MonoBehaviour {
 	GameObject playerObject;
 	Player player;
 	
-	public Texture heartSpriteFull;
-	public Texture heartSpriteHalf;
-	public Texture heartSpriteEmpty;
+	public Texture healthBar;
+	public Texture staminaBar;
 	
 	public Texture winMessage;
 	public Texture loseMessage;
 	public Texture blackBox;
+	public Texture whiteBox;
 	public Texture blueBox;
+	public Texture redBox;
 	public Texture textMessageBox;
-	
-	public Texture healthBar;
 	
 	private bool isPaused;
 	private string currentMessage;
@@ -68,17 +67,9 @@ public class CameraControl : MonoBehaviour {
 		if (!isCutscene) {
 			GUI.depth = 0;
 			int health = playerHealth();
-			for (int heart = 1; heart <= player.maxHealth/2; heart++) {
-				int x = 10 + 50*heart;
-				int y = 10;
-				if (health >= 2*heart) {
-					drawSpriteAt(x, y, heartSpriteFull);
-				} else if (health == 2*heart - 1) {
-					drawSpriteAt(x, y, heartSpriteHalf);
-				} else {
-					drawSpriteAt(x, y, heartSpriteEmpty);
-				}
-			}
+			float healthPercent = (float)health / (float)player.maxHealth;
+			GUI.DrawTexture(new Rect(0, 0, healthBar.width, healthBar.height), healthBar);
+			drawPercentBar(5, 33, 234, 25, healthPercent, redBox);
 		
 			drawEnergyBar();
 		
@@ -88,7 +79,7 @@ public class CameraControl : MonoBehaviour {
 				float percent = hacking.hackSoFar / hacking.timeToHackSeconds;
 				// 200 wide, centered
 				// 40 high, starting 3/4 down the screen
-				drawPercentBar(Screen.width/2 - 100, (int)(Screen.height * (3.0/4.0)), 200, 40, percent, "Hacking...");
+				drawPercentBar(Screen.width/2 - 100, (int)(Screen.height * (3.0/4.0)), 200, 40, percent, blueBox, "Hacking...");
 			}
 		
 			if (GameObject.FindGameObjectsWithTag("Zombie").Length == 0) {
@@ -110,14 +101,15 @@ public class CameraControl : MonoBehaviour {
 		drawPercentBar(Screen.width - 200, 10, 150, 20, percent);
 	}
 	
-	void drawPercentBar(int topLeftX, int topLeftY, int length, int height, float percent, string text = null) {
-		GUI.DrawTexture(new Rect(topLeftX, topLeftY, length, height), blackBox);
-		GUI.DrawTexture(new Rect(topLeftX + 5, topLeftY + 5, (length - (5*2))*percent, height - 5*2), blueBox);
+	void drawPercentBar(int topLeftX, int topLeftY, int length, int height, float percent, Texture color = null, string text = null, int margin = 5) {
+		color = color == null ? blueBox : color;
+		GUI.DrawTexture(new Rect(topLeftX, topLeftY, length, height), whiteBox);
+		GUI.DrawTexture(new Rect(topLeftX + margin, topLeftY + margin, (length - (margin*2))*percent, height - margin*2), color);
 		if (text != null) {
 			GUIStyle style = new GUIStyle();
 			style.alignment = TextAnchor.MiddleCenter;
 			style.normal.textColor = Color.white;
-			GUI.Label(new Rect(topLeftX + 5, topLeftY + 5, length - 5*2, height - 5*2), text, style);
+			GUI.Label(new Rect(topLeftX + margin, topLeftY + margin, length - margin*2, height - margin*2), text, style);
 		}
 	}
 	

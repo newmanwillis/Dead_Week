@@ -309,6 +309,11 @@ public class Player : MonoBehaviour {
 		foreach (Collider col in deadZombies) {
 			hitbox.zombies.Remove(col);
 		}
+		
+		foreach (Collider col in hitbox.destructibles.Keys) {
+			Destroy(col.gameObject);
+		}
+		hitbox.destructibles.Clear();
 	}
 	
 	IEnumerator waitForAnimationtoEnd(){
