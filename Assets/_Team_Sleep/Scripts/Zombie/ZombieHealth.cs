@@ -29,29 +29,29 @@ public class ZombieHealth : MonoBehaviour {
 		if(health <= 0){
 			_state.curState = ZombieSM.ZombieState.Die;
 			
-			// Set to false, so there processes wont interfere with the death animation
+			// Set to false, so their processes wont interfere with the death animation
 			transform.FindChild("ZombieAttackRange").gameObject.SetActive(false);
 			transform.FindChild("ZombieDetectionRange").gameObject.SetActive(false);
 			CC.enabled = false;
-			curAnim.Play("deathDown");
+			ChooseDeathAnimation();
 			StartCoroutine( waitForAnimationToEnd());
 		}
-		else{
+		else{  			// taking damage
 			print ("HIT");
 			_state.curState = ZombieSM.ZombieState.TakingDamage;
 			StartCoroutine( PauseWhenHit(0.4f));
-			// taking damage state	
+
 		}
 	}
 	
 	// Update is called once per frame
-	void Update () {/*
+	/*void Update () {
 		if (IsStunned) {
 			if (Time.time >= stunEnd) {
 				IsStunned = false;
 			}
-		}*/
-		/*
+		}
+		
 		if(health <= 0  && !isDead){
 			isDead = true;
 			curAnim.Play("deathDown");
@@ -59,8 +59,8 @@ public class ZombieHealth : MonoBehaviour {
 		 	StartCoroutine( waitForAnimationToEnd());
 			//StartCoroutine(RemoveZombie(3.0f));
 			//Destroy(transform.parent.gameObject);	
-		}*/
-	}
+		}
+	}*/
 	/*
 	string getCorrectDeathAnimation() {
 		switch (myZombieFollowPlayer.curDirection) {
@@ -110,7 +110,6 @@ public class ZombieHealth : MonoBehaviour {
 	}
 	
 	IEnumerator RemoveZombie(float deathTime){
-	
 		yield return new WaitForSeconds(deathTime);
 		//Destroy(transform.parent.gameObject);	
 		Destroy(gameObject);
@@ -123,8 +122,19 @@ public class ZombieHealth : MonoBehaviour {
 		if(_state.curState == ZombieSM.ZombieState.Die){
 			yield break;	
 		}
-		print ("setting to chase");
 		_state.SetStateToChase();	
+	}
+	
+	public void ChooseDeathAnimation(){
+		string clipName = curAnim.CurrentClip.name;
+		if(clipName.Contains("Down") || clipName.Contains("Forward"))
+			curAnim.Play("deathDown");	
+		else if(clipName.Contains("Up") || clipName.Contains("Backward"))
+			curAnim.Play("deathUp");
+		else if(clipName.Contains("Left"))
+			curAnim.Play("deathLeft");
+		else
+			curAnim.Play("deathRight");
 	}
 }
 

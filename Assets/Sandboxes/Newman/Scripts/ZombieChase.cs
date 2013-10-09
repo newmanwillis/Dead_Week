@@ -162,6 +162,11 @@ public class ZombieChase : MonoBehaviour {
 			else{  
 				//  they are equal	
 			}		
+			
+			// Not Direction
+			//if(direction.x == 1){
+				//ZombieSM
+			//}
 				
 			Vector3 move = direction * _speed;
 			float chaseTime = Time.time + Random.Range(0.3f, 0.8f);
