@@ -7,6 +7,7 @@ public class Player : MonoBehaviour {
 	public int maxHealth = 100;
 	public int maxPhoneCharge = 100;
 	public int maxStamina = 100;
+	public bool invulnerable {get; set;}
 	
 	public enum PlayerState {PlayerInput, SwordAttack, PhoneAttack, TakingDamage, Dead, Cutscene, Menu, chargingLazer, firingLazer};
 	//public enum FacingDirection {Up = 0, UpLeft = 45, Left = 90, DownLeft = 135, Down = 180, RightDown = 215, Right = 270, UpRight = 315};
@@ -63,7 +64,7 @@ public class Player : MonoBehaviour {
 		if (startInCutscene) {
 			enterCutscene();
 		} else {
-		
+			
 			// Loads Prefabs directly from Resources Folder
 			phoneBullet = ((GameObject) Resources.Load("Phone Attacks/Bullet")).transform;
 			phoneLazerBeam = ((GameObject) Resources.Load("Phone Attacks/LazerBeam")).transform;
@@ -85,6 +86,8 @@ public class Player : MonoBehaviour {
 			rightSideHitbox = GameObject.Find("RightSideAttackHitbox").GetComponent<PlayerAttackHitbox>();
 			leftSideHitbox = GameObject.Find("LeftSideAttackHitbox").GetComponent<PlayerAttackHitbox>();
 		
+			invulnerable = false;
+			
 		}
 	}
 	
@@ -395,4 +398,31 @@ public class Player : MonoBehaviour {
 	public void exitCutscene() {
 		curState = PlayerState.PlayerInput;
 	}
+	
+	public void GotHit(int damage){
+		if(!invulnerable){
+			invulnerable = true;
+			curHealth -= damage;
+			float timeInvulnerable = 1.5f;	// the function "Invulnerable currently assumes this being 1.5f
+			StartCoroutine(Invulnerable(Time.time + timeInvulnerable, Time.time));
+		}	
+	}
+	
+	public IEnumerator Invulnerable(float timeInvulnerable, float startTime){
+		Transform playerSprite = transform.FindChild("PlayerSprite");
+		while(Time.time < timeInvulnerable){
+			float curTime = Time.time - startTime;
+			
+			if( (curTime < 0.1) || (curTime > 0.3f && curTime < 0.4f) || (curTime > 0.7f && curTime < 0.8f) || (curTime > 1.05f && curTime < 1.15f) || (curTime > 1.4f && curTime < 1.5f)){
+				playerSprite.renderer.enabled = false;
+			}
+			else
+				playerSprite.renderer.enabled = true;
+				
+			yield return null;
+		}
+		playerSprite.renderer.enabled = true;
+		invulnerable = false;
+	}	
+	
 }

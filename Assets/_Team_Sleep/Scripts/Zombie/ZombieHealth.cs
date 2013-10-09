@@ -16,7 +16,7 @@ public class ZombieHealth : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		curAnim = GetComponent<tk2dSpriteAnimator>();
-		myZombieFollowPlayer = GetComponentInChildren<ZombieFollowPlayer>();
+		// myZombieFollowPlayer = GetComponentInChildren<ZombieFollowPlayer>();
 	}
 	
 	// Update is called once per frame
@@ -29,13 +29,14 @@ public class ZombieHealth : MonoBehaviour {
 		
 		if(health <= 0  && !isDead){
 			isDead = true;
-			curAnim.Play(getCorrectDeathAnimation());
+			curAnim.Play("deathDown");
+			// curAnim.Play(getCorrectDeathAnimation());
 		 	StartCoroutine( waitForAnimationToEnd());
 			//StartCoroutine(RemoveZombie(3.0f));
 			//Destroy(transform.parent.gameObject);	
 		}
 	}
-	
+	/*f
 	string getCorrectDeathAnimation() {
 		switch (myZombieFollowPlayer.curDirection) {
 		case Player.FacingDirection.Down:
@@ -48,7 +49,7 @@ public class ZombieHealth : MonoBehaviour {
 			return "deathUp";
 		}
 		return null;
-	}
+	}*/
 	
 	public void stunFor(float duration) {
 		IsStunned = true;
@@ -81,7 +82,8 @@ public class ZombieHealth : MonoBehaviour {
 	IEnumerator RemoveZombie(float deathTime){
 	
 		yield return new WaitForSeconds(deathTime);
-		Destroy(transform.parent.gameObject);	
+		//Destroy(transform.parent.gameObject);	
+		Destroy(gameObject);
 	}
 	
 }

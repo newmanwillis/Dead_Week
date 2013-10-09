@@ -40,7 +40,7 @@ public class ZombieChase : MonoBehaviour {
 	void OnTriggerStay(Collider other){
 		
 		if(!_foundPlayer){	
-			if(other.tag == "Player" && !_foundPlayer && _lookForPlayerTimer < Time.time){		// Keeps checking for player every 0.5 seconds if in detection range
+			if(other.tag == "Player" && !_foundPlayer && _lookForPlayerTimer < Time.time && _state.curState != ZombieSM.ZombieState.Attack){		// Keeps checking for player every 0.5 seconds if in detection range
 																								// but behind a wall. This is so it doesn't raycast every update.
 				int layerMask = ~(1 << 0);
 				RaycastHit hit;
@@ -163,7 +163,15 @@ public class ZombieChase : MonoBehaviour {
 	IEnumerator Chase(Vector3 move, float chaseTime){
 		
 		while(Time.time < chaseTime){ 
+
 			Zombie.GetComponent<CharacterController>().Move(move * Time.deltaTime);
+			
+			if(_state.curState != ZombieSM.ZombieState.Chase){
+				//print ("leaving chase");
+				_foundPlayer = false;
+				yield break;	
+			}			
+			
 			yield return null;
 		}
 		CalculateChase();

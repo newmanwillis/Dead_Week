@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ZombieSM : MonoBehaviour {
 	
-	public enum ZombieState {Wander, Chase, Attack, Die};
+	public enum ZombieState {Wander, Chase, Attack, TakingDamage, Die};
 	//public static State accessState
 	public ZombieState curState;
 	
@@ -36,10 +36,16 @@ public class ZombieSM : MonoBehaviour {
 				break;  // Do nothing, let ZombieWander script continue
 			case ZombieState.Chase:
 				break;
-			
+			case ZombieState.Attack:
+				break;			
+			// case ZombieState.TakingDamage:
+				
 				
 			
 		}
 		
 	}
+	
+	
+	
 }
