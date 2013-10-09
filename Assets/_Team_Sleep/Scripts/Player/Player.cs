@@ -56,29 +56,36 @@ public class Player : MonoBehaviour {
 	private PlayerAttackHitbox leftSideHitbox;
 	private PlayerAttackHitbox rightSideHitbox;
 	
+	public bool startInCutscene;
+	
 	// Use this for initialization
 	void Start () {
+		if (startInCutscene) {
+			enterCutscene();
+		} else {
 		
-		// Loads Prefabs directly from Resources Folder
-		phoneBullet = ((GameObject) Resources.Load("Phone Attacks/Bullet")).transform;
-		phoneLazerBeam = ((GameObject) Resources.Load("Phone Attacks/LazerBeam")).transform;
-		phoneStunBullet = ((GameObject) Resources.Load("Phone Attacks/StunBullet")).transform;
+			// Loads Prefabs directly from Resources Folder
+			phoneBullet = ((GameObject) Resources.Load("Phone Attacks/Bullet")).transform;
+			phoneLazerBeam = ((GameObject) Resources.Load("Phone Attacks/LazerBeam")).transform;
+			phoneStunBullet = ((GameObject) Resources.Load("Phone Attacks/StunBullet")).transform;
 		
-		playerSprite = transform.FindChild("PlayerSprite");
-		flashLight = transform.FindChild("FlashLight");
-		footStepsAudio = GetComponent<AudioSource>();
+			playerSprite = transform.FindChild("PlayerSprite");
+			flashLight = transform.FindChild("FlashLight");
+			footStepsAudio = GetComponent<AudioSource>();
 		
-		curState = PlayerState.PlayerInput;
-		curDirection = FacingDirection.Down;
-		flashLight.transform.Rotate(35, 0, 0);
-		flashLight.GetComponent<Light>().intensity = 0;
-		curAnim = transform.FindChild("PlayerSprite").GetComponent<tk2dSpriteAnimator>();
-		curHealth = maxHealth;
-		curPhoneCharge = maxPhoneCharge;
-		curStamina = maxStamina;
+			curState = PlayerState.PlayerInput;
+			curDirection = FacingDirection.Down;
+			flashLight.transform.Rotate(35, 0, 0);
+			flashLight.GetComponent<Light>().intensity = 0;
+			curAnim = transform.FindChild("PlayerSprite").GetComponent<tk2dSpriteAnimator>();
+			curHealth = maxHealth;
+			curPhoneCharge = maxPhoneCharge;
+			curStamina = maxStamina;
 		
-		rightSideHitbox = GameObject.Find("RightSideAttackHitbox").GetComponent<PlayerAttackHitbox>();
-		leftSideHitbox = GameObject.Find("LeftSideAttackHitbox").GetComponent<PlayerAttackHitbox>();
+			rightSideHitbox = GameObject.Find("RightSideAttackHitbox").GetComponent<PlayerAttackHitbox>();
+			leftSideHitbox = GameObject.Find("LeftSideAttackHitbox").GetComponent<PlayerAttackHitbox>();
+		
+		}
 	}
 	
 	// Update is called once per frame

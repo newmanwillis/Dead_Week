@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class CutsceneUtil : MonoBehaviour {
+	public Texture[] speakerFaces;
+	
 	public string speakerName;
 	// Use this for initialization
 	void Start () {
@@ -13,11 +15,22 @@ public class CutsceneUtil : MonoBehaviour {
 	
 	}
 	
-	void printText(string text) {
+	//void printText(string text) {
+	//	printText(text, 0, false);
+	//}
+	
+	void printText(AnimationEvent aniEvent) {
+		printText(aniEvent.stringParameter, aniEvent.intParameter, false);
+	}
+	
+	void printText(string text, int faceNum, bool faceToTheLeft) {
 		if (speakerName != null && speakerName != "") {
-			Camera.main.GetComponent<CameraControl>().pauseAndDrawTextMessage(speakerName + ":  " + text);
-		} else {
+			text = speakerName + ":  " + text;
+		}
+		if (faceNum == -1) {
 			Camera.main.GetComponent<CameraControl>().pauseAndDrawTextMessage(text);
+		} else {
+			Camera.main.GetComponent<CameraControl>().pauseAndDrawTextMessage(text, speakerFaces[faceNum], faceToTheLeft);
 		}
 	}
 	

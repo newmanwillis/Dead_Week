@@ -19,6 +19,8 @@ public class CameraControl : MonoBehaviour {
 	
 	private bool isPaused;
 	private string currentMessage;
+	private Texture currentSpeakerFace;
+	private bool faceIsToTheLeft;
 	
 	private HackableComputer[] computerTerminals;
 	
@@ -148,6 +150,13 @@ public class CameraControl : MonoBehaviour {
 		currentMessage = message;
 		isPaused = true;
 		Time.timeScale = 0;
+		currentSpeakerFace = null;
+	}
+	
+	public void pauseAndDrawTextMessage(string message, Texture face, bool faceToTheLeft) {
+		pauseAndDrawTextMessage(message);
+		currentSpeakerFace = face;
+		faceIsToTheLeft = faceToTheLeft;
 	}
 	
 	void drawTextMessage(string message) {
@@ -159,6 +168,13 @@ public class CameraControl : MonoBehaviour {
 		int upperLeftX = (Screen.width - textMessageBox.width) / 2;
 		GUI.DrawTexture(new Rect(upperLeftX, upperLeftY, textMessageBox.width, textMessageBox.height), textMessageBox);
 		GUI.Label(new Rect(upperLeftX + 85, upperLeftY + 85, 370-5, (319-85)), message, style);
+		
+		if (currentSpeakerFace != null) {
+			int faceUpperLeftX = upperLeftX+textMessageBox.width;
+			int faceUpperLeftY = upperLeftY;
+			Rect facePos = new Rect(faceUpperLeftX, faceUpperLeftY, currentSpeakerFace.width, currentSpeakerFace.height);
+			GUI.DrawTexture(facePos, currentSpeakerFace);
+		}
 	}
 	
 	/*
