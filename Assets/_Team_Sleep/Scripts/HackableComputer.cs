@@ -38,8 +38,8 @@ public class HackableComputer : MonoBehaviour {
 			if (hackSoFar >= timeToHackSeconds) {
 				hackSoFar = timeToHackSeconds;
 				beingHacked = false;
-				tk2dSprite mySprite = gameObject.GetComponent<tk2dSprite>();
-				mySprite.SetSprite("computerTerminalGreen");
+				//tk2dSprite mySprite = gameObject.GetComponent<tk2dSprite>();
+				//mySprite.SetSprite("computerTerminalGreen");
 				
 				if (unlockUpgrade != null && unlockUpgrade != "") {
 					GameObject.Find("Player").GetComponentInChildren<Player>().unlockUpgrade(unlockUpgrade);
