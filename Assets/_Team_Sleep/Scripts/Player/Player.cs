@@ -10,6 +10,7 @@ public class Player : MonoBehaviour {
 	public bool invulnerable {get; set;}
 	
 	public enum PlayerState {PlayerInput, SwordAttack, PhoneAttack, TakingDamage, Dead, Cutscene, Menu, chargingLazer, firingLazer};
+	public enum PhonePower {Bullet, Beam, Stun};
 	//public enum FacingDirection {Up = 0, UpLeft = 45, Left = 90, DownLeft = 135, Down = 180, RightDown = 215, Right = 270, UpRight = 315};
 	public enum FacingDirection {Up = 0, Left = 90, Down = 180, Right = 270};
 	public static Vector3 directionToVector(FacingDirection direction) {
@@ -28,6 +29,7 @@ public class Player : MonoBehaviour {
 	
 	private AudioSource footStepsAudio;
 	private PlayerState curState;
+	private PhonePower curPower;
 	private FacingDirection curDirection;
 	private tk2dSpriteAnimator curAnim;
 	private Transform playerSprite;
@@ -196,7 +198,7 @@ public class Player : MonoBehaviour {
 			curState = PlayerState.PlayerInput;
 			if (Time.time < lazerChargedAtTime) {
 				if (hasPhoneBullet) {
-					fireBullet(phoneBullet);
+					waitForPhoneAnimationAndFire(PhonePower.Bullet, true);
 				}
 			} else {
 				stopBeamLazer();
@@ -246,21 +248,29 @@ public class Player : MonoBehaviour {
 		}
 	}
 	
+	void waitForPhoneAnimationAndFire(PhonePower power, bool alreadyAnimated = false) {
+		curState = PlayerState.PhoneAttack;
+		curPower = power;
+		if (!alreadyAnimated) {
+			PhoneAttackAnimation();
+		}
+		StartCoroutine(waitForPhoneAnimationtoEnd());
+	}
+	
 	void AttackInput(){
 		
 		// change to enum/switch 
 		if(Input.GetKeyDown(KeyCode.S)){			// Phone bullet
 			PhoneAttackAnimation();
 			if (hasPhoneLazer) {
+				PhoneAttackAnimation();
 				curState = PlayerState.chargingLazer;
 				lazerChargedAtTime = Time.time + lazerBeamChargeTime;
 			} else if (hasPhoneBullet) {
-				fireBullet(phoneBullet);
-
+				waitForPhoneAnimationAndFire(PhonePower.Bullet);
 			}
 		} else if (Input.GetKeyDown(KeyCode.D) && hasPhoneStun) {	// Phone stun
-			PhoneAttackAnimation();
-			fireBullet(phoneStunBullet);
+			waitForPhoneAnimationAndFire(PhonePower.Stun);
 		} else if(Input.GetKey(KeyCode.A) && hasSword){			// Sword Attack
 			curState = PlayerState.SwordAttack;
 			switch(curDirection)
@@ -328,7 +338,7 @@ public class Player : MonoBehaviour {
 		switch(curDirection)
 		{		
 			case FacingDirection.Up:
-			curAnim.Play("walkingLeft");				
+			curAnim.Play("walkingBackward");				
 			break;
 			case FacingDirection.Left:
 			curAnim.Play("walkingLeft");
@@ -337,7 +347,41 @@ public class Player : MonoBehaviour {
 			curAnim.Play("walkingForward");				
 			break;
 			case FacingDirection.Right:
+			curAnim.Play("walkingRight");				
+			break;	
+		}	
+	}
+	
+	IEnumerator waitForPhoneAnimationtoEnd(){
+		
+		while(curAnim.Playing){
+			yield return null;
+		}
+		curState = PlayerState.PlayerInput;
+		
+		switch(curPower) {
+		case PhonePower.Stun:
+			fireBullet(phoneStunBullet);
+			break;
+		case PhonePower.Bullet:
+			fireBullet(phoneBullet);
+			break;
+		}
+		//Destroy(playerSprite.collider);
+		// curAnim.Pause();
+		switch(curDirection)
+		{		
+			case FacingDirection.Up:
 			curAnim.Play("walkingBackward");				
+			break;
+			case FacingDirection.Left:
+			curAnim.Play("walkingLeft");
+			break;
+			case FacingDirection.Down:
+			curAnim.Play("walkingForward");				
+			break;
+			case FacingDirection.Right:
+			curAnim.Play("walkingRight");				
 			break;	
 		}	
 	}
@@ -346,16 +390,20 @@ public class Player : MonoBehaviour {
 		switch(curDirection)
 		{		
 			case FacingDirection.Up:
-			curAnim.Play("phoneBack (1 Frame)");
+			//curAnim.Play("phoneBack (1 Frame)");
+			curAnim.Play("phoneUp");
 			break;
 			case FacingDirection.Left:
-			curAnim.Play("phoneLeft (1 Frame)");
+			//curAnim.Play("phoneLeft (1 Frame)");
+			curAnim.Play("phoneLeft");
 			break;
 			case FacingDirection.Down:
-			curAnim.Play("phoneFront (1 Frame)");			
+			//curAnim.Play("phoneFront (1 Frame)");
+			curAnim.Play("phoneDown");
 			break;
 			case FacingDirection.Right:
-			curAnim.Play("phoneRight (1 Frame)");				
+			//curAnim.Play("phoneRight (1 Frame)");
+			curAnim.Play("phoneRight");
 			break;	
 		}				
 	}
