@@ -4,7 +4,6 @@ using System.Collections;
 public class ZombieHealth : MonoBehaviour {
 	
 	public int health = 100;
-	
 
 	public bool IsStunned { get; private set; }
 	float stunEnd;
@@ -26,9 +25,10 @@ public class ZombieHealth : MonoBehaviour {
 	
 	public void TakeDamage(int damage){		// perhaps change parameters to get enum of what attack killed it to determine death animation
 		health -= damage;
-		if(health <= 0){
+		if(health <= 0 && !isDead){
+			isDead = true;
 			_state.curState = ZombieSM.ZombieState.Die;
-			
+
 			// Set to false, so their processes wont interfere with the death animation
 			transform.FindChild("ZombieAttackRange").gameObject.SetActive(false);
 			transform.FindChild("ZombieDetectionRange").gameObject.SetActive(false);
@@ -36,11 +36,13 @@ public class ZombieHealth : MonoBehaviour {
 			ChooseDeathAnimation();
 			StartCoroutine( waitForAnimationToEnd());
 		}
-		else{  			// taking damage
+		if(isDead){
+			// Don't process anything
+		}
+		else{  	// taking damage
 			print ("HIT");
 			_state.curState = ZombieSM.ZombieState.TakingDamage;
 			StartCoroutine( PauseWhenHit(0.4f));
-
 		}
 	}
 	

@@ -162,11 +162,6 @@ public class ZombieChase : MonoBehaviour {
 			else{  
 				//  they are equal	
 			}		
-			
-			// Not Direction
-			//if(direction.x == 1){
-				//ZombieSM
-			//}
 				
 			Vector3 move = direction * _speed;
 			float chaseTime = Time.time + Random.Range(0.3f, 0.8f);
@@ -175,21 +170,16 @@ public class ZombieChase : MonoBehaviour {
 	}
 	
 	IEnumerator Chase(Vector3 move, float chaseTime){
-		bool stopChasing = false;
 		while(Time.time < chaseTime){ 
 
 			Zombie.GetComponent<CharacterController>().Move(move * Time.deltaTime);
 			
 			if(_state.curState != ZombieSM.ZombieState.Chase){
-				//print ("leaving chase");
-				// _foundPlayer = false;
-				//stopChasing = true;
 				yield break;	
 			}			
 			
 			yield return null;
 		}
-		//if(!stopChasing)
 		CalculateChase();
 	}
 	
