@@ -164,7 +164,9 @@ public class CameraControl : MonoBehaviour {
 	}
 	
 	void drawInfoCard(Texture infoCard) {
-		Rect pos = new Rect((Screen.width - infoCard.width)/2, (Screen.height - infoCard.height)/2, infoCard.width, infoCard.height);
+		Debug.Log("width: " + infoCard.width + " height: " + infoCard.height);
+		//Rect pos = new Rect((Screen.width - infoCard.width)/2, (Screen.height - infoCard.height)/2, infoCard.width, infoCard.height);
+		Rect pos = new Rect((Screen.width - 630)/2, (Screen.height - 380)/2, 630, 380);
 		GUI.DrawTexture(pos, infoCard);
 	}
 	
