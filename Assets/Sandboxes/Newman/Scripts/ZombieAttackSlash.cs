@@ -57,9 +57,9 @@ public class ZombieAttackSlash : MonoBehaviour {
 		
 	}
 	
-	IEnumerator PauseBeforeAttack(){
+	//IEnumerator PauseBeforeAttack(){
 			
-	}
+	//}
 	
 	
 	IEnumerator RemoveAttackAnimation(){
