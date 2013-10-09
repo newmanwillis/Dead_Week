@@ -12,7 +12,7 @@ public class ZombieWander : MonoBehaviour {
 	
 	public enum Direction {up, down, left, right};
 	public bool _isWandering	= false;								// ZombieState continuously checks this variable
-	public float _wanderSpeed = 9f;
+	public float _wanderSpeed = 15f;
 	public bool _canWander = true;										//  can make it so specific zombies do not wander
 	
 	

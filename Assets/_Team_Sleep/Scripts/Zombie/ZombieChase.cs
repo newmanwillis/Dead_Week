@@ -30,7 +30,7 @@ public class ZombieChase : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//_speed = 24;
-		_speed = Random.Range(24, 35);
+		_speed = Random.Range(35, 52);
 		
 		Zombie = transform.parent;
 		_state = Zombie.GetComponent<ZombieSM>();
