@@ -39,18 +39,18 @@ public class ZombieHealth : MonoBehaviour {
 		else{
 			print ("HIT");
 			_state.curState = ZombieSM.ZombieState.TakingDamage;
-			StartCoroutine( PauseWhenHit(1));
+			StartCoroutine( PauseWhenHit(0.4f));
 			// taking damage state	
 		}
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () {/*
 		if (IsStunned) {
 			if (Time.time >= stunEnd) {
 				IsStunned = false;
 			}
-		}
+		}*/
 		/*
 		if(health <= 0  && !isDead){
 			isDead = true;
@@ -75,6 +75,11 @@ public class ZombieHealth : MonoBehaviour {
 		}
 		return null;
 	}*/
+	
+	public void Stun(float duration){
+		_state.curState = ZombieSM.ZombieState.Stunned;
+	 	StartCoroutine(PauseWhenHit(duration));	
+	}
 	
 	public void stunFor(float duration) {
 		IsStunned = true;
@@ -118,6 +123,7 @@ public class ZombieHealth : MonoBehaviour {
 		if(_state.curState == ZombieSM.ZombieState.Die){
 			yield break;	
 		}
+		print ("setting to chase");
 		_state.SetStateToChase();	
 	}
 }

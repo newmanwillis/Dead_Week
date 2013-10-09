@@ -20,9 +20,11 @@ public class StunExplosion : MonoBehaviour {
 		}
 	}
 	
-	void OnTriggerStay(Collider other) {
+	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Zombie") {
-			other.GetComponent<ZombieHealth>().stunFor(stunDuration);
+			// other.GetComponent<ZombieHealth>().stunFor(stunDuration);
+			print ("IN Zombie Stun ontriggerstay");
+			other.GetComponent<ZombieHealth>().Stun(stunDuration);
 		}
 	}
 }

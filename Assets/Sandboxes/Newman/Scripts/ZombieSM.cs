@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ZombieSM : MonoBehaviour {
 	
-	public enum ZombieState {Wander, Chase, Attack, TakingDamage, Die};
+	public enum ZombieState {Wander, Chase, Attack, TakingDamage, Stunned, Die};
 	//public static State accessState
 	public ZombieState curState;
 	

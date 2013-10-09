@@ -29,7 +29,7 @@ public class ZombieChase : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		
+		//_speed = 24;
 		_speed = Random.Range(24, 35);
 		
 		Zombie = transform.parent;
@@ -39,7 +39,9 @@ public class ZombieChase : MonoBehaviour {
 	
 	void OnTriggerStay(Collider other){
 		if(!_foundPlayer){	
-			if(other.tag == "Player" && !_foundPlayer && _lookForPlayerTimer < Time.time && _state.curState != ZombieSM.ZombieState.Attack){		// Keeps checking for player every 0.5 seconds if in detection range														// but behind a wall. This is so it doesn't raycast every update.
+			// Keeps checking for player every 0.5 seconds if in detection range	
+			// but behind a wall. This is so it doesn't raycast every update
+			if(other.tag == "Player" && !_foundPlayer && _lookForPlayerTimer < Time.time && _state.curState != ZombieSM.ZombieState.Stunned){
 				int layerMask = ~(1 << 0);
 				RaycastHit hit;
 				if(Physics.Raycast(Zombie.position, other.transform.position - Zombie.position, out hit, 40, layerMask)){
@@ -74,8 +76,7 @@ public class ZombieChase : MonoBehaviour {
 		if(_outsideDetectionRange){
 			_outsideDetectionRange = false;
 		}
-		CalculateChase();	
-		
+		CalculateChase();		
 	}
 	
 	void CalculateChase(){
@@ -169,7 +170,7 @@ public class ZombieChase : MonoBehaviour {
 	}
 	
 	IEnumerator Chase(Vector3 move, float chaseTime){
-		
+		bool stopChasing = false;
 		while(Time.time < chaseTime){ 
 
 			Zombie.GetComponent<CharacterController>().Move(move * Time.deltaTime);
@@ -177,11 +178,13 @@ public class ZombieChase : MonoBehaviour {
 			if(_state.curState != ZombieSM.ZombieState.Chase){
 				//print ("leaving chase");
 				// _foundPlayer = false;
+				//stopChasing = true;
 				yield break;	
 			}			
 			
 			yield return null;
 		}
+		//if(!stopChasing)
 		CalculateChase();
 	}
 	
