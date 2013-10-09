@@ -338,7 +338,9 @@ public class Player : MonoBehaviour {
 		}
 		
 		foreach (Collider col in hitbox.destructibles.Keys) {
-			Destroy(col.gameObject);
+			if (col) {
+				Destroy(col.gameObject);
+			}
 		}
 		hitbox.destructibles.Clear();
 	}
