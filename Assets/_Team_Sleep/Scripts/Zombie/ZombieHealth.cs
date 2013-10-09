@@ -9,6 +9,7 @@ public class ZombieHealth : MonoBehaviour {
 	float stunEnd;
 	
 	public bool isDead = false;
+	private bool hitMultipleTimes = false;
 
 	private tk2dSpriteAnimator curAnim;		
 	private ZombieSM _state;
@@ -28,7 +29,6 @@ public class ZombieHealth : MonoBehaviour {
 		if(health <= 0 && !isDead){
 			isDead = true;
 			_state.curState = ZombieSM.ZombieState.Die;
-
 			// Set to false, so their processes wont interfere with the death animation
 			transform.FindChild("ZombieAttackRange").gameObject.SetActive(false);
 			transform.FindChild("ZombieDetectionRange").gameObject.SetActive(false);
@@ -36,12 +36,18 @@ public class ZombieHealth : MonoBehaviour {
 			ChooseDeathAnimation();
 			StartCoroutine( waitForAnimationToEnd());
 		}
-		if(isDead){
+		if(isDead){		// In case the player keeps attacking the zombie even though it has already died
 			// Don't process anything
 		}
+		else if(_state.curState == ZombieSM.ZombieState.TakingDamage){
+			hitMultipleTimes = true;
+		}
 		else{  	// taking damage
-			print ("HIT");
+			//print ("HIT");
+			//if(_state.curState != ZombieSM.ZombieState.TakingDamage)
 			_state.curState = ZombieSM.ZombieState.TakingDamage;
+			//else
+			//hitMultipleTimes = true;
 			StartCoroutine( PauseWhenHit(0.4f));
 		}
 	}
@@ -79,7 +85,8 @@ public class ZombieHealth : MonoBehaviour {
 	}*/
 	
 	public void Stun(float duration){
-		_state.curState = ZombieSM.ZombieState.Stunned;
+		// _state.curState = ZombieSM.ZombieState.Stunned;
+		_state.curState = ZombieSM.ZombieState.TakingDamage;
 	 	StartCoroutine(PauseWhenHit(duration));	
 	}
 	
@@ -117,13 +124,32 @@ public class ZombieHealth : MonoBehaviour {
 		Destroy(gameObject);
 	}
 	
-	
+	/*
 	IEnumerator PauseWhenHit(float pauseTime){
 		curAnim.StopAndResetFrame();
 		yield return new WaitForSeconds(pauseTime);
 		if(_state.curState == ZombieSM.ZombieState.Die){
 			yield break;	
 		}
+		_state.SetStateToChase();	
+	}*/
+	
+	IEnumerator PauseWhenHit(float rawPauseTime){
+		float pauseTime = Time.time + rawPauseTime;
+		curAnim.StopAndResetFrame();
+		//gotHit = false;
+		while(Time.time < pauseTime){
+			if(hitMultipleTimes == true){ // || _state.curState == ZombieSM.ZombieState.Die){
+				hitMultipleTimes = false;
+				StartCoroutine(PauseWhenHit(rawPauseTime));
+				yield break;
+			}
+			if(_state.curState == ZombieSM.ZombieState.Die){
+				yield break;	
+			}
+			yield return null;	
+		}
+		hitMultipleTimes = false;
 		_state.SetStateToChase();	
 	}
 	

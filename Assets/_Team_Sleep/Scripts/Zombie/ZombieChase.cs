@@ -41,7 +41,8 @@ public class ZombieChase : MonoBehaviour {
 		if(!_foundPlayer){	
 			// Keeps checking for player every 0.5 seconds if in detection range	
 			// but behind a wall. This is so it doesn't raycast every update
-			if(other.tag == "Player" && !_foundPlayer && _lookForPlayerTimer < Time.time && _state.curState != ZombieSM.ZombieState.Stunned){
+			if(other.tag == "Player" && !_foundPlayer && _lookForPlayerTimer < Time.time && _state.curState != ZombieSM.ZombieState.TakingDamage){
+																												// Temp change from .Stunned
 				int layerMask = ~(1 << 0);
 				RaycastHit hit;
 				if(Physics.Raycast(Zombie.position, other.transform.position - Zombie.position, out hit, 40, layerMask)){

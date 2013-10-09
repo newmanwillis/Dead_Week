@@ -23,7 +23,6 @@ public class StunExplosion : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Zombie") {
 			// other.GetComponent<ZombieHealth>().stunFor(stunDuration);
-			print ("IN Zombie Stun ontriggerstay");
 			other.GetComponent<ZombieHealth>().Stun(stunDuration);
 		}
 	}
