@@ -20,13 +20,13 @@ public class PlayerProjectile : MonoBehaviour {
 	}
 	
 	void OnTriggerStay(Collider other) {
-		print ("TAG: " + other.tag);
+		// print ("TAG: " + other.tag);
 		if (other.tag == "Zombie" && !(dealDamageOnce && dealtDamage)) {
 			//print ("in first");
 			//other.GetComponent<ZombieHealth>().health -= damage;
-			other.GetComponent<ZombieHealth>().TakeDamage(damage);
+			if(damage > 0)
+				other.GetComponent<ZombieHealth>().TakeDamage(damage);
 			dealtDamage = true;
-			Destroy(gameObject);
 		}
 		
 		if (other.tag == "Destructible" || other.tag == "Meltable") {

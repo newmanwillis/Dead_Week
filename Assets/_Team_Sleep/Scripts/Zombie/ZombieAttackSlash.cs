@@ -31,7 +31,7 @@ public class ZombieAttackSlash : MonoBehaviour {
 	
 	void OnTriggerStay(Collider other){
 		// print ("in Attack Collider");
-		if(other.tag == "Player"  &&  _state.curState != ZombieSM.ZombieState.Attack){ // _timeSinceLastAttack < Time.time){
+		if(other.tag == "Player"  &&  _state.curState == ZombieSM.ZombieState.Chase && _timeSinceLastAttack < Time.time){
 			
 			_state.curState = ZombieSM.ZombieState.Attack;					// switch to Attack State
 			
@@ -71,6 +71,7 @@ public class ZombieAttackSlash : MonoBehaviour {
 		while(AttackAnim.Playing){
 			//print ("in removeattackanimation LOOP");
 			yield return null;	
+			
 		}
 		Destroy(Attack.gameObject);
 		//_state.curState = ZombieSM.ZombieState.Chase;

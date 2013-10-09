@@ -10,10 +10,11 @@ using System.Collections;
 
 public class ZombieWander : MonoBehaviour {
 	
+	public enum Direction {up, down, left, right};
 	public bool _isWandering	= false;								// ZombieState continuously checks this variable
 	public float _wanderSpeed = 9f;
 	public bool _canWander = true;										//  can make it so specific zombies do not wander
-	public enum Direction {up, down, left, right};
+	
 	
 	private ZombieSM _state;
 	private tk2dSpriteAnimator curAnim;  								// current animation for zombie	
@@ -23,6 +24,7 @@ public class ZombieWander : MonoBehaviour {
 		_state = GetComponent<ZombieSM>();
 		//curAnim = transform.FindChild("ZombieSprite").GetComponent<tk2dSpriteAnimator>();
 		curAnim = GetComponent<tk2dSpriteAnimator>();
+		curAnim.Stop();
 	}
 
 	public void StartWanderProcess(){		

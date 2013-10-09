@@ -3,19 +3,12 @@ using System.Collections;
 
 public class ZombieSM : MonoBehaviour {
 	
-	public enum ZombieState {Wander, Chase, Attack, TakingDamage, Die};
-	//public static State accessState
+	public enum ZombieState {Wander, Chase, Attack, TakingDamage, Stunned, Die};
 	public ZombieState curState;
-	
-	public float wanderSpeed = 0.25f;
-	public float chaseSpeed = 0.5f;
-	public int health = 100;
 	
 	// scripts on Zombie
 	private ZombieWander _wander;
 	private ZombieChase _chase;
-	
-	
 
 	
 	// Use this for initialization
