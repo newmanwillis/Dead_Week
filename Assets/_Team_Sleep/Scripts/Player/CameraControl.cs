@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class CameraControl : MonoBehaviour {
+	public GUIStyle myStyle;
 	GameObject playerObject;
 	Player player;
 	
@@ -94,7 +95,7 @@ public class CameraControl : MonoBehaviour {
 			} else if (playerHealth() <= 0) {
 				Rect position = new Rect(Screen.width/2-loseMessage.width/2, Screen.height/2-loseMessage.height/2, loseMessage.width, loseMessage.height);
 				GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), blackBox);
-				GUI.Label(position, loseMessage);
+				GUI.DrawTexture(position, loseMessage);
 			}
 		}
 	}
@@ -111,10 +112,9 @@ public class CameraControl : MonoBehaviour {
 		GUI.DrawTexture(new Rect(topLeftX, topLeftY, length, height), whiteBox);
 		GUI.DrawTexture(new Rect(topLeftX + margin, topLeftY + margin, (length - (margin*2))*percent, height - margin*2), color);
 		if (text != null) {
-			GUIStyle style = new GUIStyle();
-			style.alignment = TextAnchor.MiddleCenter;
-			style.normal.textColor = Color.black;
-			GUI.Label(new Rect(topLeftX + margin, topLeftY + margin, length - margin*2, height - margin*2), text, style);
+			myStyle.alignment = TextAnchor.MiddleCenter;
+			GUI.Label(new Rect(topLeftX + margin, topLeftY + margin, length - margin*2, height - margin*2), text, myStyle);
+			myStyle.alignment = TextAnchor.UpperLeft;
 		}
 	}
 	
@@ -171,14 +171,10 @@ public class CameraControl : MonoBehaviour {
 	}
 	
 	void drawTextMessage(string message) {
-		GUIStyle style = new GUIStyle();
-		style.normal.textColor = Color.black;
-		//style.clipping = TextClipping.Clip;
-		style.wordWrap = true;
 		int upperLeftY = Screen.height - textMessageBox.height;
 		int upperLeftX = (Screen.width - textMessageBox.width) / 2;
 		GUI.DrawTexture(new Rect(upperLeftX, upperLeftY, textMessageBox.width, textMessageBox.height), textMessageBox);
-		GUI.Label(new Rect(upperLeftX + 20, upperLeftY + 15, textMessageBox.width-20, (textMessageBox.height-15)), message, style);
+		GUI.Label(new Rect(upperLeftX + 20, upperLeftY + 15, textMessageBox.width-25, (textMessageBox.height-15)), message, myStyle);
 		
 		if (currentSpeakerFace != null) {
 			int faceUpperLeftX = upperLeftX+textMessageBox.width;
