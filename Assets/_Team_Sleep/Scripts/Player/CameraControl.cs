@@ -167,7 +167,7 @@ public class CameraControl : MonoBehaviour {
 		int upperLeftY = Screen.height - textMessageBox.height;
 		int upperLeftX = (Screen.width - textMessageBox.width) / 2;
 		GUI.DrawTexture(new Rect(upperLeftX, upperLeftY, textMessageBox.width, textMessageBox.height), textMessageBox);
-		GUI.Label(new Rect(upperLeftX + 85, upperLeftY + 85, 370-5, (319-85)), message, style);
+		GUI.Label(new Rect(upperLeftX + 20, upperLeftY + 15, textMessageBox.width-20, (textMessageBox.height-15)), message, style);
 		
 		if (currentSpeakerFace != null) {
 			int faceUpperLeftX = upperLeftX+textMessageBox.width;
