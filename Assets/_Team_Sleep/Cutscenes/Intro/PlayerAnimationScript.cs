@@ -14,16 +14,13 @@ public class PlayerAnimationScript : MonoBehaviour {
 	
 	}
 	
-	void cutscenWalkLeft() {
-		curAnim.Play("walkingLeft");
+	void playAnimation(string animation) {
+		curAnim.Play(animation);
 	}
 	
-	void cutsceneWalkDown() {
-		curAnim.Play("walkingForward");
-	}
-	
-	void cutsceneWalkRight() {
-		curAnim.Play("walkingRight");
+	void playAnimation_paused(string animation) {
+		curAnim.Play(animation);
+		curAnim.Pause();
 	}
 	
 	void swordAttackAnimation() {

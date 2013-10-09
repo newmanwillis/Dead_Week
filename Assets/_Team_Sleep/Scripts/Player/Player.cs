@@ -154,28 +154,44 @@ public class Player : MonoBehaviour {
 			flashLight.transform.localRotation = Quaternion.identity;
 			flashLight.transform.Rotate(-35, 0, 0);
 			curAnim.Resume();
-			curAnim.Play("walkingBackward");			
+			if (hasSword) {
+				curAnim.Play("walkingBackward");
+			} else {
+				curAnim.Play("walkingUpNoSword");
+			}
 		}		
 		else if(Input.GetKey(KeyCode.DownArrow)){
 			curDirection = FacingDirection.Down;
 			flashLight.transform.localRotation = Quaternion.identity;
 			flashLight.transform.Rotate(35, 0, 0);
 			curAnim.Resume();
-			curAnim.Play("walkingForward");			
+			if (hasSword) {
+				curAnim.Play("walkingForward");
+			} else {
+				curAnim.Play("walkingDownNoSword");
+			}
 		}
 		else if(Input.GetKey(KeyCode.RightArrow)){
 			curDirection = FacingDirection.Right;
 			flashLight.transform.localRotation = Quaternion.identity;
 			flashLight.transform.Rotate(0, 35, 0);
 			curAnim.Resume();
-			curAnim.Play("walkingRight");			
+			if (hasSword) {
+				curAnim.Play("walkingRight");	
+			} else {
+				curAnim.Play("walkingRightNoSword");
+			}
 		}		
 		else if(Input.GetKey(KeyCode.LeftArrow)){
 			curDirection = FacingDirection.Left;
 			flashLight.transform.localRotation = Quaternion.identity;
 			flashLight.transform.Rotate(0, -35, 0);
 			curAnim.Resume();
-			curAnim.Play("walkingLeft");
+			if (hasSword) {
+				curAnim.Play("walkingLeft");
+			} else {
+				curAnim.Play("walkingLeftNoSword");
+			}
 		}	
 				
 		// Stops walking animation when nothing is happening.
