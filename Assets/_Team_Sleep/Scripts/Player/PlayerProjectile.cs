@@ -29,9 +29,19 @@ public class PlayerProjectile : MonoBehaviour {
 			dealtDamage = true;
 		}
 		
-		if (other.tag == "Destructible" || other.tag == "Meltable") {
+		if (other.tag == "Destructible") {
 			Destroy(other.gameObject);
 			dealtDamage = true;
+		}
+		
+		if (other.tag == "Button") {
+			Debug.Log("hit button");
+			foreach (Transform possibleDoor in other.transform) {
+				Debug.Log("door " + possibleDoor.tag);
+				if (possibleDoor.tag == "Door") {
+					Destroy(possibleDoor.gameObject);
+				}
+			}
 		}
 		
 		if (other.tag == "Zombie" || other.tag == "Wall" || other.tag == "Destructible" || other.tag == "Meltable") {
