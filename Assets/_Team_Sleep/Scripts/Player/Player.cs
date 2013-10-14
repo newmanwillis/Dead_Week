@@ -285,12 +285,12 @@ public class Player : MonoBehaviour {
 		
 		// change to enum/switch 
 		if(Input.GetKeyDown(KeyCode.S)){			// Phone bullet
-			PhoneAttackAnimation();
 			if (hasPhoneLazer) {
 				PhoneAttackAnimation();
 				curState = PlayerState.chargingLazer;
 				lazerChargedAtTime = Time.time + lazerBeamChargeTime;
 			} else if (hasPhoneBullet) {
+				PhoneAttackAnimation();
 				waitForPhoneAnimationAndFire(PhonePower.Bullet);
 			}
 		} else if (Input.GetKeyDown(KeyCode.D) && hasPhoneStun) {	// Phone stun
