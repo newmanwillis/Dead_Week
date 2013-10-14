@@ -51,15 +51,15 @@ public class CameraControl : MonoBehaviour {
 	
 	// called for GRAPHICS frames and not physics timesteps. GUI methods are only allowed in here.
 	void OnGUI() {
-		if (Event.current.isKey && Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Space) {
+		if (Event.current.isKey && Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Return) {
 			if (isPaused) {
 				isPaused = false;
 				Time.timeScale = 1;
-			} else {
-				isPaused = true;
-				currentMessage = "You paused the game!";
-				Time.timeScale = 0;
-			}
+			}// else {
+			//	isPaused = true;
+			//	currentMessage = "You paused the game!";
+			//	Time.timeScale = 0;
+			//}
 		}
 		
 		if (isPaused) {

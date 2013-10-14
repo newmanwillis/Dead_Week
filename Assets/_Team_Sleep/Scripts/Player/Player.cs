@@ -63,9 +63,14 @@ public class Player : MonoBehaviour {
 	private PlayerAttackHitbox rightSideHitbox;
 	
 	public bool startInCutscene;
+	public Texture initialInfoCard;
 	
 	// Use this for initialization
 	void Start () {
+		if (initialInfoCard != null) {
+			Camera.main.GetComponent<CameraControl>().pauseAndDrawInfoCard(initialInfoCard);
+		}
+		
 		if (startInCutscene) {
 			enterCutscene();
 		} else {
@@ -440,8 +445,6 @@ public class Player : MonoBehaviour {
 			break;	
 		}				
 	}
-	
-	
 	
 	void OnTriggerStay(Collider other) {
 		if (other.tag == "ChargingStation") {
