@@ -57,7 +57,8 @@ public class Player : MonoBehaviour {
 	private Transform flashLight;
 	private bool flashLightOn = false;
 	
-	
+	private float swordAttackStartTime;
+	private PlayerAttackHitbox currentAttackHitbox;
 	private PlayerAttackHitbox leftSideHitbox;
 	private PlayerAttackHitbox rightSideHitbox;
 	
@@ -102,6 +103,10 @@ public class Player : MonoBehaviour {
 		{
 			case PlayerState.PlayerInput:
 			AttackInput();  // Check for player attacks
+			break;
+			
+		    case PlayerState.SwordAttack:
+			swordAttack(currentAttackHitbox, swordAttackStartTime);
 			break;
 			
 			case PlayerState.firingLazer:  // deliberate fallthrough
@@ -292,25 +297,27 @@ public class Player : MonoBehaviour {
 			waitForPhoneAnimationAndFire(PhonePower.Stun);
 		} else if(Input.GetKey(KeyCode.A) && hasSword){			// Sword Attack
 			curState = PlayerState.SwordAttack;
+			swordAttackStartTime = Time.time;
 			switch(curDirection)
 			{
 				case FacingDirection.Up:
-				swordAttack(leftSideHitbox);
+				currentAttackHitbox = leftSideHitbox;
 				curAnim.Play("swordLeft");				
 				break;
 				case FacingDirection.Left:
-				swordAttack(leftSideHitbox);
+				currentAttackHitbox = leftSideHitbox;
 				curAnim.Play("swordLeft");
 				break;
 				case FacingDirection.Down:
-				swordAttack(rightSideHitbox);
+				currentAttackHitbox = rightSideHitbox;
 				curAnim.Play("swordRight");				
 				break;
 				case FacingDirection.Right:
-				swordAttack(rightSideHitbox);
+				currentAttackHitbox = rightSideHitbox;
 				curAnim.Play("swordRight");				
 				break;					
 			}
+			swordAttack(currentAttackHitbox, swordAttackStartTime);
 			audio.PlayOneShot(swordAudio);
 			//swordAudioChannel.clip = swordAudio;
 			//swordAudioChannel.Play();
@@ -327,13 +334,15 @@ public class Player : MonoBehaviour {
 		}
 	}
 	
-	void swordAttack(PlayerAttackHitbox hitbox) {
+	void swordAttack(PlayerAttackHitbox hitbox, float attackStart) {
 		Debug.Log("num: " + hitbox.zombies.Keys.Count);
 		ArrayList deadZombies = new ArrayList();
 		foreach (Collider col in hitbox.zombies.Keys) {
 			if (col) {
-				col.GetComponent<ZombieHealth>().TakeDamage(50);
-				//col.GetComponent<ZombieHealth>().health -= 50;
+				ZombieHealth zombie = col.GetComponent<ZombieHealth>();
+				if (zombie.LastHitTime < attackStart) {
+					zombie.TakeDamage(50);
+				}
 			} else {
 				deadZombies.Add(col);  // this zombie died while in range
 			}

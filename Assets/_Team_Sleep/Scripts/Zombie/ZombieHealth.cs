@@ -6,6 +6,7 @@ public class ZombieHealth : MonoBehaviour {
 	public int health = 100;
 
 	public bool IsStunned { get; private set; }
+	public float LastHitTime { get; private set; }
 	float stunEnd;
 	
 	public bool isDead = false;
@@ -18,6 +19,7 @@ public class ZombieHealth : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+		LastHitTime = 0;
 		curAnim = GetComponent<tk2dSpriteAnimator>();
 		_state = GetComponent<ZombieSM>();
 		CC = GetComponent<CharacterController>();
@@ -25,6 +27,7 @@ public class ZombieHealth : MonoBehaviour {
 	}
 	
 	public void TakeDamage(int damage){		// perhaps change parameters to get enum of what attack killed it to determine death animation
+		LastHitTime = Time.time;
 		health -= damage;
 		if(health <= 0 && !isDead){
 			isDead = true;
