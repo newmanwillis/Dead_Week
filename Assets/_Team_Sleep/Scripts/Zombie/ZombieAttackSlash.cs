@@ -43,6 +43,7 @@ public class ZombieAttackSlash : MonoBehaviour {
 			else{						// RightAttack
 				Attack = (Transform)Instantiate(RightAttack, Player.position, Quaternion.identity);
 			}
+			Attack.transform.position += new Vector3(0, 0, -1);
 			Attack.parent = transform;
 			AttackAnim = Attack.GetComponent<tk2dSpriteAnimator>();
 			
