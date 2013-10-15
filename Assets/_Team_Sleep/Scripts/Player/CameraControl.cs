@@ -72,8 +72,8 @@ public class CameraControl : MonoBehaviour {
 		
 		if (!isCutscene) {
 			GUI.depth = 0;
-			int health = playerHealth();
-			float healthPercent = (float)health / (float)player.maxHealth;
+			float health = playerHealth();
+			float healthPercent = health / player.maxHealth;
 			GUI.DrawTexture(new Rect(0, 0, healthBar.width, healthBar.height), healthBar);
 			drawPercentBar(5, 33, 234, 25, healthPercent, redBox);
 		
@@ -101,9 +101,9 @@ public class CameraControl : MonoBehaviour {
 	}
 	
 	void drawEnergyBar() {
-		int energy = player.curPhoneCharge;
-		int energyMax = player.maxPhoneCharge;
-		float percent = ((float) energy) / energyMax;
+		float energy = player.curPhoneCharge;
+		float energyMax = player.maxPhoneCharge;
+		float percent = energy / energyMax;
 		drawPercentBar(Screen.width - 200, 10, 150, 20, percent);
 	}
 	
@@ -193,7 +193,7 @@ public class CameraControl : MonoBehaviour {
 		GUI.DrawTexture(new Rect(x, y, sprite.width, sprite.height), sprite);
 	}
 	
-	int playerHealth() {
+	float playerHealth() {
 		if (playerObject == null) { // this is apparently overloaded to check whether it has been destroyed
 			return -1;
 		}

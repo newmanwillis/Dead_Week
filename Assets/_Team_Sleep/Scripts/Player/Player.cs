@@ -4,9 +4,9 @@ using System.Collections;
 public class Player : MonoBehaviour {
 	
 	public float movementSpeed = 0.8f;
-	public int maxHealth = 100;
-	public int maxPhoneCharge = 100;
-	public int maxStamina = 100;
+	public float maxHealth = 100;
+	public float maxPhoneCharge = 100;
+	public float maxStamina = 100;
 	public bool invulnerable {get; set;}
 	
 	public enum PlayerState {PlayerInput, SwordAttack, PhoneAttack, TakingDamage, Dead, Cutscene, Menu, chargingLazer, firingLazer};
@@ -35,9 +35,9 @@ public class Player : MonoBehaviour {
 	private FacingDirection curDirection;
 	private tk2dSpriteAnimator curAnim;
 	private Transform playerSprite;
-	public int curPhoneCharge {get; private set;}
-	public int curHealth {get; set;}
-	int curStamina;
+	public float curPhoneCharge {get; private set;}
+	public float curHealth {get; set;}
+	float curStamina;
 	
 	public bool footStepsAudioPlaying = false;
 	public float lazerBeamChargeTime;  // time it takes the lazer to charge
@@ -359,7 +359,7 @@ public class Player : MonoBehaviour {
 		
 		foreach (Collider col in hitbox.destructibles.Keys) {
 			if (col) {
-				Destroy(col.gameObject);
+				col.GetComponent<Destructible>().smash();
 			}
 		}
 		hitbox.destructibles.Clear();
@@ -468,6 +468,11 @@ public class Player : MonoBehaviour {
 			} else {
 				Camera.main.GetComponent<CameraControl>().pauseAndDrawInfoCard(message.infocard);
 			}
+			Destroy(other.gameObject);
+		} else if (other.tag == "Pickup") {
+			Pickup pickup = other.GetComponent<Pickup>();
+			curHealth = Mathf.Min(curHealth + pickup.healthRestored, maxHealth);
+			curPhoneCharge = Mathf.Min(curPhoneCharge + pickup.energyRestored, maxPhoneCharge);
 			Destroy(other.gameObject);
 		}
 	}
