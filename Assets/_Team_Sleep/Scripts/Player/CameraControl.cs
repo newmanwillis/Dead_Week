@@ -8,6 +8,7 @@ public class CameraControl : MonoBehaviour {
 	
 	public Texture healthBar;
 	public Texture staminaBar;
+	public Texture energyBarLabel;
 	
 	public Texture winMessage;
 	public Texture loseMessage;
@@ -114,7 +115,8 @@ public class CameraControl : MonoBehaviour {
 		float energy = player.curPhoneCharge;
 		float energyMax = player.maxPhoneCharge;
 		float percent = energy / energyMax;
-		drawPercentBar(Screen.width - 200, 10, 150, 20, percent);
+		GUI.DrawTexture(new Rect(Screen.width - 289, 10, energyBarLabel.width, energyBarLabel.height), energyBarLabel);
+		drawPercentBar(Screen.width - 284, 10+energyBarLabel.height, 234, 25, percent);
 	}
 	
 	void drawPercentBar(int topLeftX, int topLeftY, int length, int height, float percent, Texture color = null, string text = null, int margin = 5) {
