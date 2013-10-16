@@ -40,8 +40,10 @@ public class ZombieSM : MonoBehaviour {
 	}
 	
 	public void SetStateToChase(){
-		curState = ZombieState.Chase;
-		_chase.PreCalculateChase();
+		if(curState != ZombieSM.ZombieState.Die){
+			curState = ZombieState.Chase;
+			_chase.PreCalculateChase();
+		}
 	}
 	
 	
