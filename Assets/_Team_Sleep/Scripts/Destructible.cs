@@ -20,6 +20,8 @@ public class Destructible : MonoBehaviour {
 		if (!destroyed) {
 			if (animator.GetClipByName("smashed") != null) {
 				animator.Play("smashed");
+			} else {
+				Destroy(GetComponent<tk2dSprite>());
 			}
 			destroyed = true;
 			StartCoroutine(waitForAnimationAndDie());
@@ -56,6 +58,6 @@ public class Destructible : MonoBehaviour {
 		}
 		
 		spawnPickups();
-		Destroy(gameObject);
+		Destroy(GetComponent<BoxCollider>());
 	}
 }
