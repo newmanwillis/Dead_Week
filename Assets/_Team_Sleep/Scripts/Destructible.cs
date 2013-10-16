@@ -18,7 +18,9 @@ public class Destructible : MonoBehaviour {
 	
 	public void smash() {
 		if (!destroyed) {
-			animator.Play("smashed");
+			if (animator.GetClipByName("smashed") != null) {
+				animator.Play("smashed");
+			}
 			destroyed = true;
 			StartCoroutine(waitForAnimationAndDie());
 		}
