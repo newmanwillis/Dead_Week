@@ -33,8 +33,10 @@ public class ZombieHealth : MonoBehaviour {
 			isDead = true;
 			_state.curState = ZombieSM.ZombieState.Die;
 			// Set to false, so their processes wont interfere with the death animation
+			
+			// Find better solution than turning them off
 			transform.FindChild("ZombieAttackRange").gameObject.SetActive(false);
-			transform.FindChild("ZombieDetectionRange").gameObject.SetActive(false);
+			// transform.FindChild("ZombieDetectionRange").gameObject.SetActive(false);
 			CC.enabled = false;
 			ChooseDeathAnimation();
 			StartCoroutine( waitForAnimationToEnd());

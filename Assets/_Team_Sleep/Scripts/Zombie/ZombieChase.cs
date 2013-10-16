@@ -172,13 +172,11 @@ public class ZombieChase : MonoBehaviour {
 	
 	IEnumerator Chase(Vector3 move, float chaseTime){
 		while(Time.time < chaseTime){ 
-
-			Zombie.GetComponent<CharacterController>().Move(move * Time.deltaTime);
 			
 			if(_state.curState != ZombieSM.ZombieState.Chase){
 				yield break;	
 			}			
-			
+			Zombie.GetComponent<CharacterController>().Move(move * Time.deltaTime);			
 			yield return null;
 		}
 		CalculateChase();
