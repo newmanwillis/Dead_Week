@@ -44,7 +44,7 @@ public class PlayerProjectile : MonoBehaviour {
 			}
 		}
 		
-		if (other.tag == "Zombie" || other.tag == "Wall" || other.tag == "Destructible" || other.tag == "Door") {
+		if (other.tag == "Zombie" || other.tag == "Wall" || other.tag == "Destructible" || other.tag == "Door" || other.tag == "Button") {
 			if (disappearOnCollide) {
 				if (spawnOther != null) {
 					Instantiate(spawnOther, transform.position, Quaternion.identity);
