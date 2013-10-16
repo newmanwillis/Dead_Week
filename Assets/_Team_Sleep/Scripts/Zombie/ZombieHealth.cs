@@ -115,7 +115,7 @@ public class ZombieHealth : MonoBehaviour {
 		
 		while(curAnim.Playing){
 			//print("in while loop");
-			yield return null;	
+			yield return null;
 		}
 		curAnim.Stop();
 		StartCoroutine(RemoveZombie(0.5f));

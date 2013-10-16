@@ -17,7 +17,7 @@ public class ZombieChase : MonoBehaviour {
 	private float _stopChaseDelay = 3.0f; 
 	private float _xOffset = 3f;
 	private float _yOffset = 7f;
-	
+
 
 	private bool _foundPlayer = false;
 	private bool _outsideDetectionRange = true;
