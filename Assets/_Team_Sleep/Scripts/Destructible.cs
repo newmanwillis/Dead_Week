@@ -14,6 +14,7 @@ public class Destructible : MonoBehaviour {
 	public int energyDropChance;
 	public Transform energyPickup;
 	
+	private bool wasDisintigrated = false;
 	void Start () {
 		animator = GetComponent<tk2dSpriteAnimator>();
 		destructionSound = GetComponent<AudioSource>();
@@ -37,6 +38,7 @@ public class Destructible : MonoBehaviour {
 		if (animator.GetClipByName("Disintigrated") == null) {
 			smash();
 		} else if (!destroyed) {
+			wasDisintigrated = true;
 			animator.Play("Disintigrated");
 			destroyed = true;
 			StartCoroutine(waitForAnimationAndDie());
@@ -64,5 +66,8 @@ public class Destructible : MonoBehaviour {
 		
 		spawnPickups();
 		Destroy(GetComponent<BoxCollider>());
+		if (!wasDisintigrated && animator.GetClipByName("smashed_flashing") != null) {
+			animator.Play("smashed_flashing");
+		}
 	}
 }
