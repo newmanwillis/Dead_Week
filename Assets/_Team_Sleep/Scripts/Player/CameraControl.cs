@@ -96,7 +96,7 @@ public class CameraControl : MonoBehaviour {
 				float percent = hacking.hackSoFar / hacking.timeToHackSeconds;
 				// 200 wide, centered
 				// 40 high, starting 3/4 down the screen
-				drawPercentBar(Screen.width/2 - 100, (int)(Screen.height * (3.0/4.0)), 200, 40, percent, blueBox, "Hacking...");
+				drawPercentBar(Screen.width/2 - 100, (int)(Screen.height * (3.0/4.0)), 200, 40, percent, blueBox, "Hacking...", false);
 			}
 		
 			if (GameObject.FindGameObjectsWithTag("LevelExit").Length == 0) {
@@ -119,9 +119,9 @@ public class CameraControl : MonoBehaviour {
 		drawPercentBar(Screen.width - 284, 10+energyBarLabel.height, 234, 25, percent);
 	}
 	
-	void drawPercentBar(int topLeftX, int topLeftY, int length, int height, float percent, Texture color = null, string text = null, int margin = 5) {
+	void drawPercentBar(int topLeftX, int topLeftY, int length, int height, float percent, Texture color = null, string text = null, bool flashIfLow = true, int margin = 5) {
 		color = color == null ? blueBox : color;
-		if (percent < .25 && currentlyRedIfLow) {
+		if (percent < .25 && currentlyRedIfLow && flashIfLow) {
 			GUI.DrawTexture(new Rect(topLeftX, topLeftY, length, height), redBox);
 		} else {
 			GUI.DrawTexture(new Rect(topLeftX, topLeftY, length, height), whiteBox);
