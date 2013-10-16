@@ -25,7 +25,9 @@ public class Destructible : MonoBehaviour {
 	}
 	
 	public void disintigrate() {
-		if (!destroyed) {
+		if (animator.GetClipByName("Disintigrated") == null) {
+			smash();
+		} else if (!destroyed) {
 			animator.Play("Disintigrated");
 			destroyed = true;
 			StartCoroutine(waitForAnimationAndDie());
