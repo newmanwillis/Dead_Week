@@ -25,6 +25,9 @@ public class CameraControl : MonoBehaviour {
 	
 	private HackableComputer[] computerTerminals;
 	
+	private bool currentlyRedIfLow;
+	private float redWhiteSwitchTime;
+	
 	public bool isCutscene;
 	
 	// Use this for initialization
@@ -43,10 +46,17 @@ public class CameraControl : MonoBehaviour {
 		for (int i = 0; i < computers.Length; i++) {
 			computerTerminals[i] = computers[i].GetComponent<HackableComputer>();
 		}
+		
+		currentlyRedIfLow = false;
+		redWhiteSwitchTime = Time.time + 1;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if (Time.time > redWhiteSwitchTime) {
+			redWhiteSwitchTime = Time.time + 1;
+			currentlyRedIfLow = !currentlyRedIfLow;
+		}
 	}
 	
 	// called for GRAPHICS frames and not physics timesteps. GUI methods are only allowed in here.
@@ -109,7 +119,11 @@ public class CameraControl : MonoBehaviour {
 	
 	void drawPercentBar(int topLeftX, int topLeftY, int length, int height, float percent, Texture color = null, string text = null, int margin = 5) {
 		color = color == null ? blueBox : color;
-		GUI.DrawTexture(new Rect(topLeftX, topLeftY, length, height), whiteBox);
+		if (percent < .25 && currentlyRedIfLow) {
+			GUI.DrawTexture(new Rect(topLeftX, topLeftY, length, height), redBox);
+		} else {
+			GUI.DrawTexture(new Rect(topLeftX, topLeftY, length, height), whiteBox);
+		}
 		GUI.DrawTexture(new Rect(topLeftX + margin, topLeftY + margin, (length - (margin*2))*percent, height - margin*2), color);
 		if (text != null) {
 			myStyle.alignment = TextAnchor.MiddleCenter;
