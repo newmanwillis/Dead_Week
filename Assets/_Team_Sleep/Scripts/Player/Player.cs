@@ -27,9 +27,11 @@ public class Player : MonoBehaviour {
 		return new Vector3(0, 0, 0);
 	}
 	
-	public AudioClip swordAudio;
 	private AudioSource swordAudioChannel;  
 	private AudioSource footStepsAudio;
+	private AudioSource takingDamageAudio;
+	private AudioSource itemPickupAudio;
+	private AudioSource[] aSources;
 	private PlayerState curState;
 	private PhonePower curPower;
 	private FacingDirection curDirection;
@@ -82,7 +84,17 @@ public class Player : MonoBehaviour {
 		
 			playerSprite = transform.FindChild("PlayerSprite");
 			flashLight = transform.FindChild("FlashLight");
-			footStepsAudio = GetComponent<AudioSource>();
+			
+			// Player Audio sources - location in array dependent upon order of player components
+			// first audio source listed is source[0]
+			aSources = GetComponents<AudioSource>();
+			footStepsAudio = aSources[0];
+			swordAudioChannel = aSources[1];
+			takingDamageAudio = aSources[2];
+			itemPickupAudio = aSources[3];
+			swordAudioChannel.loop = false;
+			takingDamageAudio.loop = false;
+			itemPickupAudio.loop = false;
 			
 		
 			curState = PlayerState.PlayerInput;
@@ -323,9 +335,7 @@ public class Player : MonoBehaviour {
 				break;					
 			}
 			swordAttack(currentAttackHitbox, swordAttackStartTime);
-			audio.PlayOneShot(swordAudio);
-			//swordAudioChannel.clip = swordAudio;
-			//swordAudioChannel.Play();
+			swordAudioChannel.Play ();
 			curAnim.Resume();
 			StartCoroutine(waitForAnimationtoEnd());
 		} else if (Input.GetKeyDown(KeyCode.F)) {    // flashlight
@@ -452,15 +462,19 @@ public class Player : MonoBehaviour {
 		} else if (other.tag == "SwordPickup") {
 			hasSword = true;
 			Destroy(other.gameObject);
+			itemPickupAudio.Play();
 		} else if (other.tag == "PhoneBulletPickup") {
 			hasPhoneBullet = true;
 			Destroy(other.gameObject);
+			itemPickupAudio.Play();
 		} else if (other.tag == "PhoneLazerPickup") {
 			hasPhoneLazer = true;
 			Destroy(other.gameObject);
+			itemPickupAudio.Play();
 		} else if (other.tag == "PhoneStunPickup") {
 			hasPhoneStun = true;
 			Destroy(other.gameObject);
+			itemPickupAudio.Play();
 		} else if (other.tag == "TextMessage") {
 			TextMessage message = other.GetComponent<TextMessage>();
 			if (message.message != null && message.message != "") {
@@ -474,6 +488,7 @@ public class Player : MonoBehaviour {
 			curHealth = Mathf.Min(curHealth + pickup.healthRestored, maxHealth);
 			curPhoneCharge = Mathf.Min(curPhoneCharge + pickup.energyRestored, maxPhoneCharge);
 			Destroy(other.gameObject);
+			itemPickupAudio.Play();
 		}
 	}
 	
@@ -504,6 +519,7 @@ public class Player : MonoBehaviour {
 			invulnerable = true;
 			curHealth -= damage;
 			float timeInvulnerable = 1.5f;	// the function "Invulnerable currently assumes this being 1.5f
+			takingDamageAudio.Play();
 			StartCoroutine(Invulnerable(Time.time + timeInvulnerable, Time.time));
 		}	
 	}
