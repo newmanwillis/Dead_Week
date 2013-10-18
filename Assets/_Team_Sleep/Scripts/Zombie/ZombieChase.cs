@@ -15,8 +15,8 @@ public class ZombieChase : MonoBehaviour {
 	private float _lookForPause = 0.5f;
 	private float _stopChaseTimer = 0;
 	private float _stopChaseDelay = 3.0f; 
-	private float _xOffset = 3f;
-	private float _yOffset = 7f;
+	private float _xOffset = 5f;
+	private float _yOffset = 11f;
 
 
 	private bool _foundPlayer = false;
@@ -29,8 +29,8 @@ public class ZombieChase : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		//_speed = 24;
-		_speed = Random.Range(35, 52);
+		_speed = 52;
+		//_speed = Random.Range(35, 52);
 		
 		Zombie = transform.parent;
 		_state = Zombie.GetComponent<ZombieSM>();
