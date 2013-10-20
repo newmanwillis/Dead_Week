@@ -8,17 +8,21 @@ public class Destructible : MonoBehaviour {
 	
 	private AudioSource destructionSound;
 	
-	public int nothingDropChance;
-	public int healthDropChance;
+	public int[] dropChances;
+	public Transform[] drops;
+	
+	private float[] dropCutoffs;
+	/*public int healthDropChance;
 	public Transform healthPickup;
 	public int energyDropChance;
-	public Transform energyPickup;
+	public Transform energyPickup;*/
 	
 	private bool wasDisintigrated = false;
 	void Start () {
 		animator = GetComponent<tk2dSpriteAnimator>();
 		destructionSound = GetComponent<AudioSource>();
 		destructionSound.loop = false;
+		calculateCutoffs();
 	}
 	
 	public void smash() {
@@ -45,18 +49,30 @@ public class Destructible : MonoBehaviour {
 		}
 	}
 	
+	void calculateCutoffs() {
+		dropCutoffs = new float[drops.Length];
+		float totalChance = 0;
+		foreach (int chance in dropChances) {
+			totalChance += chance;
+		}
+		
+		float lowerBound = 0;
+		for (int i = 0; i < drops.Length; i++) {
+			dropCutoffs[i] = lowerBound + dropChances[i]/totalChance;
+			lowerBound = dropCutoffs[i];
+		}
+	}
+	
 	void spawnPickups() {
 		float roll = (float)Random.Range(0, 100) / 100;
-		int totalChance = nothingDropChance + healthDropChance + energyDropChance;
-		float nothingChance = (float)nothingDropChance / totalChance;
-		float healthChance = (float)healthDropChance / totalChance;
-		float energyChance = (float)energyDropChance / totalChance;
+		int index = 0;
+		while (roll > dropCutoffs[index]) {
+			index++;
+		}
 		
-		if (roll < healthChance) {
-			Instantiate(healthPickup, transform.position, Quaternion.identity);
-		} else if (roll < healthChance + energyChance) {
-			Instantiate(energyPickup, transform.position, Quaternion.identity);
-		} // else nothing
+		if (drops[index] != null) {
+			Instantiate(drops[index], transform.position, Quaternion.identity);
+		} // else, drop nothing
 	}
 	
 	IEnumerator waitForAnimationAndDie() {
