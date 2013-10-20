@@ -9,6 +9,7 @@ public class ZombieHealth : MonoBehaviour {
 	public float LastHitTime { get; private set; }
 	float stunEnd;
 	
+	public enum direction {up, down, left, right};
 	public bool isDead = false;
 	private bool hitMultipleTimes = false;
 
@@ -38,7 +39,8 @@ public class ZombieHealth : MonoBehaviour {
 			transform.FindChild("ZombieAttackRange").gameObject.SetActive(false);
 			// transform.FindChild("ZombieDetectionRange").gameObject.SetActive(false);
 			CC.enabled = false;
-			ChooseDeathAnimation();
+			direction facing = FindDirection();
+			ChooseDeathAnimation(facing);
 			StartCoroutine( waitForAnimationToEnd());
 		}
 		if(isDead){		// In case the player keeps attacking the zombie even though it has already died
@@ -141,8 +143,10 @@ public class ZombieHealth : MonoBehaviour {
 	
 	IEnumerator PauseWhenHit(float rawPauseTime){
 		float pauseTime = Time.time + rawPauseTime;
-		curAnim.StopAndResetFrame();
+		//curAnim.StopAndResetFrame();
 		//gotHit = false;
+		direction facing = FindDirection();
+		ChooseGotHitAnimation(facing);
 		while(Time.time < pauseTime){
 			if(hitMultipleTimes == true){ // || _state.curState == ZombieSM.ZombieState.Die){
 				hitMultipleTimes = false;
@@ -158,7 +162,54 @@ public class ZombieHealth : MonoBehaviour {
 		_state.SetStateToChase();	
 	}
 	
-	public void ChooseDeathAnimation(){
+	public direction FindDirection(){
+		//int facing;
+		string clipName = curAnim.CurrentClip.name;
+		if(clipName.Contains("Down") || clipName.Contains("Forward"))
+			return direction.down;
+		else if(clipName.Contains("Up") || clipName.Contains("Backward"))
+			return direction.up;		
+		else if(clipName.Contains("Left"))
+			return direction.left;
+		else
+			return direction.right;			
+	}
+	
+	public void ChooseGotHitAnimation(direction facing){
+		switch(facing){
+			case direction.up:
+				curAnim.Play("GotHitUp");
+				break;
+			case direction.down:
+				curAnim.Play("GotHitDown");
+				break;
+			case direction.left:
+				curAnim.Play("GotHitLeft");
+				break;
+			case direction.right:
+				curAnim.Play("GotHitRight");			
+				break;
+		}
+	}
+	
+	
+	public void ChooseDeathAnimation(direction facing){
+		switch(facing){
+			case direction.up:
+				curAnim.Play("deathUp");
+				break;
+			case direction.down:
+				curAnim.Play("deathDown");
+				break;
+			case direction.left:
+				curAnim.Play("deathLeft");
+				break;
+			case direction.right:
+				curAnim.Play("deathRight");			
+				break;
+		}		
+		
+	/*	
 		string clipName = curAnim.CurrentClip.name;
 		if(clipName.Contains("Down") || clipName.Contains("Forward"))
 			curAnim.Play("deathDown");	
@@ -168,6 +219,7 @@ public class ZombieHealth : MonoBehaviour {
 			curAnim.Play("deathLeft");
 		else
 			curAnim.Play("deathRight");
+	*/
 	}
 }
 
