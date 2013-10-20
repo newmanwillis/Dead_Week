@@ -56,8 +56,7 @@ public class Player : MonoBehaviour {
 	public bool hasPhoneLazer;
 	public bool hasPhoneStun;
 	
-	private Transform flashLight;
-	private bool flashLightOn = false;
+	private FlashlightControl flashLight;
 	
 	private float swordAttackStartTime;
 	private PlayerAttackHitbox currentAttackHitbox;
@@ -83,7 +82,7 @@ public class Player : MonoBehaviour {
 			phoneStunBullet = ((GameObject) Resources.Load("Phone Attacks/StunBullet")).transform;
 		
 			playerSprite = transform.FindChild("PlayerSprite");
-			flashLight = transform.FindChild("FlashLight");
+			flashLight = GetComponent<FlashlightControl>();
 			
 			// Player Audio sources - location in array dependent upon order of player components
 			// first audio source listed is source[0]
@@ -99,8 +98,6 @@ public class Player : MonoBehaviour {
 		
 			curState = PlayerState.PlayerInput;
 			curDirection = FacingDirection.Down;
-			flashLight.transform.Rotate(35, 0, 0);
-			flashLight.GetComponent<Light>().intensity = 0;
 			curAnim = transform.FindChild("PlayerSprite").GetComponent<tk2dSpriteAnimator>();
 			curHealth = maxHealth;
 			curPhoneCharge = maxPhoneCharge;
@@ -176,8 +173,7 @@ public class Player : MonoBehaviour {
 		
 		if(Input.GetKey(KeyCode.UpArrow)){
 			curDirection = FacingDirection.Up;
-			flashLight.transform.localRotation = Quaternion.identity;
-			flashLight.transform.Rotate(-35, 0, 0);
+			flashLight.face(curDirection);
 			curAnim.Resume();
 			if (hasSword) {
 				curAnim.Play("walkingBackward");
@@ -187,8 +183,7 @@ public class Player : MonoBehaviour {
 		}		
 		else if(Input.GetKey(KeyCode.DownArrow)){
 			curDirection = FacingDirection.Down;
-			flashLight.transform.localRotation = Quaternion.identity;
-			flashLight.transform.Rotate(35, 0, 0);
+			flashLight.face(curDirection);
 			curAnim.Resume();
 			if (hasSword) {
 				curAnim.Play("walkingForward");
@@ -198,8 +193,7 @@ public class Player : MonoBehaviour {
 		}
 		else if(Input.GetKey(KeyCode.RightArrow)){
 			curDirection = FacingDirection.Right;
-			flashLight.transform.localRotation = Quaternion.identity;
-			flashLight.transform.Rotate(0, 35, 0);
+			flashLight.face(curDirection);
 			curAnim.Resume();
 			if (hasSword) {
 				curAnim.Play("walkingRight");	
@@ -209,8 +203,7 @@ public class Player : MonoBehaviour {
 		}		
 		else if(Input.GetKey(KeyCode.LeftArrow)){
 			curDirection = FacingDirection.Left;
-			flashLight.transform.localRotation = Quaternion.identity;
-			flashLight.transform.Rotate(0, -35, 0);
+			flashLight.face(curDirection);
 			curAnim.Resume();
 			if (hasSword) {
 				curAnim.Play("walkingLeft");
@@ -339,13 +332,7 @@ public class Player : MonoBehaviour {
 			curAnim.Resume();
 			StartCoroutine(waitForAnimationtoEnd());
 		} else if (Input.GetKeyDown(KeyCode.F)) {    // flashlight
-			if (flashLightOn) {
-				flashLightOn = false;
-				flashLight.GetComponent<Light>().intensity = 0;
-			} else {
-				flashLightOn = true;
-				flashLight.GetComponent<Light>().intensity = 6;
-			}
+			flashLight.toggleOnOff();
 		}
 	}
 	
