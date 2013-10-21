@@ -62,6 +62,8 @@ public class Player : MonoBehaviour {
 	private PlayerAttackHitbox currentAttackHitbox;
 	private PlayerAttackHitbox leftSideHitbox;
 	private PlayerAttackHitbox rightSideHitbox;
+	private PlayerAttackHitbox upHitbox;
+	private PlayerAttackHitbox downHitbox;
 	
 	public bool startInCutscene;
 	public Texture initialInfoCard;
@@ -105,6 +107,8 @@ public class Player : MonoBehaviour {
 		
 			rightSideHitbox = GameObject.Find("RightSideAttackHitbox").GetComponent<PlayerAttackHitbox>();
 			leftSideHitbox = GameObject.Find("LeftSideAttackHitbox").GetComponent<PlayerAttackHitbox>();
+			upHitbox = GameObject.Find("UpAttackHitbox").GetComponent<PlayerAttackHitbox>();
+			downHitbox = GameObject.Find("DownAttackHitbox").GetComponent<PlayerAttackHitbox>();
 		
 			invulnerable = false;
 			
@@ -311,16 +315,16 @@ public class Player : MonoBehaviour {
 			switch(curDirection)
 			{
 				case FacingDirection.Up:
-				currentAttackHitbox = leftSideHitbox;
-				curAnim.Play("swordLeft");				
+				currentAttackHitbox = upHitbox;
+				curAnim.Play("swordUp");				
 				break;
 				case FacingDirection.Left:
 				currentAttackHitbox = leftSideHitbox;
 				curAnim.Play("swordLeft");
 				break;
 				case FacingDirection.Down:
-				currentAttackHitbox = rightSideHitbox;
-				curAnim.Play("swordRight");				
+				currentAttackHitbox = downHitbox;
+				curAnim.Play("swordDown");				
 				break;
 				case FacingDirection.Right:
 				currentAttackHitbox = rightSideHitbox;
