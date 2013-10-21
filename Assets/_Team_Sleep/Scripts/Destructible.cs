@@ -21,7 +21,9 @@ public class Destructible : MonoBehaviour {
 	void Start () {
 		animator = GetComponent<tk2dSpriteAnimator>();
 		destructionSound = GetComponent<AudioSource>();
-		destructionSound.loop = false;
+		if (destructionSound != null) {
+			destructionSound.loop = false;
+		}
 		calculateCutoffs();
 	}
 	
@@ -33,7 +35,9 @@ public class Destructible : MonoBehaviour {
 				Destroy(GetComponent<tk2dSprite>());
 			}
 			destroyed = true;
-			destructionSound.Play ();
+			if (destructionSound != null) {
+				destructionSound.Play ();
+			}
 			StartCoroutine(waitForAnimationAndDie());
 		}
 	}
@@ -84,6 +88,11 @@ public class Destructible : MonoBehaviour {
 		Destroy(GetComponent<BoxCollider>());
 		if (!wasDisintigrated && animator.GetClipByName("smashed_flashing") != null) {
 			animator.Play("smashed_flashing");
+		}
+		
+		Generator gen = GetComponent<Generator>();
+		if (gen != null) {
+			gen.shutdown();
 		}
 	}
 }
