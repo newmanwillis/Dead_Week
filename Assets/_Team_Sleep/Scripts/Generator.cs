@@ -24,6 +24,9 @@ public class Generator : MonoBehaviour {
 		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ElectronicDoor")) {
 			obj.animation.Play("ElectronicDoorOpen");
 		}
+		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("DestroyOnGeneratorShutdown")) {
+			Destroy(obj);
+		}
 		StartCoroutine(flickerLights());
 		IsRunning = false;
 	}
