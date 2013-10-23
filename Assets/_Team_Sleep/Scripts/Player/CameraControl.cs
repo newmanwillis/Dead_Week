@@ -104,9 +104,9 @@ public class CameraControl : MonoBehaviour {
 				GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), blackBox);
 				GUI.DrawTexture(position, winMessage);
 			} else if (playerHealth() <= 0) {
-				Rect position = new Rect(Screen.width/2-loseMessage.width/2, Screen.height/2-loseMessage.height/2, loseMessage.width, loseMessage.height);
-				GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), blackBox);
-				GUI.DrawTexture(position, loseMessage);
+				//Rect position = new Rect(Screen.width/2-loseMessage.width/2, Screen.height/2-loseMessage.height/2, loseMessage.width, loseMessage.height);
+				//GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), blackBox);
+				//GUI.DrawTexture(position, loseMessage);
 			}
 		}
 	}
@@ -180,7 +180,7 @@ public class CameraControl : MonoBehaviour {
 	}
 	
 	void drawInfoCard(Texture infoCard) {
-		Debug.Log("width: " + infoCard.width + " height: " + infoCard.height);
+		//Debug.Log("width: " + infoCard.width + " height: " + infoCard.height);
 		//Rect pos = new Rect((Screen.width - infoCard.width)/2, (Screen.height - infoCard.height)/2, infoCard.width, infoCard.height);
 		Rect pos = new Rect((Screen.width - 630)/2, (Screen.height - 380)/2, 630, 380);
 		GUI.DrawTexture(pos, infoCard);

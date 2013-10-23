@@ -142,6 +142,11 @@ public class Player : MonoBehaviour {
 			case PlayerState.PlayerInput:
 				MovementInput();  // Check for player movement
 			break;
+			case PlayerState.Dead:
+				if (!curAnim.Playing) {
+					Application.LoadLevel(Application.loadedLevel);
+				}
+			break;
 		}		
 	}
 	
@@ -509,9 +514,14 @@ public class Player : MonoBehaviour {
 		if(!invulnerable){
 			invulnerable = true;
 			curHealth -= damage;
-			float timeInvulnerable = 1.5f;	// the function "Invulnerable currently assumes this being 1.5f
-			takingDamageAudio.Play();
-			StartCoroutine(Invulnerable(Time.time + timeInvulnerable, Time.time));
+			if (curHealth > 0) {
+				float timeInvulnerable = 1.5f;	// the function "Invulnerable currently assumes this being 1.5f
+				takingDamageAudio.Play();
+				StartCoroutine(Invulnerable(Time.time + timeInvulnerable, Time.time));
+			} else {
+				curAnim.Play("die");
+				curState = PlayerState.Dead;
+			}
 		}	
 	}
 	
