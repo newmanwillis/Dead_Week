@@ -3,6 +3,8 @@ using System.Collections;
 
 public class ZombieHealth : MonoBehaviour {
 	
+	public enum HitTypes {sword, burstLaser, stun}
+	
 	public int health = 100;
 
 	public bool IsStunned { get; private set; }
@@ -58,24 +60,7 @@ public class ZombieHealth : MonoBehaviour {
 			StartCoroutine( PauseWhenHit(0.4f));
 		}
 	}
-	
-	// Update is called once per frame
-	/*void Update () {
-		if (IsStunned) {
-			if (Time.time >= stunEnd) {
-				IsStunned = false;
-			}
-		}
-		
-		if(health <= 0  && !isDead){
-			isDead = true;
-			curAnim.Play("deathDown");
-			// curAnim.Play(getCorrectDeathAnimation());
-		 	StartCoroutine( waitForAnimationToEnd());
-			//StartCoroutine(RemoveZombie(3.0f));
-			//Destroy(transform.parent.gameObject);	
-		}
-	}*/
+
 	/*
 	string getCorrectDeathAnimation() {
 		switch (myZombieFollowPlayer.curDirection) {
