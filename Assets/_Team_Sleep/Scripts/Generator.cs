@@ -8,6 +8,9 @@ public class Generator : MonoBehaviour {
 	public int numFlickers;
 	
 	public bool IsRunning {get; private set;}
+	
+	public Vector3[] spawnZombieLocations;
+	public Transform zombie;
 
 	// Use this for initialization
 	void Start () {
@@ -26,6 +29,9 @@ public class Generator : MonoBehaviour {
 		}
 		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("DestroyOnGeneratorShutdown")) {
 			Destroy(obj);
+		}
+		foreach (Vector3 spawnLoc in spawnZombieLocations) {
+			Instantiate(zombie, spawnLoc, Quaternion.identity);
 		}
 		StartCoroutine(flickerLights());
 		IsRunning = false;
