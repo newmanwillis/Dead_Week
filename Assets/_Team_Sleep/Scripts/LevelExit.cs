@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class LevelExit : MonoBehaviour {
+	public string nextLevelSceneName;
 
 	// Use this for initialization
 	void Start () {
@@ -15,6 +16,9 @@ public class LevelExit : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Player") {
+			if (nextLevelSceneName != null && nextLevelSceneName != "") {
+				Application.LoadLevel(nextLevelSceneName);
+			}
 			Destroy(this.gameObject);
 		}
 	}
