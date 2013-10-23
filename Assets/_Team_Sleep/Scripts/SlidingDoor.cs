@@ -18,7 +18,7 @@ public class SlidingDoor : MonoBehaviour {
 	
 	void OnTriggerStay(Collider other) {
 		lock (animation) {
-			if (other.tag == "Player" && !open && !animation.isPlaying && generator.IsRunning) {
+			if ((other.tag == "Player" || other.tag == "Zombie") && !open && !animation.isPlaying && generator.IsRunning) {
 				animation.Play("SlidingDoorOpen");
 				open = true;
 			}
@@ -26,7 +26,7 @@ public class SlidingDoor : MonoBehaviour {
 	}
 	
 	void OnTriggerExit(Collider other) {
-		if (other.tag == "Player" ) {
+		if (other.tag == "Player") {
 			StartCoroutine(close());
 		}
 	}
