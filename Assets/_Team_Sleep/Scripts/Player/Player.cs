@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
 	
+	public int swordDamage;
 	public float movementSpeed = 0.8f;
 	public float maxHealth = 100;
 	public float maxPhoneCharge = 100;
@@ -352,7 +353,7 @@ public class Player : MonoBehaviour {
 			if (col) {
 				ZombieHealth zombie = col.GetComponent<ZombieHealth>();
 				if (zombie.LastHitTime < attackStart) {
-					zombie.TakeDamage(50);
+					zombie.TakeDamage(swordDamage, ZombieHealth.HitTypes.sword);
 				}
 			} else {
 				deadZombies.Add(col);  // this zombie died while in range

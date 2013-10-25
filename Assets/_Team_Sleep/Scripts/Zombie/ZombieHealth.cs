@@ -4,6 +4,7 @@ using System.Collections;
 public class ZombieHealth : MonoBehaviour {
 	
 	public enum HitTypes {sword, burstLaser, stun}
+	private HitTypes lastHitType;
 	
 	public int health = 100;
 
@@ -29,8 +30,9 @@ public class ZombieHealth : MonoBehaviour {
 		// myZombieFollowPlayer = GetComponentInChildren<ZombieFollowPlayer>();
 	}
 	
-	public void TakeDamage(int damage){		// perhaps change parameters to get enum of what attack killed it to determine death animation
+	public void TakeDamage(int damage, HitTypes source){		// perhaps change parameters to get enum of what attack killed it to determine death animation
 		LastHitTime = Time.time;
+		lastHitType = source;
 		health -= damage;
 		if(health <= 0 && !isDead){
 			isDead = true;
@@ -181,16 +183,32 @@ public class ZombieHealth : MonoBehaviour {
 	public void ChooseDeathAnimation(direction facing){
 		switch(facing){
 			case direction.up:
-				curAnim.Play("deathUp");
+				if (lastHitType == HitTypes.burstLaser) {
+					curAnim.Play("lazerDeathUp");
+				} else {
+					curAnim.Play("deathUp");
+				}
 				break;
 			case direction.down:
-				curAnim.Play("deathDown");
+				if (lastHitType == HitTypes.burstLaser) {
+					curAnim.Play("lazerDeathDown");
+				} else {
+					curAnim.Play("deathDown");
+				}
 				break;
 			case direction.left:
-				curAnim.Play("deathLeft");
+				if (lastHitType == HitTypes.burstLaser) {
+					curAnim.Play("lazerDeathDown");
+				} else {
+					curAnim.Play("deathLeft");
+				}
 				break;
 			case direction.right:
-				curAnim.Play("deathRight");			
+				if (lastHitType == HitTypes.burstLaser) {
+					curAnim.Play("lazerDeathDown");
+				} else {
+					curAnim.Play("deathRight");
+				}
 				break;
 		}		
 		
