@@ -9,7 +9,11 @@ using System.Collections;
 
 public class ZombieChase : MonoBehaviour {
 	
-	int _speed;
+	int _speed = 52;
+	public int _speed1 = 52;
+	public int _speed2 = 58;
+	public int _speed3 = 70;
+	
 	
 	private float _lookForPlayerTimer = 0;	
 	private float _lookForPause = 0.5f;
@@ -29,8 +33,13 @@ public class ZombieChase : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		_speed = 52;
+		int[] chaseSpeeds = {_speed1, _speed2, _speed3};
+		int speedIndex = Random.Range(0, chaseSpeeds.Length);
+		_speed = chaseSpeeds[speedIndex];
+		//_speed = 72;
 		//_speed = Random.Range(35, 52);
+		
+		// print ("SPEED: " + _speed);
 		
 		Zombie = transform.parent;
 		_state = Zombie.GetComponent<ZombieSM>();

@@ -12,7 +12,8 @@ public class ZombieWander : MonoBehaviour {
 	
 	public enum Direction {up, down, left, right};
 	public bool _isWandering	= false;								// ZombieState continuously checks this variable
-	public float _wanderSpeed = 15f;
+	// public float _wanderSpeed = 15f;
+	public float[] wanderSpeeds = {10f, 20f, 26f};
 	public bool _canWander = true;										//  can make it so specific zombies do not wander
 	
 	
@@ -52,6 +53,7 @@ public class ZombieWander : MonoBehaviour {
 		ChooseDirectionAnimation(moveDirection);
 		float moveTime = CalculateTimer(0.2f, 5, 20);  					// makes Zombies wander for 1 to 4 seconds
 		// print("Wander Time: " + (moveTime - Time.time));
+		float wanderSpeed = ChooseWanderSpeed();
 		while(Time.time < moveTime){
 			if(_state.curState != ZombieSM.ZombieState.Wander){  // Stops process if zombie state changes
 				_isWandering = false;
@@ -60,16 +62,16 @@ public class ZombieWander : MonoBehaviour {
 			Vector3 moveAmount = new Vector3(0, 0, 0);
 			switch(moveDirection){	// 	Moves the Zombie
 				case Direction.up:
-					moveAmount.y = _wanderSpeed * Time.deltaTime;
+					moveAmount.y = wanderSpeed * Time.deltaTime;
 					break;
 				case Direction.down:
-					moveAmount.y = -_wanderSpeed * Time.deltaTime;
+					moveAmount.y = -wanderSpeed * Time.deltaTime;
 					break;
 				case Direction.right:
-					moveAmount.x = _wanderSpeed * Time.deltaTime;
+					moveAmount.x = wanderSpeed * Time.deltaTime;
 					break;
 				case Direction.left:
-					moveAmount.x = -_wanderSpeed * Time.deltaTime;
+					moveAmount.x = -wanderSpeed * Time.deltaTime;
 					break;					
 			}
 			GetComponent<CharacterController>().Move(moveAmount);				
@@ -77,6 +79,12 @@ public class ZombieWander : MonoBehaviour {
 		}
 		curAnim.StopAndResetFrame();									// stop animation
 		StartCoroutine(StandStill());									// start cycle over again, keep wandering	
+	}
+	
+	private float ChooseWanderSpeed(){
+		int randSpeedIndex = Random.Range(0, wanderSpeeds.Length);
+		float randSpeed = wanderSpeeds[randSpeedIndex];
+		return randSpeed;
 	}
 	
 	private float CalculateTimer(float multiplier, int min, int max){

@@ -42,7 +42,10 @@ public class ZombieHealth : MonoBehaviour {
 			// Find better solution than turning them off
 			transform.FindChild("ZombieAttackRange").gameObject.SetActive(false);
 			// transform.FindChild("ZombieDetectionRange").gameObject.SetActive(false);
-			CC.enabled = false;
+			
+			StartCoroutine( TurnOffCharacterController(0.2f) );
+			// CC.enabled = false;
+			
 			direction facing = FindDirection();
 			ChooseDeathAnimation(facing);
 			StartCoroutine( waitForAnimationToEnd());
@@ -147,6 +150,12 @@ public class ZombieHealth : MonoBehaviour {
 		}
 		hitMultipleTimes = false;
 		_state.SetStateToChase();	
+	}
+
+	// waits for a short period before turning off character controller to evoid bugs	
+	IEnumerator TurnOffCharacterController(float waitTime){
+		yield return new WaitForSeconds(waitTime);
+		CC.enabled = false;
 	}
 	
 	public direction FindDirection(){
