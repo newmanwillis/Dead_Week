@@ -19,7 +19,7 @@ public class ZombieAttack : MonoBehaviour {
 	void OnTriggerStay(Collider other){
 		if(other.tag == "Player" && canAttack) {
 			ZombieHealth myHealth = gameObject.transform.parent.GetComponent<ZombieHealth>();
-			if (!(myHealth.isStunned || myHealth.isDead)) {
+			if (!myHealth.isStunned && !myHealth.isDead) {
 				other.GetComponent<Player>().curHealth -= attackDamage;
 				canAttack = false;
 				StartCoroutine(BiteCooldown());

@@ -315,7 +315,7 @@ public class Player : MonoBehaviour {
 			}
 		} else if (Input.GetKeyDown(KeyCode.D) && hasPhoneStun) {	// Phone stun
 			waitForPhoneAnimationAndFire(PhonePower.Stun);
-		} else if(Input.GetKey(KeyCode.A) && hasSword){			// Sword Attack
+		} else if(Input.GetKeyDown(KeyCode.A) && hasSword){			// Sword Attack
 			curState = PlayerState.SwordAttack;
 			swordAttackStartTime = Time.time;
 			switch(curDirection)
@@ -353,7 +353,7 @@ public class Player : MonoBehaviour {
 			if (col) {
 				ZombieHealth zombie = col.GetComponent<ZombieHealth>();
 				if (zombie.LastHitTime < attackStart) {
-					zombie.TakeDamage(swordDamage);
+					zombie.TakeDamage(swordDamage, ZombieHealth.HitTypes.sword);
 				}
 			} else {
 				deadZombies.Add(col);  // this zombie died while in range

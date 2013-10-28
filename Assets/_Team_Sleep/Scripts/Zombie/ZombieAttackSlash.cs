@@ -9,8 +9,9 @@ public class ZombieAttackSlash : MonoBehaviour {
 	private Transform Zombie;
 	private Transform Attack;
 	private tk2dSpriteAnimator AttackAnim;
-	private ZombieSM _state;
 	private tk2dSpriteAnimator curAnim;
+	private ZombieSM _state;
+	private ZombieHealth zombieHealth;
 	
 	
 	public float _attackDelay = 1f;
@@ -22,6 +23,7 @@ public class ZombieAttackSlash : MonoBehaviour {
 		Zombie = transform.parent;
 		_state = Zombie.GetComponent<ZombieSM>();
 		curAnim = Zombie.GetComponent<tk2dSpriteAnimator>();
+		zombieHealth = Zombie.GetComponent<ZombieHealth>();
 	}
 	
 	// Update is called once per frame
@@ -84,7 +86,8 @@ public class ZombieAttackSlash : MonoBehaviour {
 		yield return new WaitForSeconds(standTime);
 		//print ("goign back to chase");
 		// curAnim.StopAndResetFrame();
-		_state.SetStateToChase();
+		if(!zombieHealth.isStunned)
+			_state.SetStateToChase();
 		//_state.curState = ZombieSM.ZombieState.Chase;
 		
 	}

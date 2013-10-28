@@ -1,4 +1,4 @@
-﻿// This script requires objects to be labeled with correct tags and layers
+// This script requires objects to be labeled with correct tags and layers
 // Tags: Player, Wall
 // Layers: Default, Wall, Player
 
@@ -30,6 +30,7 @@ public class ZombieChase : MonoBehaviour {
 	Transform Zombie;	
 	private ZombieSM _state;
 	private tk2dSpriteAnimator curAnim;
+	private CharacterController CC;
 	
 	// Use this for initialization
 	void Start () {
@@ -44,13 +45,14 @@ public class ZombieChase : MonoBehaviour {
 		Zombie = transform.parent;
 		_state = Zombie.GetComponent<ZombieSM>();
 		curAnim = Zombie.GetComponent<tk2dSpriteAnimator>();
+		CC = Zombie.GetComponent<CharacterController>();
 	}
 	
 	void OnTriggerStay(Collider other){
 		if(!_foundPlayer){	
 			// Keeps checking for player every 0.5 seconds if in detection range	
 			// but behind a wall. This is so it doesn't raycast every update
-			if(other.tag == "Player" && !_foundPlayer && _lookForPlayerTimer < Time.time && _state.curState != ZombieSM.ZombieState.TakingDamage && _state.curState != ZombieSM.ZombieState.Stunned){
+			if(other.tag == "Player" && !_foundPlayer && _lookForPlayerTimer < Time.time && _state.curState != ZombieSM.ZombieState.TakingDamage){
 																												// Temp change from .Stunned
 				int layerMask = ~(1 << 0);
 				RaycastHit hit;
@@ -184,8 +186,13 @@ public class ZombieChase : MonoBehaviour {
 			
 			if(_state.curState != ZombieSM.ZombieState.Chase){
 				yield break;	
-			}			
-			Zombie.GetComponent<CharacterController>().Move(move * Time.deltaTime);			
+			}
+			//if(!CC.gameObject.activeInHierarchy){
+			//	Destroy(Zombie);
+			//}
+			//else{
+				CC.Move(move * Time.deltaTime);			
+			//}
 			yield return null;
 		}
 		CalculateChase();
