@@ -36,12 +36,13 @@ public class PlayerProjectile : MonoBehaviour {
 		
 		if (other.tag == "Button") {
 			Debug.Log("hit button");
-			foreach (Transform possibleDoor in other.transform) {
-				Debug.Log("door " + possibleDoor.tag);
-				if (possibleDoor.tag == "Door") {
-					Destroy(possibleDoor.gameObject);
-				}
-			}
+			other.GetComponent<Button>().power();
+			//foreach (Transform possibleDoor in other.transform) {
+			//	Debug.Log("door " + possibleDoor.tag);
+			//	if (possibleDoor.tag == "Door") {
+			//		Destroy(possibleDoor.gameObject);
+			//	}
+			//}
 		}
 		
 		if (other.tag == "Zombie" || other.tag == "Wall" || other.tag == "Destructible" || other.tag == "Door" || other.tag == "Button") {
