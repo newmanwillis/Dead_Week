@@ -8,15 +8,19 @@ public class ZombieHealth : MonoBehaviour {
 	
 	public int health = 100;
 
-	public bool IsStunned { get; private set; }
+	// public bool IsStunned { get; private set; }
 	public float LastHitTime { get; private set; }
 	float stunEnd;
 	
 	public enum direction {up, down, left, right};
 	public bool isDead = false;
+	
+	
 	private bool hitMultipleTimes = false;
-
-	private tk2dSpriteAnimator curAnim;		
+	public bool isStunned = false;
+	
+	private tk2dSpriteAnimator curAnim;
+	private tk2dSprite sprite;
 	private ZombieSM _state;
 	private CharacterController CC;
 	//private ZombieFollowPlayer myZombieFollowPlayer;
@@ -25,14 +29,18 @@ public class ZombieHealth : MonoBehaviour {
 	void Start () {
 		LastHitTime = 0;
 		curAnim = GetComponent<tk2dSpriteAnimator>();
+		sprite = GetComponent<tk2dSprite>();
 		_state = GetComponent<ZombieSM>();
 		CC = GetComponent<CharacterController>();
+		//stunExplosion = GameObject.Find("StunExplosion").transform;
+		//stunDuration = stunExplosion
+		// stunDuration = stunExplosion.stunDuration;
 		// myZombieFollowPlayer = GetComponentInChildren<ZombieFollowPlayer>();
 	}
 	
-	public void TakeDamage(int damage, HitTypes source){		// perhaps change parameters to get enum of what attack killed it to determine death animation
+	public void TakeDamage(int damage){		// perhaps change parameters to get enum of what attack killed it to determine death animation
 		LastHitTime = Time.time;
-		lastHitType = source;
+		// lastHitType = source;
 		health -= damage;
 		if(health <= 0 && !isDead){
 			isDead = true;
@@ -50,11 +58,17 @@ public class ZombieHealth : MonoBehaviour {
 			ChooseDeathAnimation(facing);
 			StartCoroutine( waitForAnimationToEnd());
 		}
-		if(isDead){		// In case the player keeps attacking the zombie even though it has already died
+		else if(isDead){		// In case the player keeps attacking the zombie even though it has already died
 			// Don't process anything
+		}
+		else if(isStunned){  // If Zombie is stunned
+			curAnim.Play ();
+			StartCoroutine( PauseWhenHit(0.4f));
+			//curAnim.StopAndResetFrame();
 		}
 		else if(_state.curState == ZombieSM.ZombieState.TakingDamage){
 			hitMultipleTimes = true;
+			// curHit = source;
 		}
 		else{  	// taking damage
 			//print ("HIT");
@@ -81,19 +95,37 @@ public class ZombieHealth : MonoBehaviour {
 		return null;
 	}*/
 	
-	public void Stun(float duration){
-		// _state.curState = ZombieSM.ZombieState.Stunned;
+	
+	public void Stun(float stunDuration){
+		StartCoroutine(StunTime(stunDuration));
+	}
+	
+	IEnumerator StunTime(float stunDuration){
+		float stunTime = Time.time + stunDuration;
 		_state.curState = ZombieSM.ZombieState.TakingDamage;
-	 	StartCoroutine(PauseWhenHit(duration));	
-	}
-	
-	public void stunFor(float duration) {
-		IsStunned = true;
-		if (duration > stunEnd - Time.time) {
-			stunEnd = Time.time + duration;
+		
+		isStunned = true;
+		curAnim.Stop();
+		Color origColor = sprite.color;
+		float colorMod = 10f;
+		Color stunColor = new Color(origColor.r/colorMod, origColor.g/colorMod, origColor.b/colorMod, origColor.a);
+		sprite.color = stunColor;
+		while(Time.time < stunTime){
+			if(_state.curState == ZombieSM.ZombieState.Die){
+				sprite.color = origColor;
+				isStunned = false;
+				curAnim.Play();					
+				yield break; 
+			}			
+			yield return null;
 		}
-	}
+		isStunned = false;
+		sprite.color = origColor;
+		curAnim.Play();	
+		_state.SetStateToChase();
+	}	
 	
+
 	void Knockback(){
 		float xOffset = 1f;
 		float yOffset = 1f;
@@ -108,7 +140,6 @@ public class ZombieHealth : MonoBehaviour {
 	IEnumerator waitForAnimationToEnd(){
 		
 		while(curAnim.Playing){
-			//print("in while loop");
 			yield return null;
 		}
 		curAnim.Stop();
@@ -121,22 +152,19 @@ public class ZombieHealth : MonoBehaviour {
 		Destroy(gameObject);
 	}
 	
-	/*
-	IEnumerator PauseWhenHit(float pauseTime){
-		curAnim.StopAndResetFrame();
-		yield return new WaitForSeconds(pauseTime);
-		if(_state.curState == ZombieSM.ZombieState.Die){
-			yield break;	
-		}
-		_state.SetStateToChase();	
-	}*/
-	
 	IEnumerator PauseWhenHit(float rawPauseTime){
-		float pauseTime = Time.time + rawPauseTime;
+		float pauseTime; 
 		//curAnim.StopAndResetFrame();
 		//gotHit = false;
-		direction facing = FindDirection();
-		ChooseGotHitAnimation(facing);
+		//if(source == HitTypes.stun){
+		//	pauseTime = Time.time + 1.5f;
+		//	curAnim.Stop();
+		//}
+		//else{
+			pauseTime = Time.time + rawPauseTime;
+			direction facing = FindDirection();
+			ChooseGotHitAnimation(facing);
+		//}
 		while(Time.time < pauseTime){
 			if(hitMultipleTimes == true){ // || _state.curState == ZombieSM.ZombieState.Die){
 				hitMultipleTimes = false;
@@ -149,7 +177,13 @@ public class ZombieHealth : MonoBehaviour {
 			yield return null;	
 		}
 		hitMultipleTimes = false;
-		_state.SetStateToChase();	
+		curAnim.Play();
+		if(!isStunned){
+			_state.SetStateToChase();	
+		}
+		else{
+			curAnim.StopAndResetFrame();	
+		}
 	}
 
 	// waits for a short period before turning off character controller to evoid bugs	

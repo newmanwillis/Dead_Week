@@ -24,6 +24,8 @@ public class StunExplosion : MonoBehaviour {
 		if (other.tag == "Zombie") {
 			// other.GetComponent<ZombieHealth>().stunFor(stunDuration);
 			other.GetComponent<ZombieHealth>().Stun(stunDuration);
+			// other.GetComponent<ZombieHealth>().TakeDamage(0, ZombieHealth.HitTypes.stun);
+			//other.GetComponent<ZombieSM>().SetStateToStun(stunDuration);
 		}
 	}
 }

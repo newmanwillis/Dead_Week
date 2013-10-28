@@ -23,7 +23,7 @@ public class ZombieFollowPlayer : MonoBehaviour {
 	}
 	
 	void FixedUpdate(){
-		if(foundPlayer && !zombieHealthScript.IsStunned && !zombieHealthScript.isDead){
+		if(foundPlayer && !zombieHealthScript.isStunned && !zombieHealthScript.isDead){
 			
 
 			

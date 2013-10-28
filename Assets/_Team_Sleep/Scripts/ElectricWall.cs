@@ -18,7 +18,7 @@ public class ElectricWall : MonoBehaviour {
 			other.GetComponent<Player>().GotHit(2);
 		}
 		if (other.tag == "Zombie") {
-			other.GetComponent<ZombieHealth>().TakeDamage(3, ZombieHealth.HitTypes.burstLaser);
+			other.GetComponent<ZombieHealth>().TakeDamage(2);
 		}
 	}
 }

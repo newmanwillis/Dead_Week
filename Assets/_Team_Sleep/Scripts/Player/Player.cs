@@ -347,13 +347,13 @@ public class Player : MonoBehaviour {
 	}
 	
 	void swordAttack(PlayerAttackHitbox hitbox, float attackStart) {
-		Debug.Log("num: " + hitbox.zombies.Keys.Count);
+		// Debug.Log("num: " + hitbox.zombies.Keys.Count);
 		ArrayList deadZombies = new ArrayList();
 		foreach (Collider col in hitbox.zombies.Keys) {
 			if (col) {
 				ZombieHealth zombie = col.GetComponent<ZombieHealth>();
 				if (zombie.LastHitTime < attackStart) {
-					zombie.TakeDamage(swordDamage, ZombieHealth.HitTypes.sword);
+					zombie.TakeDamage(swordDamage);
 				}
 			} else {
 				deadZombies.Add(col);  // this zombie died while in range

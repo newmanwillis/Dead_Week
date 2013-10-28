@@ -12,7 +12,7 @@ public class ZombieSlashHitPlayer : MonoBehaviour {
 	}
 	
 	void OnTriggerStay(Collider other){
-		if(other.tag == "Player" && !_hitPlayer  && anim.ClipTimeSeconds > 0.2){  //......
+		if(other.tag == "Player" && !_hitPlayer  && anim.ClipTimeSeconds > 0.08){  //......
 			_hitPlayer = true;
 			int damage = 1;
 			other.GetComponent<Player>().GotHit(damage);

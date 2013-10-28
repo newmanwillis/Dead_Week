@@ -25,7 +25,7 @@ public class PlayerProjectile : MonoBehaviour {
 			//print ("in first");
 			//other.GetComponent<ZombieHealth>().health -= damage;
 			if(damage > 0)
-				other.GetComponent<ZombieHealth>().TakeDamage(damage, ZombieHealth.HitTypes.burstLaser);
+				other.GetComponent<ZombieHealth>().TakeDamage(damage);
 			dealtDamage = true;
 		}
 		
