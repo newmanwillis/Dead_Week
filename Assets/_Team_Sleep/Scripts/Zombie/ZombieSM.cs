@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ZombieSM : MonoBehaviour {
 	
-	public enum ZombieState {Wander, Chase, Attack, TakingDamage, Stunned, Die};
+	public enum ZombieState {Wander, Chase, Attack, TakingDamage, Die};
 	public ZombieState curState;
 	
 	private tk2dSprite sprite;
@@ -49,46 +49,5 @@ public class ZombieSM : MonoBehaviour {
 			curState = ZombieState.Chase;
 			_chase.PreCalculateChase();
 		}
-	}
-	
-	public void SetStateToStun(float stunDuration){
-		curState = ZombieState.Stunned;
-		StartCoroutine(Stun(stunDuration));
-	}
-	
-	IEnumerator Stun(float stunDuration){
-		float stunTime = Time.time + stunDuration;
-		
-		curAnim.Stop();
-		Color origColor = sprite.color;
-		float colorMod = 3f;
-		Color stunColor = new Color(origColor.r/colorMod, origColor.g/colorMod, origColor.b/colorMod, origColor.a);
-		sprite.color = stunColor;
-		while(Time.time < stunTime){
-			if(curState == ZombieState.Die){
-				sprite.color = origColor;
-				curAnim.Play();					
-				yield break; 
-			}
-			
-			print ("IS PLAYING?: " + curAnim.Playing);
-			
-			yield return null;
-		}
-
-		sprite.color = origColor;
-		curAnim.Play();	
-		//if(!curAnim.Playing){
-		//	SetStateToChase();
-		//}
-		//else{
-		//while(curAnim.Playing){
-			// wait for gethit animation to end
-		//	print ("STUCK IN LOOP");
-		//}
-		if(curState == ZombieState.Stunned){
-			SetStateToChase();
-		}
-	}
-	
+	}	
 }

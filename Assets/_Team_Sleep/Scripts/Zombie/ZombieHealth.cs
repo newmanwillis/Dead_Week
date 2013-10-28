@@ -3,14 +3,16 @@ using System.Collections;
 
 public class ZombieHealth : MonoBehaviour {
 	
-	public enum HitTypes {sword, burstLaser, stun}
+	public float hitPauseTime = 0.5f;
+	
+	public enum HitTypes {sword, burstLaser, stun, laser}
 	private HitTypes lastHitType;
 	
 	public int health = 100;
 
 	// public bool IsStunned { get; private set; }
 	public float LastHitTime { get; private set; }
-	float stunEnd;
+	// float stunEnd;
 	
 	public enum direction {up, down, left, right};
 	public bool isDead = false;
@@ -45,26 +47,27 @@ public class ZombieHealth : MonoBehaviour {
 			transform.FindChild("ZombieAttackRange").gameObject.SetActive(false);  // Find better solution than turning them off
 			// transform.FindChild("ZombieDetectionRange").gameObject.SetActive(false);
 			
-			StartCoroutine( TurnOffCharacterController(0.6f) );
+			StartCoroutine( TurnOffCharacterController(0.55f) );
 			// CC.enabled = false;
 			
 			direction facing = FindDirection();
 			ChooseDeathAnimation(facing);
 			StartCoroutine( waitForAnimationToEnd());
+			
 		}
 		else if(isDead){		// In case the player keeps attacking the zombie even though it has already died
 			// Don't process anything
 		}
 		else if(isStunned){  // If Zombie is stunned
 			curAnim.Play ();
-			StartCoroutine( PauseWhenHit(0.4f));
+			StartCoroutine( PauseWhenHit(hitPauseTime));
 		}
 		else if(_state.curState == ZombieSM.ZombieState.TakingDamage){
 			hitMultipleTimes = true;
 		}
 		else{  	// taking damage
 			_state.curState = ZombieSM.ZombieState.TakingDamage;
-			StartCoroutine( PauseWhenHit(0.4f));
+			StartCoroutine( PauseWhenHit(hitPauseTime));
 		}
 	}
 
