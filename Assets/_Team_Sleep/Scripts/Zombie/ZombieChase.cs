@@ -56,7 +56,7 @@ public class ZombieChase : MonoBehaviour {
 																												// Temp change from .Stunned
 				int layerMask = ~(1 << 0);
 				RaycastHit hit;
-				if(Physics.Raycast(Zombie.position, other.transform.position - Zombie.position, out hit, 40, layerMask)){
+				if(Physics.Raycast(Zombie.position, other.transform.position - Zombie.position, out hit, 100, layerMask)){
 					
 					if(hit.transform.tag == "Wall"){
 						_lookForPlayerTimer = Time.time + _lookForPause;					

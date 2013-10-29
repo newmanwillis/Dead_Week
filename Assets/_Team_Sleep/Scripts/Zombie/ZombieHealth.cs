@@ -47,7 +47,7 @@ public class ZombieHealth : MonoBehaviour {
 			transform.FindChild("ZombieAttackRange").gameObject.SetActive(false);  // Find better solution than turning them off
 			// transform.FindChild("ZombieDetectionRange").gameObject.SetActive(false);
 			
-			StartCoroutine( TurnOffCharacterController(0.55f) );
+			StartCoroutine( TurnOffCharacterController(0.5f) );
 			// CC.enabled = false;
 			
 			direction facing = FindDirection();
@@ -209,28 +209,28 @@ public class ZombieHealth : MonoBehaviour {
 		switch(facing){
 			case direction.up:
 				if (lastHitType == HitTypes.burstLaser) {
-					curAnim.Play("lazerDeathUp");
+					curAnim.Play("laserDeathUp");
 				} else {
 					curAnim.Play("deathUp");
 				}
 				break;
 			case direction.down:
 				if (lastHitType == HitTypes.burstLaser) {
-					curAnim.Play("lazerDeathDown");
+					curAnim.Play("laserDeathDown");
 				} else {
 					curAnim.Play("deathDown");
 				}
 				break;
 			case direction.left:
 				if (lastHitType == HitTypes.burstLaser) {
-					curAnim.Play("lazerDeathDown");
+					curAnim.Play("laserDeathLeft");
 				} else {
 					curAnim.Play("deathLeft");
 				}
 				break;
 			case direction.right:
 				if (lastHitType == HitTypes.burstLaser) {
-					curAnim.Play("lazerDeathDown");
+					curAnim.Play("laserDeathRight");
 				} else {
 					curAnim.Play("deathRight");
 				}
