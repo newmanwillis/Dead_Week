@@ -10,6 +10,10 @@ public class HackableComputer : MonoBehaviour {
 	public string unlockUpgrade;
 	public string textMessage;
 	public Texture infoCard;
+	
+	// isGenerator should be set to true iff this is being used to restart a parent generator, 
+	// which this gameobject is a child of.
+	public bool isGenerator;
 	// Use this for initialization
 	void Start () {
 	
@@ -49,6 +53,11 @@ public class HackableComputer : MonoBehaviour {
 				}
 				if (infoCard != null) {
 					Camera.main.GetComponent<CameraControl>().pauseAndDrawInfoCard(infoCard);
+				}
+				
+				// We will use this script to power on generators as well
+				if (isGenerator) {
+					transform.parent.GetComponent<Generator>().IsRunning = true;
 				}
 			}
 		}

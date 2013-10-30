@@ -3,11 +3,26 @@ using System.Collections;
 
 public class Generator : MonoBehaviour {
 	private Light ceilingLights;
+	private float lightIntensity;
 	
 	public float flickerTime;
 	public int numFlickers;
 	
-	public bool IsRunning {get; private set;}
+	private bool isRunning;
+	public bool IsRunning {
+		get {
+			return isRunning;
+		}
+		set {
+			isRunning = value;
+			if (isRunning) {
+				ceilingLights.intensity = lightIntensity;
+			} else {
+				ceilingLights.intensity = 0;
+			}
+			activateAllButtons();
+		}
+	}
 	
 	public Vector3[] spawnZombieLocations;
 	public Transform zombie;
@@ -15,12 +30,22 @@ public class Generator : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		ceilingLights = GameObject.Find("CeilingLights").GetComponent<Light>();
-		IsRunning = true;
+		lightIntensity = ceilingLights.intensity;
+		if (!IsRunning) {
+			ceilingLights.intensity = 0;
+		}
+		//IsRunning = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
+	}
+	
+	void activateAllButtons() {
+		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Button")) {
+			obj.GetComponent<Button>().powerForever();
+		}
 	}
 	
 	public void shutdown() {

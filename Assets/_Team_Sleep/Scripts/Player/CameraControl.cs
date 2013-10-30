@@ -96,7 +96,8 @@ public class CameraControl : MonoBehaviour {
 				float percent = hacking.hackSoFar / hacking.timeToHackSeconds;
 				// 200 wide, centered
 				// 40 high, starting 3/4 down the screen
-				drawPercentBar(Screen.width/2 - 100, (int)(Screen.height * (3.0/4.0)), 200, 40, percent, blueBox, "Hacking...", false);
+				string msg = hacking.isGenerator ? "Restarting..." : "Hacking...";
+				drawPercentBar(Screen.width/2 - 100, (int)(Screen.height * (3.0/4.0)), 200, 40, percent, blueBox, msg, false);
 			}
 		
 			if (GameObject.FindGameObjectsWithTag("LevelExit").Length == 0) {

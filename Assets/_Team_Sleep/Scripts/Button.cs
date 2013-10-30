@@ -7,6 +7,7 @@ public class Button : MonoBehaviour {
 	public float poweredTime;
 	private float unpowerTime;
 	private bool currentlyPowered;
+	public bool noTimeLimit;
 
 	// Use this for initialization
 	void Start () {
@@ -25,7 +26,7 @@ public class Button : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (currentlyPowered && unpowerTime < Time.time) {
+		if ((!noTimeLimit) && currentlyPowered && unpowerTime < Time.time) {
 			childObj.SetActive(!enableChildWhenPowered);
 		}
 	}
@@ -34,5 +35,11 @@ public class Button : MonoBehaviour {
 		childObj.SetActive(enableChildWhenPowered);
 		currentlyPowered = true;
 		unpowerTime = Time.time + poweredTime;
+	}
+	
+	public void powerForever() {
+		childObj.SetActive(enableChildWhenPowered);
+		currentlyPowered = true;
+		noTimeLimit = true;
 	}
 }
