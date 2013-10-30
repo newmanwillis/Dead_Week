@@ -4,12 +4,15 @@ using System.Collections;
 public class ZombieSpawner : MonoBehaviour {
 
 	// public....direction up/down
-	public float spawnTimer = 5f;
-	private float spawnDelay;
+	// public float StartSpawnDelay = 2
+	public float SpawnTimer = 5f;
+	private float SpawnDelay;
+	
+	private int ColliderCount = 0;
 	
 	// Use this for initialization
 	void Start () {
-		
+		StartCoroutine(SpawnZombie());
 	}
 	
 	// Update is called once per frame
@@ -23,7 +26,7 @@ public class ZombieSpawner : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider other){
-		
+		ColliderCount++;
 	}
 	
 	void OnTriggerStay(Collider other){
@@ -31,6 +34,16 @@ public class ZombieSpawner : MonoBehaviour {
 	}
 	
 	void OnTriggerExit(Collider other){
+		ColliderCount--;
+	}
+	
+	IEnumerator SpawnZombie(){
+		
+		if(ColliderCount == 0){
+			print ("A");
+			yield return new WaitForSeconds(SpawnTimer);	
+			print ("B");
+		}
 		
 	}
 	
