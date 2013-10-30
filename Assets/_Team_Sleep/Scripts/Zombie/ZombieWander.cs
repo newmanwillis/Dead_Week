@@ -25,7 +25,7 @@ public class ZombieWander : MonoBehaviour {
 		_state = GetComponent<ZombieSM>();
 		//curAnim = transform.FindChild("ZombieSprite").GetComponent<tk2dSpriteAnimator>();
 		curAnim = GetComponent<tk2dSpriteAnimator>();
-		curAnim.Stop();
+		
 	}
 
 	public void StartWanderProcess(){		
@@ -74,6 +74,7 @@ public class ZombieWander : MonoBehaviour {
 					moveAmount.x = -wanderSpeed * Time.deltaTime;
 					break;					
 			}
+			// print ("HERE");
 			GetComponent<CharacterController>().Move(moveAmount);				
 			yield return null;
 		}

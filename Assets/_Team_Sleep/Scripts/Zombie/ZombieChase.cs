@@ -187,12 +187,7 @@ public class ZombieChase : MonoBehaviour {
 			if(_state.curState != ZombieSM.ZombieState.Chase){
 				yield break;	
 			}
-			//if(!CC.gameObject.activeInHierarchy){
-			//	Destroy(Zombie);
-			//}
-			//else{
-				CC.Move(move * Time.deltaTime);			
-			//}
+			CC.Move(move * Time.deltaTime);			
 			yield return null;
 		}
 		CalculateChase();
