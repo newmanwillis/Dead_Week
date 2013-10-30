@@ -33,7 +33,6 @@ public class ZombieSpawner : MonoBehaviour {
 	IEnumerator SpawnZombie(float timer){
 		
 		yield return new WaitForSeconds(SpawnTimer);
-		print ("Collider Count: " + ColliderCount);
 		if(ColliderCount == 0){
 			Transform zombie = ((Transform) Instantiate(Zombie, transform.position, Quaternion.identity) );
 			zombie.GetComponent<ZombieSM>().curState = ZombieSM.ZombieState.ControlledMovement;
@@ -41,7 +40,6 @@ public class ZombieSpawner : MonoBehaviour {
 			//choose walk animation based on what direction zombie will go
 			if(Direction < 0){
 				ZombieInfo.Animate.WalkDown(zombie.GetComponent<tk2dSpriteAnimator>());
-				print ("DOWN ANIM CHOSEN");
 			}
 			else{
 				
