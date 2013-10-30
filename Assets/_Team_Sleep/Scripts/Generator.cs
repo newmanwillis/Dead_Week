@@ -18,10 +18,10 @@ public class Generator : MonoBehaviour {
 			isRunning = value;
 			if (isRunning) {
 				ceilingLights.intensity = lightIntensity;
+				activateAllButtons();
 			} else {
 				ceilingLights.intensity = 0;
 			}
-			activateAllButtons();
 		}
 	}
 	
