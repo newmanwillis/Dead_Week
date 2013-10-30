@@ -9,6 +9,7 @@ public class Generator : MonoBehaviour {
 	public int numFlickers;
 	
 	private bool isRunning;
+	public bool beginsAlreadyRunning;
 	public bool IsRunning {
 		get {
 			return isRunning;
@@ -34,7 +35,7 @@ public class Generator : MonoBehaviour {
 		if (!IsRunning) {
 			ceilingLights.intensity = 0;
 		}
-		//IsRunning = true;
+		IsRunning = beginsAlreadyRunning;
 	}
 	
 	// Update is called once per frame

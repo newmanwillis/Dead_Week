@@ -14,9 +14,11 @@ public class HackableComputer : MonoBehaviour {
 	// isGenerator should be set to true iff this is being used to restart a parent generator, 
 	// which this gameobject is a child of.
 	public bool isGenerator;
+	
+	private tk2dSpriteAnimator anim;
 	// Use this for initialization
 	void Start () {
-	
+		anim = GetComponent<tk2dSpriteAnimator>();  // possibly null
 	}
 	
 	// Update is called once per frame
@@ -27,12 +29,22 @@ public class HackableComputer : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Player" && hackSoFar < timeToHackSeconds) {
 			beingHacked = true;
+			if (anim != null) {
+				if (hackSoFar == 0) {
+					anim.Play("hacking");
+				} else {
+					anim.Resume();
+				}
+			}
 		}
 	}
 	
 	void OnTriggerExit(Collider other) {
 		if (other.tag == "Player") {
 			beingHacked = false;
+			if (hackSoFar < timeToHackSeconds) {
+				anim.Pause();
+			}
 		}
 	}
 	
@@ -42,8 +54,10 @@ public class HackableComputer : MonoBehaviour {
 			if (hackSoFar >= timeToHackSeconds) {
 				hackSoFar = timeToHackSeconds;
 				beingHacked = false;
-				//tk2dSprite mySprite = gameObject.GetComponent<tk2dSprite>();
-				//mySprite.SetSprite("computerTerminalGreen");
+				
+				if (anim != null) {
+					anim.Play("hackFinished");
+				}
 				
 				if (unlockUpgrade != null && unlockUpgrade != "") {
 					GameObject.Find("Player").GetComponentInChildren<Player>().unlockUpgrade(unlockUpgrade);
