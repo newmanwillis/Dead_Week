@@ -147,17 +147,36 @@ public class ZombieHealth : MonoBehaviour {
 		float pauseTime = Time.time + rawPauseTime;
 		direction facing = FindDirection();
 		ChooseGotHitAnimation(facing);
+		
+		Color origColor = sprite.color;
+		float colorMod = 3.5f;
+		Color hitColor = new Color(origColor.r, origColor.g/colorMod, origColor.b/colorMod, origColor.a);
+		float startTime = Time.time;
+		//sprite.color = stunColor;		
+		
 		while(Time.time < pauseTime){
 			if(hitMultipleTimes == true){ // || _state.curState == ZombieSM.ZombieState.Die){
 				hitMultipleTimes = false;
+				sprite.color = origColor;
 				StartCoroutine(PauseWhenHit(rawPauseTime));
 				yield break;
 			}
 			if(_state.curState == ZombieSM.ZombieState.Die){
+				sprite.color = origColor;
 				yield break;	
 			}
+			// Make zombie flash red when hit
+			float curTime = Time.time - startTime;
+			if(curTime < 0.05f){// || (curTime > 0.06f && curTime < 0.09f)){// || (curTime < 0.2f && curTime > 0.25)){
+				sprite.color = hitColor;
+			}
+			else{
+				sprite.color = origColor;	
+			}
+			
 			yield return null;	
 		}
+		sprite.color = origColor;
 		hitMultipleTimes = false;
 		curAnim.Play();
 		if(!isStunned){
