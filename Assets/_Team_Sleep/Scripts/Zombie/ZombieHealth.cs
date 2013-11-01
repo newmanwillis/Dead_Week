@@ -152,7 +152,6 @@ public class ZombieHealth : MonoBehaviour {
 		float colorMod = 3.5f;
 		Color hitColor = new Color(origColor.r, origColor.g/colorMod, origColor.b/colorMod, origColor.a);
 		float startTime = Time.time;
-		//sprite.color = stunColor;		
 		
 		while(Time.time < pauseTime){
 			if(hitMultipleTimes == true){ // || _state.curState == ZombieSM.ZombieState.Die){
