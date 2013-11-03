@@ -364,12 +364,18 @@ public class Player : MonoBehaviour {
 			hitbox.zombies.Remove(col);
 		}
 		
+		ArrayList deadDestructibles = new ArrayList();
 		foreach (Collider col in hitbox.destructibles.Keys) {
 			if (col) {
 				col.GetComponent<Destructible>().smash();
+			} else {
+				deadDestructibles.Add(col);
 			}
 		}
-		hitbox.destructibles.Clear();
+		
+		foreach (Collider col in deadZombies) {
+			hitbox.destructibles.Remove(col);
+		}
 	}
 	
 	IEnumerator waitForAnimationtoEnd(){

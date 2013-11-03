@@ -8,6 +8,9 @@ public class Destructible : MonoBehaviour {
 	
 	private AudioSource destructionSound;
 	
+	private int numHits = 0;
+	public int maxHits;
+	
 	public int[] dropChances;
 	public Transform[] drops;
 	
@@ -28,28 +31,38 @@ public class Destructible : MonoBehaviour {
 	}
 	
 	public void smash() {
-		if (!destroyed) {
-			if (animator.GetClipByName("smashed") != null) {
-				animator.Play("smashed");
+		if (numHits < maxHits && (!animator.Playing)) {
+			string clipname = "smashed" + (++numHits);
+			if (animator.GetClipByName(clipname) != null) {
+				animator.Play(clipname);
 			} else {
 				Destroy(GetComponent<tk2dSprite>());
 			}
-			destroyed = true;
 			if (destructionSound != null) {
 				destructionSound.Play ();
 			}
-			StartCoroutine(waitForAnimationAndDie());
+			if (numHits == maxHits) {
+				StartCoroutine(waitForAnimationAndDie());
+			}
 		}
 	}
 	
 	public void disintigrate() {
-		if (animator.GetClipByName("Disintigrated") == null) {
-			smash();
-		} else if (!destroyed) {
-			wasDisintigrated = true;
-			animator.Play("Disintigrated");
-			destroyed = true;
-			StartCoroutine(waitForAnimationAndDie());
+		if (numHits < maxHits && (!animator.Playing)) {
+			string clipname = "disintigrated" + (++numHits);
+			if (animator.GetClipByName(clipname) == null) {
+				--numHits;
+				smash();
+			} else {
+				wasDisintigrated = true;
+				animator.Play(clipname);
+				if (destructionSound != null) {
+					destructionSound.Play ();
+				}
+				if (numHits == maxHits) {
+					StartCoroutine(waitForAnimationAndDie());
+				}
+			}
 		}
 	}
 	
