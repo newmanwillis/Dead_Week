@@ -50,12 +50,20 @@ public class Generator : MonoBehaviour {
 	}
 	
 	public void shutdown() {
-		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ElectronicDoor")) {
-			obj.animation.Play("ElectronicDoorOpen");
+		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ElectronicDoorLeft")) {
+			Debug.Log("opening left");
+			obj.animation.Play("ElectronicDoorOpenLeft");
 		}
+		
+		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ElectronicDoorRight")) {
+			Debug.Log("opening right");
+			obj.animation.Play("ElectronicDoorOpenRight");
+		}
+		
 		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("DestroyOnGeneratorShutdown")) {
 			Destroy(obj);
 		}
+		
 		foreach (Vector3 spawnLoc in spawnZombieLocations) {
 			Instantiate(zombie, spawnLoc, Quaternion.identity);
 		}
