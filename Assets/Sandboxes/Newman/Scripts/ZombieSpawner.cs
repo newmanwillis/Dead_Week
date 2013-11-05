@@ -50,22 +50,24 @@ public class ZombieSpawner : MonoBehaviour {
 			StartCoroutine(SpawnZombie(SpawnTimer));
 		}
 		else{
-			StartCoroutine(SpawnZombie(1));
+			StartCoroutine(SpawnZombie(1.2f));
 		}
 		
 	}
 	
 	IEnumerator MoveZombie(Transform zombie, float moveTime){
+		ZombieSM zsm = zombie.GetComponent<ZombieSM>();
+		CharacterController CC = zombie.GetComponent<CharacterController>();
 		while(Time.time < moveTime){ 
 			// zombie.GetComponent<tk2dSpriteAnimator>().Play();
-			if(zombie.GetComponent<ZombieSM>().curState != ZombieSM.ZombieState.ControlledMovement){		
+			if(zsm.curState != ZombieSM.ZombieState.ControlledMovement){		
 				yield break;	
 
 			}
-			zombie.GetComponent<CharacterController>().Move(Move * Time.deltaTime);			
+			CC.Move(Move * Time.deltaTime);			
 			yield return null;	
 		}
-		zombie.GetComponent<ZombieSM>().curState = ZombieSM.ZombieState.Wander;
+		zsm.curState = ZombieSM.ZombieState.Wander;
 		zombie.GetComponent<tk2dSpriteAnimator>().Stop();
 	}	
 }

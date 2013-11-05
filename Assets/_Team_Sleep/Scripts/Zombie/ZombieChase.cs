@@ -19,8 +19,8 @@ public class ZombieChase : MonoBehaviour {
 	private float _lookForPause = 0.5f;
 	private float _stopChaseTimer = 0;
 	private float _stopChaseDelay = 3.0f; 
-	private float _xOffset = 5f;
-	private float _yOffset = 11f;
+	private float _xOffset = 7f;
+	private float _yOffset = 13f;
 
 
 	private bool _foundPlayer = false;

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ZombieSM : MonoBehaviour {
 	
-	public enum ZombieState {Wander, Chase, Attack, TakingDamage, Die, ControlledMovement};
+	public enum ZombieState {Wander, Chase, Attack, TakingDamage, Die, ControlledMovement, Stop};
 	public ZombieState curState;
 	
 	private tk2dSprite sprite;
