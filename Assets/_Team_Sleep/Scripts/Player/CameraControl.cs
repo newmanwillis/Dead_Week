@@ -31,6 +31,8 @@ public class CameraControl : MonoBehaviour {
 	
 	public bool isCutscene;
 	
+	private GameObject boss;
+	
 	// Use this for initialization
 	void Start () {
 		//camera.orthographic = true;
@@ -50,6 +52,8 @@ public class CameraControl : MonoBehaviour {
 		
 		currentlyRedIfLow = false;
 		redWhiteSwitchTime = Time.time + 1;
+		
+		boss = GameObject.Find("FootballZombie");
 	}
 	
 	// Update is called once per frame
@@ -89,6 +93,8 @@ public class CameraControl : MonoBehaviour {
 			drawPercentBar(5, 33, 234, 25, healthPercent, redBox);
 		
 			drawEnergyBar();
+			
+			drawBossHealth();
 		
 			// draw hack bar:
 			HackableComputer hacking = findCurrentHack();
@@ -100,7 +106,7 @@ public class CameraControl : MonoBehaviour {
 				drawPercentBar(Screen.width/2 - 100, (int)(Screen.height * (3.0/4.0)), 200, 40, percent, blueBox, msg, false);
 			}
 		
-			if (GameObject.FindGameObjectsWithTag("LevelExit").Length == 0) {
+			if (GameObject.FindGameObjectsWithTag("LevelExit").Length == 0 && (!boss)) {
 				Rect position = new Rect(Screen.width/2-winMessage.width/2, Screen.height/2-winMessage.height/2, winMessage.width, winMessage.height);
 				GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), blackBox);
 				GUI.DrawTexture(position, winMessage);
@@ -118,6 +124,14 @@ public class CameraControl : MonoBehaviour {
 		float percent = energy / energyMax;
 		GUI.DrawTexture(new Rect(Screen.width - 289, 10, energyBarLabel.width, energyBarLabel.height), energyBarLabel);
 		drawPercentBar(Screen.width - 284, 10+energyBarLabel.height, 234, 25, percent);
+	}
+	
+	void drawBossHealth() {
+		if (boss) {
+			FootballZombieHealth bossHealth = boss.GetComponent<FootballZombieHealth>();
+			float percent = bossHealth.health / (float)bossHealth.maxHealth;
+			drawPercentBar(100, Screen.height - 100, Screen.width - 200, 50, percent, redBox, "Boss Health", false);
+		}
 	}
 	
 	void drawPercentBar(int topLeftX, int topLeftY, int length, int height, float percent, Texture color = null, string text = null, bool flashIfLow = true, int margin = 5) {

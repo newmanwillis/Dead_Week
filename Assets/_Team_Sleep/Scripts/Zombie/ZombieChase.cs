@@ -25,6 +25,7 @@ public class ZombieChase : MonoBehaviour {
 
 	private bool _foundPlayer = false;
 	private bool _outsideDetectionRange = true;
+	private bool _currentlyMoving = false;
 	
 	Transform Player;
 	Transform Zombie;	
@@ -182,15 +183,20 @@ public class ZombieChase : MonoBehaviour {
 	}
 	
 	IEnumerator Chase(Vector3 move, float chaseTime){
-		while(Time.time < chaseTime){ 
+		if (!_currentlyMoving) {
+			_currentlyMoving = true;
+			while(Time.time < chaseTime){ 
 			
-			if(_state.curState != ZombieSM.ZombieState.Chase){
-				yield break;	
+				if(_state.curState != ZombieSM.ZombieState.Chase){
+					_currentlyMoving = false;
+					yield break;	
+				}
+				CC.Move(move * Time.deltaTime);			
+				yield return null;
 			}
-			CC.Move(move * Time.deltaTime);			
-			yield return null;
+			_currentlyMoving = false;
+			CalculateChase();
 		}
-		CalculateChase();
 	}
 	
 	/*

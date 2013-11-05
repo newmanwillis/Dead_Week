@@ -125,7 +125,8 @@ public class Player : MonoBehaviour {
 			break;
 			
 		    case PlayerState.SwordAttack:
-			swordAttack(currentAttackHitbox, swordAttackStartTime);
+			currentAttackHitbox.attack(swordDamage, swordAttackStartTime);
+			//swordAttack(currentAttackHitbox, swordAttackStartTime);
 			break;
 			
 			case PlayerState.firingLazer:  // deliberate fallthrough
@@ -337,44 +338,13 @@ public class Player : MonoBehaviour {
 				curAnim.Play("swordRight");				
 				break;					
 			}
-			swordAttack(currentAttackHitbox, swordAttackStartTime);
+			currentAttackHitbox.attack(swordDamage, swordAttackStartTime);
+			//swordAttack(currentAttackHitbox, swordAttackStartTime);
 			swordAudioChannel.Play ();
 			curAnim.Resume();
 			StartCoroutine(waitForAnimationtoEnd());
 		} else if (Input.GetKeyDown(KeyCode.F)) {    // flashlight
 			flashLight.toggleOnOff();
-		}
-	}
-	
-	void swordAttack(PlayerAttackHitbox hitbox, float attackStart) {
-		// Debug.Log("num: " + hitbox.zombies.Keys.Count);
-		ArrayList deadZombies = new ArrayList();
-		foreach (Collider col in hitbox.zombies.Keys) {
-			if (col) {
-				ZombieHealth zombie = col.GetComponent<ZombieHealth>();
-				if (zombie.LastHitTime < attackStart) {
-					zombie.TakeDamage(swordDamage, ZombieHealth.HitTypes.sword);
-				}
-			} else {
-				deadZombies.Add(col);  // this zombie died while in range
-			}
-		}
-		
-		foreach (Collider col in deadZombies) {
-			hitbox.zombies.Remove(col);
-		}
-		
-		ArrayList deadDestructibles = new ArrayList();
-		foreach (Collider col in hitbox.destructibles.Keys) {
-			if (col) {
-				col.GetComponent<Destructible>().smash();
-			} else {
-				deadDestructibles.Add(col);
-			}
-		}
-		
-		foreach (Collider col in deadZombies) {
-			hitbox.destructibles.Remove(col);
 		}
 	}
 	

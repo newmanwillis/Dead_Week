@@ -54,7 +54,9 @@ public class ZombieSM : MonoBehaviour {
 	public void SetStateToChase(){
 		if(curState != ZombieSM.ZombieState.Die && curState != ZombieSM.ZombieState.Chase){
 			curState = ZombieState.Chase;
-			_chase.PreCalculateChase();
+			if (_chase != null) {  // the boss zombie does not have one
+				_chase.PreCalculateChase();
+			}
 		}
 	}	
 }

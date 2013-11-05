@@ -21,11 +21,16 @@ public class PlayerProjectile : MonoBehaviour {
 	
 	void OnTriggerStay(Collider other) {
 		// print ("TAG: " + other.tag);
-		if (other.tag == "Zombie" && !(dealDamageOnce && dealtDamage)) {
+		if ((other.tag == "Zombie" || other.tag == "FootballZombie") && !(dealDamageOnce && dealtDamage)) {
 			//print ("in first");
 			//other.GetComponent<ZombieHealth>().health -= damage;
-			if(damage > 0)
-				other.GetComponent<ZombieHealth>().TakeDamage(damage, ZombieHealth.HitTypes.burstLaser);
+			if(damage > 0) {
+				if (other.tag == "Zombie") {
+					other.GetComponent<ZombieHealth>().TakeDamage(damage, ZombieHealth.HitTypes.burstLaser);
+				} else {
+					other.GetComponent<FootballZombieHealth>().takeDamage(damage);
+				}
+			}
 			dealtDamage = true;
 		}
 		
@@ -37,15 +42,11 @@ public class PlayerProjectile : MonoBehaviour {
 		if (other.tag == "Button") {
 			Debug.Log("hit button");
 			other.GetComponent<Button>().power();
-			//foreach (Transform possibleDoor in other.transform) {
-			//	Debug.Log("door " + possibleDoor.tag);
-			//	if (possibleDoor.tag == "Door") {
-			//		Destroy(possibleDoor.gameObject);
-			//	}
-			//}
 		}
 		
-		if (other.tag == "Zombie" || other.tag == "Wall" || other.tag == "Destructible" || other.tag == "Door" || other.tag == "Button") {
+		string[] barrierTags = { "FootballZombie", "Zombie", "Wall", "Destructible", "Door", "Button" };
+		//if (Array.IndexOf(barrierTags, other.tag) != -1) {
+		if (System.Array.Exists(barrierTags, other.tag.Equals)) {
 			if (disappearOnCollide) {
 				if (spawnOther != null) {
 					Instantiate(spawnOther, transform.position, Quaternion.identity);

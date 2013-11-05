@@ -16,6 +16,7 @@ public class PlayerAttackHitbox : MonoBehaviour {
 	
 	public Dictionary<Collider, int> zombies = new Dictionary<Collider, int>();
 	public Dictionary<Collider, int> destructibles = new Dictionary<Collider, int>();
+	FootballZombieHealth bossHealth = null;
 	
 	void OnTriggerEnter(Collider other){
 		if(other.tag == "Zombie"){
@@ -31,6 +32,9 @@ public class PlayerAttackHitbox : MonoBehaviour {
 			} else {
 				destructibles[other] = 1;
 			}
+		}
+		if (other.tag == "FootballZombie") {
+			bossHealth = other.GetComponent<FootballZombieHealth>();
 		}
 	}
 	
@@ -54,6 +58,46 @@ public class PlayerAttackHitbox : MonoBehaviour {
 			} else {
 				Debug.LogError("removed a nonexistant destructible");
 			}
+		}
+		if (other.tag == "FootballZombie") {
+			bossHealth = null;
+		}
+	}
+	
+	public void attack(int damage, float attackStart) {
+		// Debug.Log("num: " + hitbox.zombies.Keys.Count);
+		ArrayList deadZombies = new ArrayList();
+		foreach (Collider col in zombies.Keys) {
+			if (col) {
+				ZombieHealth zombie = col.GetComponent<ZombieHealth>();
+				if (zombie.LastHitTime < attackStart) {
+					zombie.TakeDamage(damage, ZombieHealth.HitTypes.sword);
+				}
+			} else {
+				deadZombies.Add(col);  // this zombie died while in range
+			}
+		}
+		
+		foreach (Collider col in deadZombies) {
+			zombies.Remove(col);
+		}
+		
+		ArrayList deadDestructibles = new ArrayList();
+		foreach (Collider col in destructibles.Keys) {
+			if (col) {
+				col.GetComponent<Destructible>().smash();
+			} else {
+				deadDestructibles.Add(col);
+			}
+		}
+		
+		foreach (Collider col in deadZombies) {
+			destructibles.Remove(col);
+		}
+		
+		if (bossHealth != null && bossHealth.lastSwordHitTime < attackStart) {
+			bossHealth.lastSwordHitTime = attackStart;
+			bossHealth.takeDamage(damage);
 		}
 	}
 }
