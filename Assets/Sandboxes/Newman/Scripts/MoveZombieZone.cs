@@ -3,25 +3,21 @@ using System.Collections;
 
 public class MoveZombieZone : MonoBehaviour {
 	
-	public float Direction = -1;
-	public float Speed = 60;
+	private float Direction; // = -1;
+	private float Speed; // = 60;
 	
 	private Vector3 Move;
 	
 	// Use this for initialization
 	void Start () {
+		
+		Speed = transform.parent.GetComponent<SpawnerAttributes>().Speed;
+		Direction = transform.parent.GetComponent<SpawnerAttributes>().Direction;				
 		Move = new Vector3(0, Speed * Direction, 0);	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+	}	
 	
 	
-	
-	
-	
+	/*
 	void OnTriggerStay(Collider other){
 		
 		if(other.tag == "Zombie"){
@@ -45,5 +41,5 @@ public class MoveZombieZone : MonoBehaviour {
 			
 		}
 		
-	}
+	}*/
 }

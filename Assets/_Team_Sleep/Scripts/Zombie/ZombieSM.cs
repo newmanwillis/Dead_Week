@@ -40,16 +40,21 @@ public class ZombieSM : MonoBehaviour {
 				break;  // Do nothing, let ZombieWander script continue			
 		}
 		
+		
 	}
 	
-	//void FixedUpdate(){
+	void FixedUpdate(){
 	
 		//switch(curState){
 		//	case ZombieState.ControlledMovement:	
 			
 		//}
-		
-	//}
+		if(transform.position.z != 0){
+			Vector3 newPos = transform.position; //new Vector3(transform.position.x, transform.position.y, 0);
+			newPos.z = 0;
+			transform.position = newPos;
+		}
+	}
 	
 	public void SetStateToChase(){
 		if(curState != ZombieSM.ZombieState.Die && curState != ZombieSM.ZombieState.Chase){

@@ -4,10 +4,15 @@ using System.Collections;
 public class ZombieSpawner : MonoBehaviour {
 	
 	public Transform Zombie;
-	public float SpawnTimer = 5f;
-	public float Direction = -1;
-	public float MoveTime = 5;
-	public float Speed = 60;
+	private float SpawnTimer = 5f;
+	//public float Direction = -1;
+	private float MoveTime = 5;
+	//public float Speed = 60;
+	
+	private float Direction;
+	private float Speed;
+	
+	private Transform MoveZone;
 	
 	private int ColliderCount = 0;
 	
@@ -15,6 +20,14 @@ public class ZombieSpawner : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		SpawnerAttributes sa = transform.parent.GetComponent<SpawnerAttributes>();
+		Speed = sa.Speed;
+		Direction = sa.Direction;
+		SpawnTimer = sa.SpawnTimer;
+		MoveTime = sa.MoveTime;
+		
+		MoveZone = transform.parent.parent.FindChild("MoveZone");
+		
 		Move = new Vector3(0, Speed * Direction, 0);
 		
 		StartCoroutine(SpawnZombie(SpawnTimer));
@@ -67,7 +80,13 @@ public class ZombieSpawner : MonoBehaviour {
 			CC.Move(Move * Time.deltaTime);			
 			yield return null;	
 		}
-		zsm.curState = ZombieSM.ZombieState.Wander;
-		zombie.GetComponent<tk2dSpriteAnimator>().Stop();
+		// check if in movezone, then enumerate until out. // make the move zone into collider for just zombies
+		if(MoveZone.collider.bounds.Contains(zombie.position) && zsm.curState == ZombieSM.ZombieState.ControlledMovement){
+			StartCoroutine(MoveZombie(zombie, Time.time + 0.4f));			
+		}
+		else{
+			zsm.curState = ZombieSM.ZombieState.Wander;
+			zombie.GetComponent<tk2dSpriteAnimator>().Stop();
+		}
 	}	
 }
