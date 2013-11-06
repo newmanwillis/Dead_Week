@@ -16,6 +16,7 @@ public class FootballZombieChase : MonoBehaviour {
 	private Vector3 _chargeDirection;
 	private bool _currentlyPreparingForCharge = false; // true only if _currentlyCharging is also true
 	private bool _currentlyCharging = false;
+	private bool _hitPlayerLastCharge = false;
 	private float _recoveredTime = 0;
 	
 	private CharacterController CC;
@@ -31,9 +32,10 @@ public class FootballZombieChase : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		if (_recoveredTime > Time.time) {
-			return;
-		}
-		if (!_health.isVulnerable) {
+			if (!_hitPlayerLastCharge) {
+				CC.Move(-_chargeDirection * (_chargeSpeed / 10) * Time.deltaTime);
+			}
+		} else if (!_health.isVulnerable) {
 			Vector3 direction = _player.transform.position - transform.position;
 			float distance = direction.magnitude;
 			direction.Normalize();
@@ -121,7 +123,10 @@ public class FootballZombieChase : MonoBehaviour {
 			if (other.tag == "Player" || other.tag == "Wall" || other.tag == "Button") {
 				if (other.tag == "Player") {
 					_player.GotHit(3);
+					_hitPlayerLastCharge = true;
 					//Debug.Log("hit player");
+				} else {
+					_hitPlayerLastCharge = false;
 				}
 				_currentlyCharging = false;
 				_recoveredTime = Time.time + _recoverTime;

@@ -24,7 +24,14 @@ public class FootballZombieHealth : MonoBehaviour {
 	void Update () {
 		if (Time.time > becomeInvulnerableTime) {
 			isVulnerable = false;
-			barrier.SetActive(true);
+			if (!barrier.activeInHierarchy) {
+				barrier.SetActive(true);
+				barrier.GetComponent<tk2dSpriteAnimator>().Play("BarrierUp");
+			}
+		} else {
+			if (!barrier.GetComponent<tk2dSpriteAnimator>().Playing) {
+				barrier.SetActive(false);
+			}
 		}
 	}
 	
@@ -42,7 +49,8 @@ public class FootballZombieHealth : MonoBehaviour {
 	public void becomeVulnerable() {
 		isVulnerable = true;
 		becomeInvulnerableTime = Time.time + vulnerableTime;
-		barrier.SetActive(false);
+		barrier.GetComponent<tk2dSpriteAnimator>().Play("BarrierDown");
+		//barrier.SetActive(false);
 	}
 	
 	IEnumerator waitForAnimationAndDie() {
