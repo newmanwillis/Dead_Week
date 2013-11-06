@@ -14,6 +14,7 @@ public class FootballZombieChase : MonoBehaviour {
 	// _nextCharge gets updated at the END of a charge.
 	private float _nextCharge = 0;
 	private Vector3 _chargeDirection;
+	private bool _currentlyPreparingForCharge = false; // true only if _currentlyCharging is also true
 	private bool _currentlyCharging = false;
 	private float _recoveredTime = 0;
 	
@@ -38,37 +39,29 @@ public class FootballZombieChase : MonoBehaviour {
 			direction.Normalize();
 			
 			Vector3 cardinal = analogToCardinal(direction);
-			//Debug.Log ("cardinal: " + cardinal);
-			//Debug.Log ("dot: " + Vector3.Dot(direction, cardinal));
 			if ((!_currentlyCharging) && Vector3.Dot(direction, cardinal) > .99) {
-				//Debug.Log("starting charge");
 				_chargeDirection = cardinal;
 				_currentlyCharging = true;
+				_currentlyPreparingForCharge = true;
+				curAnim.Play(cardinalToStr(cardinal) + "DashCharge");
 			}
 			
-			if (_currentlyCharging) {
+			if (_currentlyPreparingForCharge) {
+				if (!curAnim.Playing) {
+					_currentlyPreparingForCharge = false;
+					curAnim.Play(cardinalToStr(_chargeDirection) + "RunLoop");
+				}
+			} else if (_currentlyCharging) {
 				//Debug.Log("charging");
 				CC.Move(_chargeDirection * _chargeSpeed * Time.deltaTime);
 			} else {
-				//Debug.Log("moving");
-				CC.Move(cardinalTowardsChargeSpot() * _speed * Time.deltaTime);
-			}
-			
-			/*if (_nextCharge < Time.time) {
-				if (_nextCharge + _chargeLength < Time.time) {
-					if (_chargeDirection == null) {
-						_chargeDirection = direction;
-					}
-					CC.Move(_chargeDirection * _speed * 3 * Time.deltaTime);
-				} else {
-					// charge is over
-					_nextCharge = Time.time + _chargeCooldown;
-					_chargeDirection = null;
+				Vector3 moveDir = cardinalTowardsChargeSpot();
+				string animStr = "walking_" + cardinalToStr(moveDir);
+				if ((curAnim.CurrentClip == null) || (curAnim.CurrentClip.name != animStr)) {
+					curAnim.Play(animStr);
 				}
-			} else {
-				CC.Move(direction * _speed * Time.deltaTime);
-				curAnim.Play(walkingAnimationForDirection(direction));
-			}*/
+				CC.Move(moveDir * _speed * Time.deltaTime);
+			}
 		} else {
 			// he hit an electric wall, so he's done charging
 			_currentlyCharging = false;
@@ -108,16 +101,22 @@ public class FootballZombieChase : MonoBehaviour {
 		}
 	}
 	
-	string walkingAnimationForDirection(Vector3 direction) {
-		//if (direction == Vector3(1, 0, 0)) {
-		//	return "walkingRight";
-		//}
-		return "walkingRight";
-		// walkingLeft, walkingBackward, walkingForwards
+	string cardinalToStr(Vector3 cardinalDirection) {
+		if (cardinalDirection.x == 1) {
+			return "right";
+		} else if (cardinalDirection.x == -1) {
+			return "left";
+		} else if (cardinalDirection.y == 1) {
+			return "up";
+		} else if (cardinalDirection.y == -1) {
+			return "down";
+		} else {
+			return null;
+		}
 	}
 	
 	void OnTriggerEnter(Collider other) {
-		if (_currentlyCharging) {
+		if (_currentlyCharging && !_currentlyPreparingForCharge) {
 			//Debug.Log("hit " + other.tag + " name: " + other.name);
 			if (other.tag == "Player" || other.tag == "Wall") {
 				if (other.tag == "Player") {
@@ -126,6 +125,7 @@ public class FootballZombieChase : MonoBehaviour {
 				}
 				_currentlyCharging = false;
 				_recoveredTime = Time.time + _recoverTime;
+				curAnim.Play("walking_" + cardinalToStr(_chargeDirection));
 			}
 		}
 	}
