@@ -49,6 +49,10 @@ public class ZombieChase : MonoBehaviour {
 		_state = Zombie.GetComponent<ZombieSM>();
 		curAnim = Zombie.GetComponent<tk2dSpriteAnimator>();
 		CC = Zombie.GetComponent<CharacterController>();
+		
+		if(AlwaysChase){
+			_state.SetStateToChase();	
+		}
 	}
 	
 	void OnTriggerStay(Collider other){
@@ -95,7 +99,7 @@ public class ZombieChase : MonoBehaviour {
 	}
 	
 	void CalculateChase(){
-		if(_outsideDetectionRange && _stopChaseTimer < Time.time){		// Stops Chasing player after they have gone out of detection range for long enough
+		if(_outsideDetectionRange && _stopChaseTimer < Time.time && !AlwaysChase){		// Stops Chasing player after they have gone out of detection range for long enough
 			_state.curState = ZombieSM.ZombieState.Wander;
 			_foundPlayer = false;
 			curAnim.Stop();
@@ -221,7 +225,8 @@ public class ZombieChase : MonoBehaviour {
 	}*/
 	
 	void OnTriggerExit(Collider other){			// Stop following player after out of detection range for long enough
-		if(other.tag == "Player"){
+		
+		if(other.tag == "Player" && !AlwaysChase){
 			_stopChaseTimer = Time.time + _stopChaseDelay;	
 			_outsideDetectionRange = true;
 		}
