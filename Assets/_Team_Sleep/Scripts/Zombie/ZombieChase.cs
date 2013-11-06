@@ -14,6 +14,8 @@ public class ZombieChase : MonoBehaviour {
 	public int _speed2 = 58;
 	public int _speed3 = 70;
 	
+	public bool AlwaysChase = false;
+	
 	
 	private float _lookForPlayerTimer = 0;	
 	private float _lookForPause = 0.5f;
