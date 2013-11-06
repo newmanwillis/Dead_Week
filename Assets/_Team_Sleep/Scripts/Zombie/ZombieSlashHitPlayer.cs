@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ZombieSlashHitPlayer : MonoBehaviour {
 	
-	public int damage = 1;
+	public float damage = 1;
 	
 	private tk2dSpriteAnimator anim;
 	private bool _hitPlayer = false;

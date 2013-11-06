@@ -487,7 +487,7 @@ public class Player : MonoBehaviour {
 		curState = PlayerState.PlayerInput;
 	}
 	
-	public void GotHit(int damage){
+	public void GotHit(float damage){
 		if(!invulnerable){
 			invulnerable = true;
 			curHealth -= damage;
