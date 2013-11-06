@@ -2,6 +2,9 @@
 using System.Collections;
 
 public class ZombieHealth : MonoBehaviour {
+		
+	public Transform[] Drops;
+	public float DropChance = 0.0f;
 	
 	public float hitPauseTime = 0.5f;
 	
@@ -46,6 +49,8 @@ public class ZombieHealth : MonoBehaviour {
 			
 			transform.FindChild("ZombieAttackRange").gameObject.SetActive(false);  // Find better solution than turning them off
 			// transform.FindChild("ZombieDetectionRange").gameObject.SetActive(false);
+
+			DropItem();	
 			
 			StartCoroutine( TurnOffCharacterController(0.5f) );
 			// CC.enabled = false;
@@ -86,6 +91,15 @@ public class ZombieHealth : MonoBehaviour {
 		return null;
 	}*/
 	
+	
+	public void DropItem(){
+		float randValue = Random.value;	
+		if(randValue < DropChance){
+			int randNum = Random.Range(0, Drops.Length);
+			Instantiate(Drops[randNum], transform.position, Quaternion.identity);
+		}
+		
+	}
 	
 	public void Stun(float stunDuration){
 		StartCoroutine(StunTime(stunDuration));
