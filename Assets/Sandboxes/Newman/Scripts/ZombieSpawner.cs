@@ -82,7 +82,7 @@ public class ZombieSpawner : MonoBehaviour {
 		}
 		// check if in movezone, then enumerate until out. // make the move zone into collider for just zombies
 		if(MoveZone.collider.bounds.Contains(zombie.position) && zsm.curState == ZombieSM.ZombieState.ControlledMovement){
-			StartCoroutine(MoveZombie(zombie, Time.time + 0.4f));			
+			StartCoroutine(MoveZombie(zombie, Time.time + 1));			
 		}
 		else{
 			zsm.curState = ZombieSM.ZombieState.Wander;
