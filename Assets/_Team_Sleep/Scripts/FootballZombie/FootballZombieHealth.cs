@@ -11,17 +11,20 @@ public class FootballZombieHealth : MonoBehaviour {
 	
 	public bool isVulnerable = false;
 	private float becomeInvulnerableTime = 0;
+	private GameObject barrier;	
 
 	// Use this for initialization
 	void Start () {
 		health = maxHealth;
 		anim = GetComponent<tk2dSpriteAnimator>();
+		barrier = gameObject.transform.FindChild("Barrier").gameObject;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (Time.time > becomeInvulnerableTime) {
 			isVulnerable = false;
+			barrier.SetActive(true);
 		}
 	}
 	
@@ -38,6 +41,7 @@ public class FootballZombieHealth : MonoBehaviour {
 	public void becomeVulnerable() {
 		isVulnerable = true;
 		becomeInvulnerableTime = Time.time + vulnerableTime;
+		barrier.SetActive(false);
 	}
 	
 	IEnumerator waitForAnimationAndDie() {
