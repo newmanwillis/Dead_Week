@@ -69,6 +69,9 @@ public class FootballZombieChase : MonoBehaviour {
 				CC.Move(direction * _speed * Time.deltaTime);
 				curAnim.Play(walkingAnimationForDirection(direction));
 			}*/
+		} else {
+			// he hit an electric wall, so he's done charging
+			_currentlyCharging = false;
 		}
 	}
 	
