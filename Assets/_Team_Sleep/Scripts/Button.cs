@@ -28,12 +28,14 @@ public class Button : MonoBehaviour {
 	void Update () {
 		if ((!noTimeLimit) && currentlyPowered && unpowerTime < Time.time) {
 			childObj.SetActive(!enableChildWhenPowered);
+			GetComponent<tk2dSprite>().SetSprite("laserbuttonOFFcropped");
 		}
 	}
 	
 	public void power() {
 		childObj.SetActive(enableChildWhenPowered);
 		currentlyPowered = true;
+		GetComponent<tk2dSprite>().SetSprite("laserbuttonONcropped");
 		unpowerTime = Time.time + poweredTime;
 	}
 	
