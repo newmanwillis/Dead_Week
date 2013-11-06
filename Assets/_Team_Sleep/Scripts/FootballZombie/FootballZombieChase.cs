@@ -9,7 +9,7 @@ public class FootballZombieChase : MonoBehaviour {
 	public float _recoverTime = 2; //seconds
 	
 	private Player _player;
-	private ZombieSM _state;
+	private FootballZombieHealth _health;
 	
 	// _nextCharge gets updated at the END of a charge.
 	private float _nextCharge = 0;
@@ -22,11 +22,9 @@ public class FootballZombieChase : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_player = GameObject.Find("Player").GetComponent<Player>();
-		_state = GetComponent<ZombieSM>();
+		_health = GetComponent<FootballZombieHealth>();
 		CC = GetComponent<CharacterController>();
 		curAnim = GetComponent<tk2dSpriteAnimator>();
-		
-		_state.SetStateToChase();
 	}
 	
 	// Update is called once per frame
@@ -34,7 +32,7 @@ public class FootballZombieChase : MonoBehaviour {
 		if (_recoveredTime > Time.time) {
 			return;
 		}
-		if (_state.curState == ZombieSM.ZombieState.Chase) {
+		if (!_health.isVulnerable) {
 			Vector3 direction = _player.transform.position - transform.position;
 			float distance = direction.magnitude;
 			direction.Normalize();
@@ -43,7 +41,7 @@ public class FootballZombieChase : MonoBehaviour {
 			//Debug.Log ("cardinal: " + cardinal);
 			//Debug.Log ("dot: " + Vector3.Dot(direction, cardinal));
 			if ((!_currentlyCharging) && Vector3.Dot(direction, cardinal) > .99) {
-				Debug.Log("starting charge");
+				//Debug.Log("starting charge");
 				_chargeDirection = cardinal;
 				_currentlyCharging = true;
 			}
@@ -117,11 +115,11 @@ public class FootballZombieChase : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider other) {
 		if (_currentlyCharging) {
-			Debug.Log("hit " + other.tag + " name: " + other.name);
+			//Debug.Log("hit " + other.tag + " name: " + other.name);
 			if (other.tag == "Player" || other.tag == "Wall") {
 				if (other.tag == "Player") {
 					_player.GotHit(3);
-					Debug.Log("hit player");
+					//Debug.Log("hit player");
 				}
 				_currentlyCharging = false;
 				_recoveredTime = Time.time + _recoverTime;

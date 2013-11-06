@@ -5,8 +5,12 @@ public class FootballZombieHealth : MonoBehaviour {
 	public int health;
 	public int maxHealth;
 	public float lastSwordHitTime = 0;
+	public float vulnerableTime;
 	
 	private tk2dSpriteAnimator anim;
+	
+	public bool isVulnerable = false;
+	private float becomeInvulnerableTime = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -16,15 +20,24 @@ public class FootballZombieHealth : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (Time.time > becomeInvulnerableTime) {
+			isVulnerable = false;
+		}
 	}
 	
 	public void takeDamage(int damage) {
-		health -= damage;
-		if (health <= 0) {
-			// start death animation
-			StartCoroutine(waitForAnimationAndDie());
+		if (isVulnerable) {
+			health -= damage;
+			if (health <= 0) {
+				// start death animation
+				StartCoroutine(waitForAnimationAndDie());
+			}
 		}
+	}
+	
+	public void becomeVulnerable() {
+		isVulnerable = true;
+		becomeInvulnerableTime = Time.time + vulnerableTime;
 	}
 	
 	IEnumerator waitForAnimationAndDie() {
