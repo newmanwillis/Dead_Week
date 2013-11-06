@@ -190,6 +190,10 @@ public class ZombieHealth : MonoBehaviour {
 	IEnumerator TurnOffCharacterController(float waitTime){
 		yield return new WaitForSeconds(waitTime);
 		CC.enabled = false;
+		
+		// Moves sprite back so it doesn't overlap enemies running over it
+		//Vector3 newPos = transform.position;
+		//newPos.z += 0.1f;		
 	}
 	
 	public direction FindDirection(){

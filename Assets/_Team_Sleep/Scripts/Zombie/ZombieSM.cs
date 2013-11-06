@@ -4,6 +4,7 @@ using System.Collections;
 public class ZombieSM : MonoBehaviour {
 	
 	public enum ZombieState {Wander, Chase, Attack, TakingDamage, Die, ControlledMovement, Stop};
+	// public ZombieState StartState; // = ZombieState.Wander;
 	public ZombieState curState;
 	
 	private tk2dSprite sprite;
@@ -15,10 +16,12 @@ public class ZombieSM : MonoBehaviour {
 	
 	void Awake(){
 		curState = ZombieState.Wander;
+		//curState = StartState;
 	}
 	
 	// Use this for initialization
 	void Start () {
+		
 		sprite = GetComponent<tk2dSprite>();
 		curAnim = GetComponent<tk2dSpriteAnimator>();
 		
@@ -26,6 +29,9 @@ public class ZombieSM : MonoBehaviour {
 		_wander = transform.GetComponent<ZombieWander>();
 		_chase = transform.FindChild("ZombieDetectionRange").GetComponent<ZombieChase>();
 		
+		/*if(StartState == ZombieState.Chase){
+			SetStateToChase();		
+		}*/
 		
 		// Do the wander change in here, then add a "changeStateToWander" Function
 	}
