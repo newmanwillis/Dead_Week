@@ -10,6 +10,8 @@ public class Player : MonoBehaviour {
 	public float maxStamina = 100;
 	public bool invulnerable {get; set;}
 	
+	private GameObject currentCheckpoint;
+	
 	public enum PlayerState {PlayerInput, SwordAttack, PhoneAttack, TakingDamage, Dead, Cutscene, Menu, chargingLazer, firingLazer};
 	public enum PhonePower {Bullet, Beam, Stun};
 	//public enum FacingDirection {Up = 0, UpLeft = 45, Left = 90, DownLeft = 135, Down = 180, RightDown = 215, Right = 270, UpRight = 315};
@@ -71,6 +73,7 @@ public class Player : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+		currentCheckpoint = null;
 		if (initialInfoCard != null) {
 			Camera.main.GetComponent<CameraControl>().pauseAndDrawInfoCard(initialInfoCard);
 		}
@@ -138,7 +141,9 @@ public class Player : MonoBehaviour {
 	}
 	
 	void FixedUpdate () {
-		
+		if (curHealth <= 0) {
+			curState = PlayerState.Dead;
+		}
 		switch( curState)
 		{
 			case PlayerState.PlayerInput:
@@ -146,7 +151,16 @@ public class Player : MonoBehaviour {
 			break;
 			case PlayerState.Dead:
 				if (!curAnim.Playing) {
-					Application.LoadLevel(Application.loadedLevel);
+					if (currentCheckpoint != null) {
+						transform.position = currentCheckpoint.transform.position;
+						curHealth = maxHealth;
+						curPhoneCharge = maxPhoneCharge;
+						curState = PlayerState.PlayerInput;
+						invulnerable = false;
+						GotHit(0); // make the sprite flash
+					} else {
+						Application.LoadLevel(Application.loadedLevel);
+					}
 				}
 			break;
 		}		
@@ -462,6 +476,15 @@ public class Player : MonoBehaviour {
 			curPhoneCharge = Mathf.Min(curPhoneCharge + pickup.energyRestored, maxPhoneCharge);
 			Destroy(other.gameObject);
 			itemPickupAudio.Play();
+		}
+	}
+	
+	void OnTriggerEnter(Collider other) {
+		if (other.tag == "Checkpoint") {
+			if (currentCheckpoint != other.gameObject) {
+				currentCheckpoint = other.gameObject;
+				Camera.main.GetComponent<CameraControl>().gotCheckpoint();
+			}
 		}
 	}
 	
