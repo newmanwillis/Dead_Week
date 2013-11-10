@@ -5,6 +5,8 @@ public class StunExplosion : MonoBehaviour {
 	public float explosionDuration;
 	public float stunDuration;
 	
+	public int energyCost;
+	
 	float startTime;
 
 	// Use this for initialization

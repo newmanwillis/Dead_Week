@@ -53,6 +53,7 @@ public class Player : MonoBehaviour {
 	private Transform phoneBullet;
 	private Transform phoneLazerBeam;
 	private Transform phoneStunBullet;
+	private Transform phoneStunExplosion;
 	
 	public bool hasSword;
 	public bool hasPhoneBullet;
@@ -86,6 +87,7 @@ public class Player : MonoBehaviour {
 			phoneBullet = ((GameObject) Resources.Load("Phone Attacks/Bullet")).transform;
 			phoneLazerBeam = ((GameObject) Resources.Load("Phone Attacks/LazerBeam")).transform;
 			phoneStunBullet = ((GameObject) Resources.Load("Phone Attacks/StunBullet")).transform;
+			phoneStunExplosion = ((GameObject) Resources.Load("Phone Attacks/StunExplosion")).transform;
 		
 			playerSprite = transform.FindChild("PlayerSprite");
 			flashLight = GetComponent<FlashlightControl>();
@@ -280,8 +282,14 @@ public class Player : MonoBehaviour {
 		}
 	}
 	
-	void fireBullet(Transform bulletTypeToFire) {
-		int cost = bulletTypeToFire.GetComponent<PlayerProjectile>().energyCost;
+	void fireBullet(Transform bulletTypeToFire, bool dropInsteadOfFire = false) {
+		PlayerProjectile proj = bulletTypeToFire.GetComponent<PlayerProjectile>();
+		int cost;
+		if (proj != null) {
+			cost = proj.energyCost;
+		} else {
+			cost = bulletTypeToFire.GetComponent<StunExplosion>().energyCost;
+		}
 		if (curPhoneCharge < cost) {
 			// TODO: replace this with a sound effect
 			Debug.Log("Not enough battery");
@@ -289,7 +297,9 @@ public class Player : MonoBehaviour {
 			Transform shootingBullet = (Transform)Instantiate(bulletTypeToFire, transform.position, Quaternion.identity);
 			
 			shootingBullet.Rotate(0, 0, (int)curDirection - 270);
-			shootingBullet.rigidbody.AddForce(directionToVector(curDirection) * 8000);
+			if (!dropInsteadOfFire) {
+				shootingBullet.rigidbody.AddForce(directionToVector(curDirection) * 8000);
+			}
 			curPhoneCharge -= cost;
 		}
 	}
@@ -396,7 +406,8 @@ public class Player : MonoBehaviour {
 		
 		switch(curPower) {
 		case PhonePower.Stun:
-			fireBullet(phoneStunBullet);
+			//fireBullet(phoneStunBullet);
+			fireBullet(phoneStunExplosion, true);
 			break;
 		case PhonePower.Bullet:
 			fireBullet(phoneBullet);
