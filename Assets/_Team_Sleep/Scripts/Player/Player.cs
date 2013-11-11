@@ -7,7 +7,7 @@ public class Player : MonoBehaviour {
 	public float movementSpeed = 0.8f;
 	public float maxHealth = 100;
 	public float maxPhoneCharge = 100;
-	public float maxStamina = 100;
+	public float maxStamina = 200;
 	public bool invulnerable {get; set;}
 	
 	private GameObject currentCheckpoint;
@@ -42,7 +42,8 @@ public class Player : MonoBehaviour {
 	private Transform playerSprite;
 	public float curPhoneCharge {get; private set;}
 	public float curHealth {get; set;}
-	float curStamina;
+	public float curStamina {get; set;}
+	private bool isSprinting = false;
 	
 	public bool footStepsAudioPlaying = false;
 	public float lazerBeamChargeTime;  // time it takes the lazer to charge
@@ -109,7 +110,7 @@ public class Player : MonoBehaviour {
 			curAnim = transform.FindChild("PlayerSprite").GetComponent<tk2dSpriteAnimator>();
 			curHealth = maxHealth;
 			curPhoneCharge = maxPhoneCharge;
-			curStamina = maxStamina;
+			curStamina = 0;
 		
 			rightSideHitbox = GameObject.Find("RightSideAttackHitbox").GetComponent<PlayerAttackHitbox>();
 			leftSideHitbox = GameObject.Find("LeftSideAttackHitbox").GetComponent<PlayerAttackHitbox>();
@@ -165,7 +166,10 @@ public class Player : MonoBehaviour {
 					}
 				}
 			break;
-		}		
+		}
+		if (isSprinting) {
+			curStamina -= 1;
+		}
 	}
 	
 	void MovementInput(){
@@ -174,6 +178,9 @@ public class Player : MonoBehaviour {
 		float transH = Input.GetAxisRaw("Horizontal") * movementSpeed ;
 		float transV = Input.GetAxisRaw("Vertical") * movementSpeed;
 		Vector3 moveAmount = new Vector3(transH, transV, 0);
+		if (isSprinting) {
+			moveAmount *= 1.3F;
+		}
 		GetComponent<CharacterController>().Move(moveAmount);
 		
 		// Switches animations & decides projectile attack angles
@@ -327,6 +334,12 @@ public class Player : MonoBehaviour {
 	}
 	
 	void AttackInput(){
+		if (Input.GetKey(KeyCode.LeftShift)) {
+			isSprinting = true;
+		} 
+		if (Input.GetKeyUp(KeyCode.LeftShift) || (curStamina < 1)) {
+			isSprinting = false;
+		}
 		
 		// change to enum/switch 
 		if(Input.GetKeyDown(KeyCode.S)){			// Phone bullet

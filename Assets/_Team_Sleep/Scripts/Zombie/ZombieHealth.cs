@@ -58,7 +58,7 @@ public class ZombieHealth : MonoBehaviour {
 			direction facing = FindDirection();
 			ChooseDeathAnimation(facing);
 			StartCoroutine( waitForAnimationToEnd());
-			
+			GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().curStamina += 20;
 		}
 		else if(isDead){		// In case the player keeps attacking the zombie even though it has already died
 			// Don't process anything

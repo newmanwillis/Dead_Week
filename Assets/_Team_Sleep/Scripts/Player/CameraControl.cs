@@ -95,6 +95,9 @@ public class CameraControl : MonoBehaviour {
 			float healthPercent = health / player.maxHealth;
 			GUI.DrawTexture(new Rect(0, 0, healthBar.width, healthBar.height), healthBar);
 			drawPercentBar(5, 33, 234, 25, healthPercent, redBox);
+			
+			float stamPercent = player.curStamina / (float) player.maxStamina;
+			drawPercentBar(5, 70, 234, 25, stamPercent, redBox, null, false);
 		
 			drawEnergyBar();
 			
