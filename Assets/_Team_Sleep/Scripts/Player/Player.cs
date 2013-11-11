@@ -144,6 +144,13 @@ public class Player : MonoBehaviour {
 	}
 	
 	void FixedUpdate () {
+		// Keep player at 0 in Z-zone
+		if(transform.position.z != 0){
+			Vector3 newPos = transform.position;
+			newPos.z = 0;
+			transform.position = newPos;
+		}		
+		
 		if (curHealth <= 0) {
 			curState = PlayerState.Dead;
 		}

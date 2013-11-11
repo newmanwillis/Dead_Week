@@ -3,16 +3,19 @@ using System.Collections;
 
 public class ZombieSM : MonoBehaviour {
 	
-	public enum ZombieState {Wander, Chase, Attack, TakingDamage, Die, ControlledMovement, Stop};
+	public enum ZombieState {Wander, Chase, Attack, TakingDamage, Die, ControlledMovement, Stop, EnumeratedMovement};
 	// public ZombieState StartState; // = ZombieState.Wander;
 	public ZombieState curState;
 	
 	private tk2dSprite sprite;
 	private tk2dSpriteAnimator curAnim;
+	private CharacterController CC;
 	
 	// scripts on Zombie
 	private ZombieWander _wander;
 	private ZombieChase _chase;
+	
+	private Vector3 Move;
 	
 	void Awake(){
 		curState = ZombieState.Wander;
@@ -24,10 +27,13 @@ public class ZombieSM : MonoBehaviour {
 		
 		sprite = GetComponent<tk2dSprite>();
 		curAnim = GetComponent<tk2dSpriteAnimator>();
+		CC = GetComponent<CharacterController>();
 		
 		//Debug.Log("in Zombie Start");		
 		_wander = transform.GetComponent<ZombieWander>();
 		_chase = transform.FindChild("ZombieDetectionRange").GetComponent<ZombieChase>();
+		
+		//move = new Vector3 (0, -1.1f, 0);
 		
 		/*if(StartState == ZombieState.Chase){
 			SetStateToChase();		
@@ -60,6 +66,31 @@ public class ZombieSM : MonoBehaviour {
 			newPos.z = 0;
 			transform.position = newPos;
 		}
+		
+		switch(curState){
+			case ZombieState.ControlledMovement:
+			
+				//CC.Move(move);
+				//print ("IN Controlled Movement");
+				ControlledMovement();
+				break;		
+		}		
+		
+	}
+	
+	public void ControlledMovement(){
+		// ZombieInfo.Animate.WalkDown(curAnim);
+		CC.Move(Move);
+	}
+	
+	public void SetStateToControlledMovement(Vector3 move){
+		Move = move;
+		if(move.y < 0)
+			ZombieInfo.Animate.WalkDown(curAnim);
+		else
+			ZombieInfo.Animate.WalkUp(curAnim);
+		
+		curState = ZombieState.ControlledMovement;
 	}
 	
 	public void SetStateToChase(){

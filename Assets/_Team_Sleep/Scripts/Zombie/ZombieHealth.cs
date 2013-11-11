@@ -8,6 +8,8 @@ public class ZombieHealth : MonoBehaviour {
 	
 	public float hitPauseTime = 0.5f;
 	
+	public bool CountDeath = false;
+	
 	public enum HitTypes {sword, burstLaser, stun, laser}
 	private HitTypes lastHitType;
 	
@@ -51,6 +53,9 @@ public class ZombieHealth : MonoBehaviour {
 			// transform.FindChild("ZombieDetectionRange").gameObject.SetActive(false);
 
 			DropItem();	
+			
+			if(CountDeath)	// removes from Zombie Spawner counter
+				transform.parent.GetComponent<ZombieSpawner2>().ZombieCount--;
 			
 			StartCoroutine( TurnOffCharacterController(0.5f) );
 			// CC.enabled = false;
