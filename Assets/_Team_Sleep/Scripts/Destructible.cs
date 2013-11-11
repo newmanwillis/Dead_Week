@@ -99,6 +99,7 @@ public class Destructible : MonoBehaviour {
 		
 		spawnPickups();
 		Destroy(GetComponent<BoxCollider>());
+		Destroy(transform.FindChild("ColliderForBullet").gameObject);
 		if (!wasDisintigrated && animator.GetClipByName("smashed_flashing") != null) {
 			animator.Play("smashed_flashing");
 		}

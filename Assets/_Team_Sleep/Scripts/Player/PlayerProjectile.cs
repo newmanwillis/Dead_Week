@@ -35,7 +35,11 @@ public class PlayerProjectile : MonoBehaviour {
 		}
 		
 		if (other.tag == "Destructible") {
-			other.GetComponent<Destructible>().disintigrate();
+			Destructible destruct = other.GetComponent<Destructible>();
+			if (destruct == null) {
+				destruct = other.transform.parent.gameObject.GetComponent<Destructible>();
+			}
+			destruct.disintigrate();
 			dealtDamage = true;
 		}
 		

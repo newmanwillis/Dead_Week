@@ -85,7 +85,7 @@ public class PlayerAttackHitbox : MonoBehaviour {
 		ArrayList deadDestructibles = new ArrayList();
 		foreach (Collider col in destructibles.Keys) {
 			if (col) {
-				col.GetComponent<Destructible>().smash();
+				col.transform.parent.gameObject.GetComponent<Destructible>().smash();
 			} else {
 				deadDestructibles.Add(col);
 			}
