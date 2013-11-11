@@ -9,6 +9,8 @@ public class CameraControl : MonoBehaviour {
 	public Texture healthBar;
 	public Texture staminaBar;
 	public Texture energyBarLabel;
+	public Texture controlKeys;
+	private Rect controlKeysPosition;
 	
 	public Texture winMessage;
 	public Texture loseMessage;
@@ -54,6 +56,8 @@ public class CameraControl : MonoBehaviour {
 		redWhiteSwitchTime = Time.time + 1;
 		
 		boss = GameObject.Find("FootballZombie");
+		
+		controlKeysPosition = new Rect(50, Screen.height - 15 - controlKeys.height, controlKeys.width, controlKeys.height);
 	}
 	
 	// Update is called once per frame
@@ -105,6 +109,9 @@ public class CameraControl : MonoBehaviour {
 				string msg = hacking.isGenerator ? "Restarting..." : "Hacking...";
 				drawPercentBar(Screen.width/2 - 100, (int)(Screen.height * (3.0/4.0)), 200, 40, percent, blueBox, msg, false);
 			}
+			
+			GUI.DrawTexture(controlKeysPosition, blackBox);
+			GUI.DrawTexture(controlKeysPosition, controlKeys);
 		
 			if (GameObject.FindGameObjectsWithTag("LevelExit").Length == 0 && (!boss)) {
 				Rect position = new Rect(Screen.width/2-winMessage.width/2, Screen.height/2-winMessage.height/2, winMessage.width, winMessage.height);
