@@ -485,6 +485,9 @@ public class Player : MonoBehaviour {
 			Pickup pickup = other.GetComponent<Pickup>();
 			curHealth = Mathf.Min(curHealth + pickup.healthRestored, maxHealth);
 			curPhoneCharge = Mathf.Min(curPhoneCharge + pickup.energyRestored, maxPhoneCharge);
+			if (pickup.onPickupAnimation != null) {
+				Instantiate(pickup.onPickupAnimation, pickup.gameObject.transform.position + new Vector3(0, 0, -1), Quaternion.identity);
+			}
 			Destroy(other.gameObject);
 			itemPickupAudio.Play();
 		}
