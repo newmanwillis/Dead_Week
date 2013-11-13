@@ -10,7 +10,8 @@ public class Player : MonoBehaviour {
 	public float maxStamina = 200;
 	public bool invulnerable {get; set;}
 	
-	private GameObject currentCheckpoint;
+	private bool hasCheckpoint = false;
+	private Vector3 currentCheckpoint;
 	
 	public enum PlayerState {PlayerInput, SwordAttack, PhoneAttack, TakingDamage, Dead, Cutscene, Menu, chargingLazer, firingLazer};
 	public enum PhonePower {Bullet, Beam, Stun};
@@ -75,7 +76,6 @@ public class Player : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		currentCheckpoint = null;
 		if (initialInfoCard != null) {
 			Camera.main.GetComponent<CameraControl>().pauseAndDrawInfoCard(initialInfoCard);
 		}
@@ -161,10 +161,11 @@ public class Player : MonoBehaviour {
 			break;
 			case PlayerState.Dead:
 				if (!curAnim.Playing) {
-					if (currentCheckpoint != null) {
-						transform.position = currentCheckpoint.transform.position;
+					if (hasCheckpoint) {
+						transform.position = currentCheckpoint;
 						curHealth = maxHealth;
 						curPhoneCharge = maxPhoneCharge;
+						curStamina = 0;
 						curState = PlayerState.PlayerInput;
 						invulnerable = false;
 						GotHit(0); // make the sprite flash
@@ -513,12 +514,17 @@ public class Player : MonoBehaviour {
 		}
 	}
 	
+	public void setCheckpoint(Vector3 checkpointPos) {
+		if ((checkpointPos - currentCheckpoint).magnitude > 10) {
+			hasCheckpoint = true;
+			currentCheckpoint = checkpointPos;
+			Camera.main.GetComponent<CameraControl>().gotCheckpoint();
+		}
+	}
+	
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Checkpoint") {
-			if (currentCheckpoint != other.gameObject) {
-				currentCheckpoint = other.gameObject;
-				Camera.main.GetComponent<CameraControl>().gotCheckpoint();
-			}
+			setCheckpoint(other.gameObject.transform.position);
 		}
 	}
 	
