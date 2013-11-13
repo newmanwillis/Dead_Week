@@ -4,6 +4,7 @@ using System.Collections;
 public class FlashlightControl : MonoBehaviour {
 	
 	private Transform flashLight;
+
 	private bool flashLightOn = false;
 	
 	private Vector3 up = new Vector3(-35, 0, 0);
@@ -16,11 +17,19 @@ public class FlashlightControl : MonoBehaviour {
 	
 	public float rotationSpeed;
 	
+	private Transform playerSpotlight;	
+	private float origSpotLightRange;
+	private float origSpotLightIntensity;
+	
 	// Use this for initialization
 	void Start () {
 		flashLight = transform.FindChild("FlashLight");
 		flashLight.transform.Rotate(curDirection);
 		flashLight.GetComponent<Light>().intensity = 0;
+		
+		playerSpotlight = transform.FindChild("Spotlight");
+		origSpotLightRange = playerSpotlight.GetComponent<Light>().range;
+		origSpotLightIntensity = playerSpotlight.GetComponent<Light>().intensity;
 	}
 	
 	void FixedUpdate () {
@@ -50,9 +59,14 @@ public class FlashlightControl : MonoBehaviour {
 		if (flashLightOn) {
 			flashLightOn = false;
 			flashLight.GetComponent<Light>().intensity = 0;
+			playerSpotlight.GetComponent<Light>().range = origSpotLightRange;
+			playerSpotlight.GetComponent<Light>().intensity = origSpotLightIntensity;			
+			
 		} else {
 			flashLightOn = true;
 			flashLight.GetComponent<Light>().intensity = 6;
+			playerSpotlight.GetComponent<Light>().range = 110;
+			playerSpotlight.GetComponent<Light>().intensity = 0.5f;
 		}
 	}
 }
