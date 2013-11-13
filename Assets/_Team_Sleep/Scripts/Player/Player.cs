@@ -43,7 +43,15 @@ public class Player : MonoBehaviour {
 	private Transform playerSprite;
 	public float curPhoneCharge {get; private set;}
 	public float curHealth {get; set;}
-	public float curStamina {get; set;}
+	public float __curStaminaActual;
+	public float curStamina {
+		get {
+			return __curStaminaActual;
+		}
+		set {
+			__curStaminaActual = value > maxStamina ? maxStamina : value;
+		}
+	}
 	private bool isSprinting = false;
 	
 	public bool footStepsAudioPlaying = false;
