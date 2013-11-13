@@ -4,6 +4,7 @@ using System.Collections;
 public class MoveZombieZone2 : MonoBehaviour {
 	
 	public float Direction = -1;
+	public float enumMoveTime = 1f;
 	
 	private Vector3 contMove;
 	private Vector3 enumMove;
@@ -37,9 +38,11 @@ public class MoveZombieZone2 : MonoBehaviour {
 	void OnTriggerExit(Collider other){
 		
 		if(other.tag == "Zombie"){
-			other.GetComponent<ZombieSM>().curState = ZombieSM.ZombieState.EnumeratedMovement;
-			StartCoroutine(EnumeratedMove(other.transform, Time.time + 1.2f));	
-			
+			ZombieSM zsm = other.GetComponent<ZombieSM>();
+			if(zsm.curState == ZombieSM.ZombieState.ControlledMovement){
+				zsm.curState = ZombieSM.ZombieState.EnumeratedMovement;
+				StartCoroutine(EnumeratedMove(other.transform, Time.time + enumMoveTime));	
+			}
 		}
 		
 	}
@@ -49,15 +52,15 @@ public class MoveZombieZone2 : MonoBehaviour {
 		ZombieSM zsm = zombie.GetComponent<ZombieSM>();
 		
 		while(Time.time < moveTime){
-			if(zsm.curState != ZombieSM.ZombieState.EnumeratedMovement){		
+			if(zsm.curState != ZombieSM.ZombieState.EnumeratedMovement){
 				yield break;
 			}
 			CC.Move(enumMove * Time.deltaTime);
-				
-			yield return null;	
+			yield return null;
 		}
 		if(zsm.curState == ZombieSM.ZombieState.EnumeratedMovement){
-			zsm.curState = ZombieSM.ZombieState.Wander;	
+			//zsm.SetStateToChase();
+			zsm.curState = ZombieSM.ZombieState.Wander;
 		}
 	}
 }
