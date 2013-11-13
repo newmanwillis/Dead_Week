@@ -39,7 +39,7 @@ public class ZombieHealth : MonoBehaviour {
 		CC = GetComponent<CharacterController>();
 	}
 	
-	public void TakeDamage(int damage, HitTypes source){		// perhaps change parameters to get enum of what attack killed it to determine death animation
+	public void TakeDamage(int damage, HitTypes source, bool generateStamina = true){		// perhaps change parameters to get enum of what attack killed it to determine death animation
 		LastHitTime = Time.time;
 		
 		health -= damage;
@@ -62,7 +62,9 @@ public class ZombieHealth : MonoBehaviour {
 			direction facing = FindDirection();
 			ChooseDeathAnimation(facing);
 			StartCoroutine( waitForAnimationToEnd());
-			GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().curStamina += 20;
+			if (generateStamina) {
+				GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().curStamina += 20;
+			}
 		}
 		else if(isDead){		// In case the player keeps attacking the zombie even though it has already died
 			// Don't process anything
