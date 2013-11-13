@@ -153,10 +153,11 @@ public class Player : MonoBehaviour {
 	
 	void FixedUpdate () {
 		// Keep player at 0 in Z-zone
-		if(transform.position.z != 0){
+		if(transform.position.z != -0.01){
 			Vector3 newPos = transform.position;
 			newPos.z = 0;
 			transform.position = newPos;
+			playerSprite.GetComponent<Rigidbody>().velocity = Vector3.zero;
 		}		
 		
 		if (curHealth <= 0) {

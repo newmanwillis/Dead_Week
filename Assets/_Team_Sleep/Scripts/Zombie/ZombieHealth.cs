@@ -22,7 +22,6 @@ public class ZombieHealth : MonoBehaviour {
 	public enum direction {up, down, left, right};
 	public bool isDead = false;
 	
-	
 	private bool hitMultipleTimes = false;
 	public bool isStunned = false;
 	
@@ -101,7 +100,9 @@ public class ZombieHealth : MonoBehaviour {
 		float randValue = Random.value;	
 		if(randValue < DropChance){
 			int randNum = Random.Range(0, Drops.Length);
-			Instantiate(Drops[randNum], transform.position, Quaternion.identity);
+			Vector3 dropPos = transform.position;
+			dropPos.z = 0.01f;
+			Instantiate(Drops[randNum], dropPos, Quaternion.identity);
 		}
 		
 	}
@@ -211,8 +212,9 @@ public class ZombieHealth : MonoBehaviour {
 		CC.enabled = false;
 		
 		// Moves sprite back so it doesn't overlap enemies running over it
-		//Vector3 newPos = transform.position;
-		//newPos.z += 0.1f;		
+		Vector3 newPos = transform.position;
+		newPos.z = 0f;
+		transform.position = newPos;
 	}
 	
 	public direction FindDirection(){

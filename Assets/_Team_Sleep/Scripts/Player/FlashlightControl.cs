@@ -17,7 +17,7 @@ public class FlashlightControl : MonoBehaviour {
 	
 	public float rotationSpeed;
 	
-	private Transform playerSpotlight;	
+	private Light playerSpotlight;	
 	private float origSpotLightRange;
 	private float origSpotLightIntensity;
 	
@@ -27,7 +27,7 @@ public class FlashlightControl : MonoBehaviour {
 		flashLight.transform.Rotate(curDirection);
 		flashLight.GetComponent<Light>().intensity = 0;
 		
-		playerSpotlight = transform.FindChild("Spotlight");
+		playerSpotlight = transform.FindChild("Spotlight").GetComponent<Light>();
 		origSpotLightRange = playerSpotlight.GetComponent<Light>().range;
 		origSpotLightIntensity = playerSpotlight.GetComponent<Light>().intensity;
 	}
@@ -59,14 +59,14 @@ public class FlashlightControl : MonoBehaviour {
 		if (flashLightOn) {
 			flashLightOn = false;
 			flashLight.GetComponent<Light>().intensity = 0;
-			playerSpotlight.GetComponent<Light>().range = origSpotLightRange;
-			playerSpotlight.GetComponent<Light>().intensity = origSpotLightIntensity;			
+			playerSpotlight.range = origSpotLightRange;
+			playerSpotlight.intensity = origSpotLightIntensity;			
 			
 		} else {
 			flashLightOn = true;
 			flashLight.GetComponent<Light>().intensity = 6;
-			playerSpotlight.GetComponent<Light>().range = 110;
-			playerSpotlight.GetComponent<Light>().intensity = 0.5f;
+			playerSpotlight.range = 110;
+			playerSpotlight.intensity = 0.5f;
 		}
 	}
 }

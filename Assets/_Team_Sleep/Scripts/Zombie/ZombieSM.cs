@@ -61,10 +61,11 @@ public class ZombieSM : MonoBehaviour {
 		//	case ZombieState.ControlledMovement:	
 			
 		//}
-		if(transform.position.z != 0){
+		if(transform.position.z != -0.01){
 			Vector3 newPos = transform.position; //new Vector3(transform.position.x, transform.position.y, 0);
 			newPos.z = 0;
 			transform.position = newPos;
+			GetComponent<Rigidbody>().velocity = Vector3.zero;
 		}
 		
 		switch(curState){
