@@ -154,20 +154,23 @@ public class Player : MonoBehaviour {
 	void FixedUpdate () {
 		// Keep player at 0 in Z-zone
 		if(transform.position.z != -0.01){
-			Vector3 newPos = transform.position;
-			newPos.z = 0;
-			transform.position = newPos;
-			playerSprite.GetComponent<Rigidbody>().velocity = Vector3.zero;
+			if(curState != PlayerState.Dead){
+				Vector3 newPos = transform.position;
+				newPos.z = 0;
+				transform.position = newPos;
+				playerSprite.GetComponent<Rigidbody>().velocity = Vector3.zero;
+			}
 		}		
 		
-		if (curHealth <= 0) {
+		/*if (curHealth <= 0) {
 			curState = PlayerState.Dead;
-		}
+		}*/
 		switch( curState)
 		{
 			case PlayerState.PlayerInput:
 				MovementInput();  // Check for player movement
 			break;
+			/*
 			case PlayerState.Dead:
 				if (!curAnim.Playing) {
 					if (hasCheckpoint) {
@@ -182,7 +185,7 @@ public class Player : MonoBehaviour {
 						Application.LoadLevel(Application.loadedLevel);
 					}
 				}
-			break;
+			break;*/
 		}
 		if (isSprinting) {
 			curStamina -= 1;
@@ -570,6 +573,8 @@ public class Player : MonoBehaviour {
 			} else {
 				curAnim.Play("die");
 				curState = PlayerState.Dead;
+				//
+				GetComponent<GameOver>().StartGameOverSequence();
 			}
 		}	
 	}
@@ -590,5 +595,19 @@ public class Player : MonoBehaviour {
 		playerSprite.renderer.enabled = true;
 		invulnerable = false;
 	}	
+	
+	public void ReloadPlayerAfterDeath(){
+		if (hasCheckpoint) {
+			transform.position = currentCheckpoint;
+			curHealth = maxHealth;
+			curPhoneCharge = maxPhoneCharge;
+			curStamina = 0;
+			curState = PlayerState.PlayerInput;
+			invulnerable = false;
+			GotHit(0); // make the sprite flash
+		} else {
+			Application.LoadLevel(Application.loadedLevel);
+		}
+	}
 	
 }
