@@ -50,8 +50,11 @@ public class ZombieHealth : MonoBehaviour {
 			
 			transform.FindChild("ZombieAttackRange").gameObject.SetActive(false);  // Find better solution than turning them off
 			// transform.FindChild("ZombieDetectionRange").gameObject.SetActive(false);
-
-			DropItem();	
+			
+			if (generateStamina) {
+				DropItem();
+				GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().curStamina += 20;
+			}
 			
 			if(CountDeath)	// removes from Zombie Spawner counter
 				transform.parent.GetComponent<ZombieSpawner2>().ZombieCount--;
@@ -62,9 +65,6 @@ public class ZombieHealth : MonoBehaviour {
 			direction facing = FindDirection();
 			ChooseDeathAnimation(facing);
 			StartCoroutine( waitForAnimationToEnd());
-			if (generateStamina) {
-				GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().curStamina += 20;
-			}
 		}
 		else if(isDead){		// In case the player keeps attacking the zombie even though it has already died
 			// Don't process anything
