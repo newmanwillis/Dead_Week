@@ -15,14 +15,14 @@ public class ZombieSM : MonoBehaviour {
 	private ZombieWander _wander;
 	private ZombieChase _chase;
 	
+	// For ControlledMovement state
 	private Vector3 Move;
 	
 	void Awake(){
 		curState = ZombieState.Wander;
 		//curState = StartState;
 	}
-	
-	// Use this for initialization
+
 	void Start () {
 		
 		sprite = GetComponent<tk2dSprite>();
@@ -68,20 +68,19 @@ public class ZombieSM : MonoBehaviour {
 		}
 		
 		switch(curState){
-			case ZombieState.ControlledMovement:
-			
-				//CC.Move(move);
-				//print ("IN Controlled Movement");
-				ControlledMovement();
+			case ZombieState.ControlledMovement:		
+				CC.Move(Move);
+				// print ("IN Controlled Movement");
+				// ControlledMovement();
 				break;		
 		}		
 		
 	}
-	
+	/*
 	public void ControlledMovement(){
 		// ZombieInfo.Animate.WalkDown(curAnim);
 		CC.Move(Move);
-	}
+	}*/
 	
 	public void SetStateToControlledMovement(Vector3 move){
 		Move = move;
