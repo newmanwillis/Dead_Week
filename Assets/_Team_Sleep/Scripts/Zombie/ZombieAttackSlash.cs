@@ -18,17 +18,12 @@ public class ZombieAttackSlash : MonoBehaviour {
 	private bool _readyToAttack = false;
 	private float _timeSinceLastAttack = 0;
 	
-	// Use this for initialization
+
 	void Start () {
 		Zombie = transform.parent;
 		_state = Zombie.GetComponent<ZombieSM>();
 		curAnim = Zombie.GetComponent<tk2dSpriteAnimator>();
 		zombieHealth = Zombie.GetComponent<ZombieHealth>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 	
 	void OnTriggerStay(Collider other){
@@ -49,10 +44,8 @@ public class ZombieAttackSlash : MonoBehaviour {
 			Attack.parent = transform;
 			AttackAnim = Attack.GetComponent<tk2dSpriteAnimator>();
 			
-			// call coroutine to puase before attack
+			// call coroutine to pause before attack
 			// check in ontriggerstay when its sone if play is in range
-			
-			
 			
 			
 			AttackAnim.Play();
@@ -85,8 +78,23 @@ public class ZombieAttackSlash : MonoBehaviour {
 	}
 	
 	IEnumerator MovementPause(float standTime){
+		float totalTime = Time.time + standTime;
+		while(Time.time < totalTime){
+			if(_state.curState == ZombieSM.ZombieState.Die){
+				yield break;	
+			}
+			yield return null;
+		}
+		if(!zombieHealth.isStunned)
+			_state.SetStateToChase();		
+		
+		/*
 		//print ("in movement pause");
 		yield return new WaitForSeconds(standTime);
+		
+		
+		
+		
 		if(_state.curState == ZombieSM.ZombieState.Die){
 			yield break;	
 		}
@@ -95,7 +103,7 @@ public class ZombieAttackSlash : MonoBehaviour {
 		if(!zombieHealth.isStunned)
 			_state.SetStateToChase();
 		//_state.curState = ZombieSM.ZombieState.Chase;
-		
+		*/
 	}
 	
 	
