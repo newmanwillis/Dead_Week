@@ -48,7 +48,7 @@ public class ZombieHealth : MonoBehaviour {
 			lastHitType = source;
 			_state.curState = ZombieSM.ZombieState.Die;
 			
-			transform.FindChild("ZombieAttackRange").gameObject.SetActive(false);  // Find better solution than turning them off
+			// transform.FindChild("ZombieAttackRange").gameObject.SetActive(false);  // Find better solution than turning them off
 			// transform.FindChild("ZombieDetectionRange").gameObject.SetActive(false);
 			
 			if (generateStamina) {

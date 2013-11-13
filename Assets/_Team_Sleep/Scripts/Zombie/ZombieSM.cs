@@ -33,12 +33,6 @@ public class ZombieSM : MonoBehaviour {
 		_wander = transform.GetComponent<ZombieWander>();
 		_chase = transform.FindChild("ZombieDetectionRange").GetComponent<ZombieChase>();
 		
-		//move = new Vector3 (0, -1.1f, 0);
-		
-		/*if(StartState == ZombieState.Chase){
-			SetStateToChase();		
-		}*/
-		
 		// Do the wander change in here, then add a "changeStateToWander" Function
 	}
 	
@@ -57,10 +51,6 @@ public class ZombieSM : MonoBehaviour {
 	
 	void FixedUpdate(){
 	
-		//switch(curState){
-		//	case ZombieState.ControlledMovement:	
-			
-		//}
 		if(transform.position.z != -0.01){
 			Vector3 newPos = transform.position; //new Vector3(transform.position.x, transform.position.y, 0);
 			newPos.z = 0;

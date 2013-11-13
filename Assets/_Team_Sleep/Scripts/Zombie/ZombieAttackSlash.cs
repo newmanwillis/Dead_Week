@@ -72,9 +72,12 @@ public class ZombieAttackSlash : MonoBehaviour {
 	IEnumerator RemoveAttackAnimation(){
 		//print ("in removeattackanimation");
 		while(AttackAnim.Playing){
+			if( _state.curState == ZombieSM.ZombieState.Die){
+				Destroy(Attack.gameObject);				
+				yield break;	
+			}	
 			//print ("in removeattackanimation LOOP");
 			yield return null;	
-			
 		}
 		Destroy(Attack.gameObject);
 		//_state.curState = ZombieSM.ZombieState.Chase;
@@ -84,7 +87,10 @@ public class ZombieAttackSlash : MonoBehaviour {
 	IEnumerator MovementPause(float standTime){
 		//print ("in movement pause");
 		yield return new WaitForSeconds(standTime);
-		//print ("goign back to chase");
+		if(_state.curState == ZombieSM.ZombieState.Die){
+			yield break;	
+		}
+		
 		// curAnim.StopAndResetFrame();
 		if(!zombieHealth.isStunned)
 			_state.SetStateToChase();
