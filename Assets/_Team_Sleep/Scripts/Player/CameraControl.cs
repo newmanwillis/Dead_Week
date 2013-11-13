@@ -18,6 +18,7 @@ public class CameraControl : MonoBehaviour {
 	public Texture whiteBox;
 	public Texture blueBox;
 	public Texture redBox;
+	public Texture greenBox;
 	public Texture textMessageBox;
 	
 	private bool isPaused;
@@ -97,8 +98,9 @@ public class CameraControl : MonoBehaviour {
 			drawPercentBar(5, 33, 234, 25, healthPercent, redBox);
 			
 			float stamPercent = player.curStamina / (float) player.maxStamina;
-			drawPercentBar(5, 70, 234, 25, stamPercent, redBox, null, false);
-		
+			GUI.DrawTexture(new Rect(0, 58, staminaBar.width, staminaBar.height), staminaBar);
+			drawPercentBar(7, 2*33 + 24, 234, 25, stamPercent, greenBox, null, false);
+			
 			drawEnergyBar();
 			
 			drawBossHealth();
