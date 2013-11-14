@@ -119,8 +119,13 @@ public class FootballZombieChase : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider other) {
 		if (_currentlyCharging && !_currentlyPreparingForCharge) {
-			Debug.Log("hit " + other.tag + " name: " + other.name);
-			if (other.tag == "Player" || other.tag == "Wall" || other.tag == "Button") {
+			if (other.tag == "Button" || other.tag == "Wall") {
+				Debug.Log("hit " + other.tag + " name: " + other.name);
+			}
+			if (other.tag == "LazerWall") {
+				_health.becomeVulnerable();
+			}
+			if (other.tag == "Player" || other.tag == "Wall" || other.tag == "Button" || other.tag == "LazerWall") {
 				if (other.tag == "Player") {
 					_player.GotHit(3);
 					_hitPlayerLastCharge = true;
