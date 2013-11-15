@@ -8,6 +8,7 @@ public class Player : MonoBehaviour {
 	public float maxHealth = 100;
 	public float maxPhoneCharge = 100;
 	public float maxStamina = 200;
+	public float sprintSpeedup = 1.6f;
 	public bool invulnerable {get; set;}
 	
 	private bool hasCheckpoint = false;
@@ -189,6 +190,8 @@ public class Player : MonoBehaviour {
 		}
 		if (isSprinting) {
 			curStamina -= 1;
+		} else {
+			curStamina += 0.5f;
 		}
 	}
 	
@@ -199,7 +202,7 @@ public class Player : MonoBehaviour {
 		float transV = Input.GetAxisRaw("Vertical") * movementSpeed;
 		Vector3 moveAmount = new Vector3(transH, transV, 0);
 		if (isSprinting) {
-			moveAmount *= 1.3F;
+			moveAmount *= sprintSpeedup;
 		}
 		GetComponent<CharacterController>().Move(moveAmount);
 		
