@@ -25,4 +25,10 @@ public class ElectricWall : MonoBehaviour {
 			other.GetComponent<FootballZombieHealth>().becomeVulnerable();
 		}
 	}
+	
+	void OnTriggerEnter(Collider other) {
+		if (other.tag == "FootballZombie") {
+			Debug.Log("hit boss enter");
+		}
+	}
 }

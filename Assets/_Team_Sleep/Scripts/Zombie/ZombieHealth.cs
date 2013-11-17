@@ -53,7 +53,7 @@ public class ZombieHealth : MonoBehaviour {
 			
 			if (generateStamina) {
 				DropItem();
-				GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().curStamina += 20;
+				//GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().curStamina += 20;
 			}
 			
 			if(CountDeath)	// removes from Zombie Spawner counter
