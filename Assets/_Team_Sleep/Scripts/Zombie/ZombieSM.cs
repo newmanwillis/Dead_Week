@@ -6,6 +6,7 @@ public class ZombieSM : MonoBehaviour {
 	public enum ZombieState {Wander, Chase, Attack, TakingDamage, Die, ControlledMovement, Stop, EnumeratedMovement};
 	// public ZombieState StartState; // = ZombieState.Wander;
 	public ZombieState curState;
+	public bool Stoppable = true;
 	
 	private tk2dSprite sprite;
 	private tk2dSpriteAnimator curAnim;
@@ -19,7 +20,10 @@ public class ZombieSM : MonoBehaviour {
 	private Vector3 Move;
 	
 	void Awake(){
-		curState = ZombieState.Wander;
+		if(Stoppable)
+			curState = ZombieState.Stop;
+		else
+			curState = ZombieState.Wander;
 		//curState = StartState;
 	}
 
@@ -91,4 +95,27 @@ public class ZombieSM : MonoBehaviour {
 			}
 		}
 	}	
+	/*
+	void OnControllerColliderHit(ControllerColliderHit hit) {
+		print ("In ControllerColliderHit");
+		if(hit.gameObject.tag == "ActivateZombie"){
+			print ("ColliderHit Activate");
+		}
+	}
+
+	void OnCollisionEnter(Collision collision) {
+		print ("In CollisionEnter");
+		if(collision.gameObject.tag == "ActivateZombie"){
+			print ("CollisionEnter Activate");
+		}
+	}
+
+	void OnTriggerEnter(Collider other) {
+		print ("In TriggerEnter");
+		if(other.tag == "ActivateZombie"){
+			print ("TriggerEnter Activate");
+		}
+	}*/
+
+
 }

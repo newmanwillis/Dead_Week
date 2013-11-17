@@ -51,6 +51,7 @@ public class ZombieSpawner2 : MonoBehaviour {
 			for(int i = 0; i < SpawnPositions.Length; i++){
 				Transform ZombieCopy = ((Transform)Instantiate(Zombie, SpawnPositions[i], Quaternion.identity));	
 				ZombieCopy.GetComponent<ZombieHealth>().CountDeath = true;
+				//ZombieCopy.GetComponent<ZombieSM>().Stoppable = false;	// These zombies will wander around regardless
 				ZombieCopy.parent = transform;
 				ZombieCount++;
 				// print ("SPAWN: " + ZombieCount);				
@@ -58,10 +59,6 @@ public class ZombieSpawner2 : MonoBehaviour {
 			
 		}
 		StartCoroutine(SpawnZombies(SpawnDelay));
-	}
-	
-	public void CountReduction(){
-		
 	}
 	
 }

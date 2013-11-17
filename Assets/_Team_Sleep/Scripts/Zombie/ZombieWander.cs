@@ -36,7 +36,7 @@ public class ZombieWander : MonoBehaviour {
 	}	
 	
 	IEnumerator StandStill(){
-		float waitTime = CalculateTimer(0.5f, 1, 7);  					// makes Zombies stand still for 0.5f to 3.5 seconds	
+		float waitTime = CalculateTimer(0.5f, 1, 4);  					// makes Zombies stand still for 0.5f to 2 seconds	
 		// print("Stand Still Time: " + (waitTime - Time.time));
 		while(Time.time < waitTime){
 			if(_state.curState != ZombieSM.ZombieState.Wander){  // Stops process if zombie state changes
