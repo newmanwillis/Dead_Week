@@ -17,6 +17,8 @@ public class LevelExit : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Player") {
 			if (nextLevelSceneName != null && nextLevelSceneName != "") {
+				PlayerPrefs.SetString(nextLevelSceneName, "Unlocked");
+				PlayerPrefs.Save();
 				Application.LoadLevel(nextLevelSceneName);
 			}
 			Destroy(this.gameObject);
