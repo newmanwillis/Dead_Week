@@ -14,7 +14,7 @@ public class Button : MonoBehaviour {
 		for (int i = 0; i < transform.childCount; i++) {
 			// A button controls either a door or an electric gate
 			// either way, it must be named "ControlledByButton"
-			if (transform.GetChild(i).name == "ControlledByButton") {
+			if (transform.GetChild(i).name == "LaserFence") {
 				childObj = transform.GetChild(i).gameObject;
 				break;
 			}
