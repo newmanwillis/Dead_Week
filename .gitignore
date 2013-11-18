@@ -12,6 +12,8 @@ Library/guidmapper
 Library/InspectorExpandedItems.asset
 Library/metadata
 Library/ScriptMapper
+Library/CurrentLayout.dwlt
+Library/CurrentMaximizeLayout.dwlt
 /Temp
 
 *.csproj
