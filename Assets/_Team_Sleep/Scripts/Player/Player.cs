@@ -198,6 +198,20 @@ public class Player : MonoBehaviour {
 			curStamina += 0.5f;
 		}
 	}
+
+	string directionToString(FacingDirection dir) {
+		switch (dir) {
+		case FacingDirection.Down:
+			return "Down";
+		case FacingDirection.Left:
+			return "Left";
+		case FacingDirection.Right:
+			return "Right";
+		case FacingDirection.Up:
+			return "Up";
+		}
+		return null;
+	}
 	
 	void MovementInput(){
 					
@@ -231,50 +245,36 @@ public class Player : MonoBehaviour {
 		else */
 		
 		// change to enum/switch statements
-		
+
+		bool isMoving = true;
 		if(Input.GetKey(KeyCode.UpArrow)){
 			curDirection = FacingDirection.Up;
-			flashLight.face(curDirection);
-			curAnim.Resume();
-			if (hasSword) {
-				curAnim.Play("walkingBackward");
-			} else {
-				curAnim.Play("walkingUpNoSword");
-			}
 		}		
 		else if(Input.GetKey(KeyCode.DownArrow)){
 			curDirection = FacingDirection.Down;
-			flashLight.face(curDirection);
-			curAnim.Resume();
-			if (hasSword) {
-				curAnim.Play("walkingForward");
-			} else {
-				curAnim.Play("walkingDownNoSword");
-			}
 		}
 		else if(Input.GetKey(KeyCode.RightArrow)){
 			curDirection = FacingDirection.Right;
-			flashLight.face(curDirection);
-			curAnim.Resume();
-			if (hasSword) {
-				curAnim.Play("walkingRight");	
-			} else {
-				curAnim.Play("walkingRightNoSword");
-			}
 		}		
 		else if(Input.GetKey(KeyCode.LeftArrow)){
 			curDirection = FacingDirection.Left;
-			flashLight.face(curDirection);
-			curAnim.Resume();
-			if (hasSword) {
-				curAnim.Play("walkingLeft");
-			} else {
-				curAnim.Play("walkingLeftNoSword");
-			}
-		}	
+		} else {
+			isMoving = false;
+		}
+
+		flashLight.face(curDirection);
+
+		if (isMoving) {
+			string animName = "";
+			animName += (isSprinting && hasSword) ? "run" : "walking";
+			animName += directionToString(curDirection);
+			animName += hasSword ? "" : "NoSword";
+			curAnim.Play(animName);
+		}
 				
 		// Stops walking animation when nothing is happening.
-		if(!(Input.GetKey(KeyCode.UpArrow)) && !(Input.GetKey(KeyCode.LeftArrow)) && !(Input.GetKey(KeyCode.DownArrow)) && !(Input.GetKey(KeyCode.RightArrow))){
+		if(!isMoving){
+			curAnim.Play("walking" + directionToString(curDirection));
 			curAnim.StopAndResetFrame();	
 			footStepsAudio.Stop();
 			footStepsAudioPlaying = false;
@@ -421,21 +421,7 @@ public class Player : MonoBehaviour {
 		curState = PlayerState.PlayerInput;
 		Destroy(playerSprite.collider);
 		// curAnim.Pause();
-		switch(curDirection)
-		{		
-			case FacingDirection.Up:
-			curAnim.Play("walkingBackward");				
-			break;
-			case FacingDirection.Left:
-			curAnim.Play("walkingLeft");
-			break;
-			case FacingDirection.Down:
-			curAnim.Play("walkingForward");				
-			break;
-			case FacingDirection.Right:
-			curAnim.Play("walkingRight");				
-			break;	
-		}	
+		curAnim.Play("walking" + directionToString(curDirection));
 	}
 	
 	IEnumerator waitForPhoneAnimationtoEnd(){
@@ -456,21 +442,7 @@ public class Player : MonoBehaviour {
 		}
 		//Destroy(playerSprite.collider);
 		// curAnim.Pause();
-		switch(curDirection)
-		{		
-			case FacingDirection.Up:
-			curAnim.Play("walkingBackward");				
-			break;
-			case FacingDirection.Left:
-			curAnim.Play("walkingLeft");
-			break;
-			case FacingDirection.Down:
-			curAnim.Play("walkingForward");				
-			break;
-			case FacingDirection.Right:
-			curAnim.Play("walkingRight");				
-			break;	
-		}	
+		curAnim.Play("walking" + directionToString(curDirection));
 	}
 	
 	void PhoneAttackAnimation(){
