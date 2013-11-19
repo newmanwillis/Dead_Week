@@ -16,9 +16,12 @@ public class HackableComputer : MonoBehaviour {
 	public bool isGenerator;
 	
 	private tk2dSpriteAnimator anim;
+
+	private AudioSource hackingAudio;
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<tk2dSpriteAnimator>();  // possibly null
+		hackingAudio = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -29,6 +32,9 @@ public class HackableComputer : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Player" && hackSoFar < timeToHackSeconds) {
 			beingHacked = true;
+			if (hackingAudio != null) {
+				hackingAudio.Play();
+			}
 			if (anim != null) {
 				if (hackSoFar == 0) {
 					anim.Play("hacking");
@@ -42,6 +48,9 @@ public class HackableComputer : MonoBehaviour {
 	void OnTriggerExit(Collider other) {
 		if (other.tag == "Player") {
 			beingHacked = false;
+			if (hackingAudio != null) {
+				hackingAudio.Pause();
+			}
 			if (hackSoFar < timeToHackSeconds) {
 				anim.Pause();
 			}
@@ -54,7 +63,10 @@ public class HackableComputer : MonoBehaviour {
 			if (hackSoFar >= timeToHackSeconds) {
 				hackSoFar = timeToHackSeconds;
 				beingHacked = false;
-				
+
+				if (hackingAudio != null) {
+					hackingAudio.Pause();
+				}
 				if (anim != null) {
 					anim.Play("hackFinished");
 				}
