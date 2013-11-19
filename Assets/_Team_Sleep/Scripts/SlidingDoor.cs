@@ -31,10 +31,12 @@ public class SlidingDoor : MonoBehaviour {
 			if (open && !personInRange) {
 				// we need to close
 				animation.Play("SlidingDoorClose");
+				GetComponent<AudioSource>().Play();
 				open = false;
 			}
 			if (personInRange && (!open) && generator.IsRunning) {
 				animation.Play("SlidingDoorOpen");
+				GetComponent<AudioSource>().Play();
 				open = true;
 			}
 		}

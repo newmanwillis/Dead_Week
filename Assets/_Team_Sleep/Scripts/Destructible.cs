@@ -7,6 +7,7 @@ public class Destructible : MonoBehaviour {
 	private bool destroyed = false;
 	
 	private AudioSource destructionSound;
+	private AudioSource disintigrationSound;
 	
 	private int numHits = 0;
 	public int maxHits;
@@ -23,7 +24,11 @@ public class Destructible : MonoBehaviour {
 	private bool wasDisintigrated = false;
 	void Start () {
 		animator = GetComponent<tk2dSpriteAnimator>();
-		destructionSound = GetComponent<AudioSource>();
+		AudioSource[] audio = GetComponents<AudioSource>();
+		if (audio != null && audio.Length > 0) {
+			destructionSound = audio[0];//GetComponent<AudioSource>();
+			disintigrationSound = audio.Length > 1 ? audio[1] : null;
+		}
 		if (destructionSound != null) {
 			destructionSound.loop = false;
 		}
@@ -56,8 +61,8 @@ public class Destructible : MonoBehaviour {
 			} else {
 				wasDisintigrated = true;
 				animator.Play(clipname);
-				if (destructionSound != null) {
-					destructionSound.Play ();
+				if (disintigrationSound != null) {
+					disintigrationSound.Play ();
 				}
 				if (numHits == maxHits) {
 					StartCoroutine(waitForAnimationAndDie());

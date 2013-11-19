@@ -64,6 +64,9 @@ public class ZombieHealth : MonoBehaviour {
 			
 			direction facing = FindDirection();
 			ChooseDeathAnimation(facing);
+			if (lastHitType == HitTypes.burstLaser) {
+				GetComponents<AudioSource>()[0].Play(); // disintigrate
+			}
 			StartCoroutine( waitForAnimationToEnd());
 		}
 		else if(isDead){		// In case the player keeps attacking the zombie even though it has already died
