@@ -65,10 +65,12 @@ public class PlayerAttackHitbox : MonoBehaviour {
 	}
 	
 	public void attack(int damage, float attackStart) {
+		bool hitZombie = false;
 		// Debug.Log("num: " + hitbox.zombies.Keys.Count);
 		ArrayList deadZombies = new ArrayList();
 		foreach (Collider col in zombies.Keys) {
 			if (col) {
+				hitZombie = true;
 				ZombieHealth zombie = col.GetComponent<ZombieHealth>();
 				if (zombie.LastHitTime < attackStart) {
 					zombie.TakeDamage(damage, ZombieHealth.HitTypes.sword);
@@ -96,8 +98,13 @@ public class PlayerAttackHitbox : MonoBehaviour {
 		}
 		
 		if (bossHealth != null && bossHealth.lastSwordHitTime < attackStart) {
+			hitZombie = true;
 			bossHealth.lastSwordHitTime = attackStart;
 			bossHealth.takeDamage(damage);
+		}
+
+		if (hitZombie) {
+			GetComponent<AudioSource>().Play();
 		}
 	}
 }
