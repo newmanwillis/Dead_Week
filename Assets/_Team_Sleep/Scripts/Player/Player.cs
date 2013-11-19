@@ -36,6 +36,7 @@ public class Player : MonoBehaviour {
 	private AudioSource footStepsAudio;
 	private AudioSource takingDamageAudio;
 	private AudioSource itemPickupAudio;
+	private AudioSource noBatteryAudio;
 	private AudioSource[] aSources;
 	private PlayerState curState;
 	private PhonePower curPower;
@@ -109,6 +110,7 @@ public class Player : MonoBehaviour {
 			swordAudioChannel = aSources[1];
 			takingDamageAudio = aSources[2];
 			itemPickupAudio = aSources[3];
+			noBatteryAudio = aSources[4];
 			swordAudioChannel.loop = false;
 			takingDamageAudio.loop = false;
 			itemPickupAudio.loop = false;
@@ -305,6 +307,7 @@ public class Player : MonoBehaviour {
 			int beamCost = currentlyFiringLazer.GetComponentInChildren<PlayerProjectile>().energyCost;
 			if (curPhoneCharge < beamCost) {
 				curState = PlayerState.PlayerInput;
+				noBatteryAudio.Play();
 				stopBeamLazer();
 			} else {
 				curPhoneCharge -= beamCost;
@@ -321,7 +324,7 @@ public class Player : MonoBehaviour {
 			cost = bulletTypeToFire.GetComponent<StunExplosion>().energyCost;
 		}
 		if (curPhoneCharge < cost) {
-			// TODO: replace this with a sound effect
+			noBatteryAudio.Play();
 			Debug.Log("Not enough battery");
 		} else {
 			Transform shootingBullet = (Transform)Instantiate(bulletTypeToFire, transform.position, Quaternion.identity);
