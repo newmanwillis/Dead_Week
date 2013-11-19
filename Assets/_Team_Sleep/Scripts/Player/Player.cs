@@ -37,6 +37,7 @@ public class Player : MonoBehaviour {
 	private AudioSource takingDamageAudio;
 	private AudioSource itemPickupAudio;
 	private AudioSource noBatteryAudio;
+	private AudioSource batteryChargingAudio;
 	private AudioSource[] aSources;
 	private PlayerState curState;
 	private PhonePower curPower;
@@ -111,6 +112,7 @@ public class Player : MonoBehaviour {
 			takingDamageAudio = aSources[2];
 			itemPickupAudio = aSources[3];
 			noBatteryAudio = aSources[4];
+			batteryChargingAudio = aSources[5];
 			swordAudioChannel.loop = false;
 			takingDamageAudio.loop = false;
 			itemPickupAudio.loop = false;
@@ -543,6 +545,9 @@ public class Player : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Checkpoint") {
 			setCheckpoint(other.gameObject.transform.position);
+		}
+		if (other.tag == "ChargingStation") {
+			batteryChargingAudio.Play();
 		}
 	}
 	
