@@ -104,7 +104,10 @@ public class PlayerAttackHitbox : MonoBehaviour {
 		}
 
 		if (hitZombie) {
-			GetComponent<AudioSource>().Play();
+			AudioSource audio = GetComponent<AudioSource>();
+			if (!audio.isPlaying) {
+				GetComponent<AudioSource>().Play();
+			}
 		}
 	}
 }
