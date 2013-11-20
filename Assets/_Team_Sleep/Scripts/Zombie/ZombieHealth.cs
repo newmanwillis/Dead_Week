@@ -58,9 +58,11 @@ public class ZombieHealth : MonoBehaviour {
 			
 			if(CountDeath)	// removes from Zombie Spawner counter
 				transform.parent.GetComponent<ZombieSpawner2>().ZombieCount--;
-			
-			StartCoroutine( TurnOffCharacterController(0.5f) );
-			// CC.enabled = false;
+
+			if(damage != 1007)
+				StartCoroutine( TurnOffCharacterController(0.5f) );
+			else
+				CC.enabled = false;
 			
 			direction facing = FindDirection();
 			ChooseDeathAnimation(facing);
@@ -71,6 +73,8 @@ public class ZombieHealth : MonoBehaviour {
 		}
 		else if(isDead){		// In case the player keeps attacking the zombie even though it has already died
 			// Don't process anything
+			if(damage == 1007)
+				CC.enabled = false;
 		}
 		else if(isStunned){  // If Zombie is stunned
 			curAnim.Play ();

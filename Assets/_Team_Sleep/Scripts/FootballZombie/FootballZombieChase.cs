@@ -12,6 +12,7 @@ public class FootballZombieChase : MonoBehaviour {
 	private FootballZombieHealth _health;
 
 	private bool _gotHit = false;
+	private int _numCharges = 0;
 
 	// _nextCharge gets updated at the END of a charge.
 	private float _nextCharge = 0;
@@ -51,11 +52,13 @@ public class FootballZombieChase : MonoBehaviour {
 				Vector3 cardinal = analogToCardinal(direction);
 				if ((!_currentlyCharging) && Vector3.Dot(direction, cardinal) > .99) {
 					//*****
-					if(_gotHit){
+					if(_gotHit || _numCharges >= 2){
+						_numCharges = 0;
 						FZSM.SetStateToRaiseZombies();
 						_gotHit = false;
 					}
 					else{
+						_numCharges ++;
 					//*****
 						_chargeDirection = cardinal;
 						_currentlyCharging = true;
@@ -141,12 +144,19 @@ public class FootballZombieChase : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider other) {
 		if (_currentlyCharging && !_currentlyPreparingForCharge) {
+			bool hitLaserWall = false;
+
 			if (other.tag == "Button" || other.tag == "Wall") {
 				Debug.Log("hit " + other.tag + " name: " + other.name);
 			}
 			if (other.tag == "LazerWall") {
 				_gotHit = true;
+				_numCharges = 0;
 				_health.becomeVulnerable();
+				// print("STRING: zap_" + cardinalToStr(_chargeDirection));
+				curAnim.Play("zap_" + cardinalToStr(_chargeDirection));
+				hitLaserWall = true;
+
 			}
 			if (other.tag == "Player" || other.tag == "Wall" || other.tag == "Button" || other.tag == "LazerWall") {
 				if (other.tag == "Player") {
@@ -159,11 +169,17 @@ public class FootballZombieChase : MonoBehaviour {
 				}
 				_currentlyCharging = false;
 				_recoveredTime = Time.time + _recoverTime;
-				curAnim.Play("walking_" + cardinalToStr(_chargeDirection));
+				if(!hitLaserWall)
+					curAnim.Play("walking_" + cardinalToStr(_chargeDirection));
 			}
-			//else if(other.tag == "Zombie"){
-			//	other.GetComponent<ZombieHealth>().TakeDamage(
-			//}
+			else if(other.tag == "Zombie"){
+				other.GetComponent<ZombieHealth>().TakeDamage(1007, ZombieHealth.HitTypes.sword, false);
+
+			}
 		}
 	}
+
+	//void ElectrocutedAnimation(){
+
+	//}
 }

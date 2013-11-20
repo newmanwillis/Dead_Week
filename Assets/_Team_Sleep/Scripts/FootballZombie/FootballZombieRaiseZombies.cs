@@ -14,9 +14,11 @@ public class FootballZombieRaiseZombies : MonoBehaviour {
 	private int ZombieCount = 0;
 	
 	private FootballZombieSM FZSM;
+	private tk2dSpriteAnimator curAnim;
 
 	void Start () {
 		FZSM = GetComponent<FootballZombieSM>();
+		curAnim = GetComponent<tk2dSpriteAnimator>();
 
 		RaiseZombieZone = GameObject.Find("RaiseZombieZone").transform;
 		ZoneMaxX = (int)RaiseZombieZone.collider.bounds.max.x;
@@ -33,12 +35,12 @@ public class FootballZombieRaiseZombies : MonoBehaviour {
 	public void BeginRaisingZombies(){
 		// play animation
 		StartCoroutine(RaiseZombie());
-
+		curAnim.Play("raiseZombies");
 	}
 
 	IEnumerator RaiseZombie(){
 		//RaiseZombieZone.collider.bounds.
-		yield return new WaitForSeconds(0.6f);
+		yield return new WaitForSeconds(0.8f);
 
 		int xPos = Random.Range(ZoneMinX, ZoneMaxX);
 		int yPos = Random.Range(ZoneMinY, ZoneMaxY);
@@ -56,7 +58,8 @@ public class FootballZombieRaiseZombies : MonoBehaviour {
 	}
 
 	IEnumerator WaitBeforeSwitchingToChase(){
-		yield return new WaitForSeconds(5);
+		yield return new WaitForSeconds(3.5f);
+		curAnim.Stop();
 		FZSM.SetStateToChase();
 	}
 
