@@ -127,8 +127,8 @@ public class FootballZombieChase : MonoBehaviour {
 			}
 			if (other.tag == "Player" || other.tag == "Wall" || other.tag == "Button" || other.tag == "LazerWall") {
 				if (other.tag == "Player") {
-					_player.GotHit(3);
 					_player.knockBack(_chargeDirection);
+					_player.GotHit(3);
 					_hitPlayerLastCharge = true;
 					//Debug.Log("hit player");
 				} else {
