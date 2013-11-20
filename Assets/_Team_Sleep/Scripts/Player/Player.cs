@@ -9,7 +9,7 @@ public class Player : MonoBehaviour {
 	public float maxPhoneCharge = 100;
 	public float maxStamina = 200;
 	public float sprintSpeedup = 1.6f;
-	public float knockedBackSpeed = 1f;
+	public float knockedBackSpeed = 3f;
 	public bool invulnerable {get; set;}
 	
 	private bool hasCheckpoint = false;
@@ -381,7 +381,7 @@ public class Player : MonoBehaviour {
 
 		//TODO remove this
 		if (Input.GetKeyDown(KeyCode.G)) {
-			knockBack(FacingDirection.Left, new Vector3(1, 0, 0));
+			knockBack(new Vector3(1, 0, 0));
 		}
 		
 		// change to enum/switch 
@@ -577,10 +577,16 @@ public class Player : MonoBehaviour {
 		}	
 	}
 
-	public void knockBack(FacingDirection dir, Vector3 cardinalDirection) {
+	public void knockBack(Vector3 cardinalDirection) {
 		curState = PlayerState.KnockedBack;
 		knockBackDirection = cardinalDirection;
-		curAnim.Play("leftKnockback");
+		if (cardinalDirection.x > 0.1) {
+			curAnim.Play("leftKnockback");
+		} else if (cardinalDirection.x < -0.1) {
+			curAnim.Play("rightKnockback");
+		} else {
+			curAnim.Play("upKnockback");
+		}
 		// play animation based on dir
 	}
 	
