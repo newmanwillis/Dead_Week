@@ -4,8 +4,9 @@ using System.Collections;
 public class ZombieHealth : MonoBehaviour {
 		
 	public Transform[] Drops;
+	public AudioClip[] DeathSounds;
+	public AudioClip[] HitSounds;
 	public float DropChance = 0.0f;
-	
 	public float hitPauseTime = 0.5f;
 	
 	public bool CountDeath = false;
@@ -59,6 +60,7 @@ public class ZombieHealth : MonoBehaviour {
 			if(CountDeath)	// removes from Zombie Spawner counter
 				transform.parent.GetComponent<ZombieSpawner2>().ZombieCount--;
 
+			// Just for Boss Zombie
 			if(damage != 1007)
 				StartCoroutine( TurnOffCharacterController(0.5f) );
 			else
@@ -66,13 +68,16 @@ public class ZombieHealth : MonoBehaviour {
 			
 			direction facing = FindDirection();
 			ChooseDeathAnimation(facing);
-			if (lastHitType == HitTypes.burstLaser) {
+			PlayDeathSound(source, generateStamina);
+			//if (lastHitType == HitTypes.burstLaser) {
 				// GetComponents<AudioSource>()[0].Play(); // disintigrate
-			}
+			//}
 			StartCoroutine( waitForAnimationToEnd());
 		}
 		else if(isDead){		// In case the player keeps attacking the zombie even though it has already died
 			// Don't process anything
+
+			// Just for Boss
 			if(damage == 1007)
 				CC.enabled = false;
 		}
@@ -85,25 +90,11 @@ public class ZombieHealth : MonoBehaviour {
 		}
 		else{  	// taking damage
 			_state.curState = ZombieSM.ZombieState.TakingDamage;
+			PlayRandomHitSound();
 			StartCoroutine( PauseWhenHit(hitPauseTime));
 		}
 	}
 
-	/*
-	string getCorrectDeathAnimation() {
-		switch (myZombieFollowPlayer.curDirection) {
-		case Player.FacingDirection.Down:
-			return "deathDown";
-		case Player.FacingDirection.Left:
-			return "deathLeft";
-		case Player.FacingDirection.Right:
-			return "deathRight";
-		case Player.FacingDirection.Up:
-			return "deathUp";
-		}
-		return null;
-	}*/
-	
 	
 	public void DropItem(){
 		float randValue = Random.value;	
@@ -300,6 +291,27 @@ public class ZombieHealth : MonoBehaviour {
 		else
 			curAnim.Play("deathRight");
 	*/
+	}
+
+	private void PlayDeathSound(HitTypes source, bool stam){
+		if(source == HitTypes.sword){
+			if(Random.value < 0.4f){
+				audio.clip = DeathSounds[0];
+				audio.Play();
+			}
+		}
+		else if(source == HitTypes.burstLaser && stam){
+			audio.clip = DeathSounds[1];
+			audio.Play();
+		}
+	}
+
+	private void PlayRandomHitSound(){
+		if(Random.value < 0.2f){
+			int rand = Random.Range(0, HitSounds.Length);
+			audio.clip = HitSounds[rand];
+			audio.Play();
+		}
 	}
 }
 
