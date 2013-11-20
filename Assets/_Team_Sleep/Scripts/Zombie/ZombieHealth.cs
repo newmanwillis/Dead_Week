@@ -65,7 +65,7 @@ public class ZombieHealth : MonoBehaviour {
 			direction facing = FindDirection();
 			ChooseDeathAnimation(facing);
 			if (lastHitType == HitTypes.burstLaser) {
-				GetComponents<AudioSource>()[0].Play(); // disintigrate
+				// GetComponents<AudioSource>()[0].Play(); // disintigrate
 			}
 			StartCoroutine( waitForAnimationToEnd());
 		}

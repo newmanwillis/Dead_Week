@@ -29,11 +29,6 @@ public class FootballZombieRaiseZombies : MonoBehaviour {
 
 		// StartCoroutine(RaiseZombie());
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
 	public void BeginRaisingZombies(){
 		// play animation
@@ -43,7 +38,7 @@ public class FootballZombieRaiseZombies : MonoBehaviour {
 
 	IEnumerator RaiseZombie(){
 		//RaiseZombieZone.collider.bounds.
-		yield return new WaitForSeconds(1);
+		yield return new WaitForSeconds(0.6f);
 
 		int xPos = Random.Range(ZoneMinX, ZoneMaxX);
 		int yPos = Random.Range(ZoneMinY, ZoneMaxY);
@@ -51,7 +46,7 @@ public class FootballZombieRaiseZombies : MonoBehaviour {
 		Instantiate(AscensionZombie, pos, Quaternion.identity);
 
 		ZombieCount++;
-		if(ZombieCount <= 10){
+		if(ZombieCount <= 8){
 			StartCoroutine(RaiseZombie());
 		}
 		else{
