@@ -274,7 +274,7 @@ public class Player : MonoBehaviour {
 				
 		// Stops walking animation when nothing is happening.
 		if(!isMoving){
-			curAnim.Play("walking" + directionToString(curDirection));
+			curAnim.Play("walking" + directionToString(curDirection) + (hasSword? "" : "NoSword"));
 			curAnim.StopAndResetFrame();	
 			footStepsAudio.Stop();
 			footStepsAudioPlaying = false;
@@ -421,7 +421,7 @@ public class Player : MonoBehaviour {
 		curState = PlayerState.PlayerInput;
 		Destroy(playerSprite.collider);
 		// curAnim.Pause();
-		curAnim.Play("walking" + directionToString(curDirection));
+		curAnim.Play("walking" + directionToString(curDirection) + (hasSword? "" : "NoSword"));
 	}
 	
 	IEnumerator waitForPhoneAnimationtoEnd(){
@@ -442,7 +442,7 @@ public class Player : MonoBehaviour {
 		}
 		//Destroy(playerSprite.collider);
 		// curAnim.Pause();
-		curAnim.Play("walking" + directionToString(curDirection));
+		curAnim.Play("walking" + directionToString(curDirection) + (hasSword? "" : "NoSword"));
 	}
 	
 	void PhoneAttackAnimation(){
