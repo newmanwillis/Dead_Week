@@ -51,8 +51,13 @@ public class FootballZombieRaiseZombies : MonoBehaviour {
 		}
 		else{
 			ZombieCount = 0;
-			//FZSM.SetStateToChase();
+			StartCoroutine(WaitBeforeSwitchingToChase());
 		}
+	}
+
+	IEnumerator WaitBeforeSwitchingToChase(){
+		yield return new WaitForSeconds(5);
+		FZSM.SetStateToChase();
 	}
 
 

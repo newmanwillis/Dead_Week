@@ -37,9 +37,7 @@ public class FootballZombieChase : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-
 		if(FZSM.State() == FootballZombieSM.BossStates.Chase){
-
 			if (_recoveredTime > Time.time) {
 
 				if (!_hitPlayerLastCharge) {
@@ -163,6 +161,9 @@ public class FootballZombieChase : MonoBehaviour {
 				_recoveredTime = Time.time + _recoverTime;
 				curAnim.Play("walking_" + cardinalToStr(_chargeDirection));
 			}
+			//else if(other.tag == "Zombie"){
+			//	other.GetComponent<ZombieHealth>().TakeDamage(
+			//}
 		}
 	}
 }
