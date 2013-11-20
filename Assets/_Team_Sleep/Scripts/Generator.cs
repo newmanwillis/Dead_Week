@@ -16,6 +16,9 @@ public class Generator : MonoBehaviour {
 		}
 		set {
 			isRunning = value;
+			if (GetComponent<RepeatedlySpawn>() != null) {
+				GetComponent<RepeatedlySpawn>().spawning = isRunning;
+			}
 			if (isRunning != beginsAlreadyRunning) {
 				GameObject.Find("Player").GetComponent<Player>().setCheckpoint(transform.position + new Vector3(0, -20, 0));
 			}
