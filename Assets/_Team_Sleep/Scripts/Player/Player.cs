@@ -9,12 +9,13 @@ public class Player : MonoBehaviour {
 	public float maxPhoneCharge = 100;
 	public float maxStamina = 200;
 	public float sprintSpeedup = 1.6f;
+	public float knockedBackSpeed = 1f;
 	public bool invulnerable {get; set;}
 	
 	private bool hasCheckpoint = false;
 	private Vector3 currentCheckpoint;
 	
-	public enum PlayerState {PlayerInput, SwordAttack, PhoneAttack, TakingDamage, Dead, Cutscene, Menu, chargingLazer, firingLazer};
+	public enum PlayerState {PlayerInput, SwordAttack, PhoneAttack, TakingDamage, Dead, Cutscene, Menu, chargingLazer, firingLazer, KnockedBack};
 	public enum PhonePower {Bullet, Beam, Stun};
 	//public enum FacingDirection {Up = 0, UpLeft = 45, Left = 90, DownLeft = 135, Down = 180, RightDown = 215, Right = 270, UpRight = 315};
 	public enum FacingDirection {Up = 0, Left = 90, Down = 180, Right = 270};
@@ -62,6 +63,8 @@ public class Player : MonoBehaviour {
 	bool chargingLazer = false;
 	float lazerChargedAtTime;  // time at which the lazer will be charged
 	Transform currentlyFiringLazer = null;
+
+	private Vector3 knockBackDirection;
 
 	private Transform phoneBullet;
 	private Transform phoneLazerBeam;
@@ -174,6 +177,13 @@ public class Player : MonoBehaviour {
 		{
 			case PlayerState.PlayerInput:
 				MovementInput();  // Check for player movement
+			break;
+			case PlayerState.KnockedBack:
+				if (curAnim.Playing) {
+					GetComponent<CharacterController>().Move(knockBackDirection * knockedBackSpeed);
+				} else {
+					curState = PlayerState.PlayerInput;
+				}
 			break;
 			/*
 			case PlayerState.Dead:
@@ -362,11 +372,16 @@ public class Player : MonoBehaviour {
 	}
 	
 	void AttackInput(){
-		if (Input.GetKey(KeyCode.LeftShift)) {
+		if (Input.GetKeyDown(KeyCode.LeftShift)) {
 			isSprinting = true;
 		} 
 		if (Input.GetKeyUp(KeyCode.LeftShift) || (curStamina < 1)) {
 			isSprinting = false;
+		}
+
+		//TODO remove this
+		if (Input.GetKeyDown(KeyCode.G)) {
+			knockBack(FacingDirection.Left, new Vector3(1, 0, 0));
 		}
 		
 		// change to enum/switch 
@@ -560,6 +575,13 @@ public class Player : MonoBehaviour {
 				GetComponent<GameOver>().StartGameOverSequence();
 			}
 		}	
+	}
+
+	public void knockBack(FacingDirection dir, Vector3 cardinalDirection) {
+		curState = PlayerState.KnockedBack;
+		knockBackDirection = cardinalDirection;
+		curAnim.Play("swordDown");
+		// play animation based on dir
 	}
 	
 	public IEnumerator Invulnerable(float timeInvulnerable, float startTime){
