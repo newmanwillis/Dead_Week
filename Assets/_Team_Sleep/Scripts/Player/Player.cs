@@ -580,7 +580,7 @@ public class Player : MonoBehaviour {
 	public void knockBack(FacingDirection dir, Vector3 cardinalDirection) {
 		curState = PlayerState.KnockedBack;
 		knockBackDirection = cardinalDirection;
-		curAnim.Play("swordDown");
+		curAnim.Play("leftKnockback");
 		// play animation based on dir
 	}
 	
