@@ -36,10 +36,10 @@ public class GameOver : MonoBehaviour {
 		
 		// Move player forward in Z zone
 		Vector3 newPos = transform.position; // PlayerT.position;
-		newPos.z = -15;
+		newPos.z = -100;
 		BlackScreenCopy = ((Transform)(Instantiate(BlackScreen, newPos, Quaternion.identity)));
 		BlackScreenSprite = BlackScreenCopy.GetComponent<tk2dSprite>();
-		newPos.z = -50;
+		newPos.z = -200;
 		transform.position = newPos;
 		//PlayerT.position = newPos;	
 		// print("moved PlayerT: " + PlayerT.position);
