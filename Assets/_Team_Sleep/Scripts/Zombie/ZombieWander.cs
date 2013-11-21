@@ -11,6 +11,8 @@ using System.Collections;
 public class ZombieWander : MonoBehaviour {
 	
 	public enum Direction {up, down, left, right};
+	public AudioClip[] Sounds;
+
 	public bool _isWandering	= false;								// ZombieState continuously checks this variable
 	// public float _wanderSpeed = 15f;
 	public float[] wanderSpeeds = {10f, 20f, 26f};
@@ -22,6 +24,7 @@ public class ZombieWander : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+
 		_state = GetComponent<ZombieSM>();
 		//curAnim = transform.FindChild("ZombieSprite").GetComponent<tk2dSpriteAnimator>();
 		curAnim = GetComponent<tk2dSpriteAnimator>();
@@ -54,6 +57,7 @@ public class ZombieWander : MonoBehaviour {
 		float moveTime = CalculateTimer(0.2f, 5, 20);  					// makes Zombies wander for 1 to 4 seconds
 		// print("Wander Time: " + (moveTime - Time.time));
 		float wanderSpeed = ChooseWanderSpeed();
+		PlayRandomSound();
 		while(Time.time < moveTime){
 			if(_state.curState != ZombieSM.ZombieState.Wander){  // Stops process if zombie state changes
 				_isWandering = false;
@@ -81,7 +85,18 @@ public class ZombieWander : MonoBehaviour {
 		curAnim.StopAndResetFrame();									// stop animation
 		StartCoroutine(StandStill());									// start cycle over again, keep wandering	
 	}
-	
+
+	private void PlayRandomSound(){
+
+
+		if(Random.value < 0.1f){
+			int rand = Random.Range(0, Sounds.Length);
+			//Sounds[rand]
+			audio.clip = Sounds[rand];
+			audio.Play();
+		}
+	}
+
 	private float ChooseWanderSpeed(){
 		int randSpeedIndex = Random.Range(0, wanderSpeeds.Length);
 		float randSpeed = wanderSpeeds[randSpeedIndex];

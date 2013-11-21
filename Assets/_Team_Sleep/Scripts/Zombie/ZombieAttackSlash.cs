@@ -2,10 +2,11 @@
 using System.Collections;
 
 public class ZombieAttackSlash : MonoBehaviour {
-	
+
 	public Transform LeftAttack;
 	public Transform RightAttack;
-	
+	public AudioClip[] AttackSounds;
+
 	private Transform Zombie;
 	private Transform Attack;
 	private tk2dSpriteAnimator AttackAnim;
@@ -47,7 +48,7 @@ public class ZombieAttackSlash : MonoBehaviour {
 			// call coroutine to pause before attack
 			// check in ontriggerstay when its sone if play is in range
 			
-			
+			PlayRandomAttackSound();
 			AttackAnim.Play();
 			_timeSinceLastAttack = Time.time + _attackDelay;				// Delays attack
 			StartCoroutine(RemoveAttackAnimation());						// Remove attack animation when finished
@@ -105,7 +106,12 @@ public class ZombieAttackSlash : MonoBehaviour {
 		//_state.curState = ZombieSM.ZombieState.Chase;
 		*/
 	}
-	
+
+	private void PlayRandomAttackSound(){
+		int rand = Random.Range(0, AttackSounds.Length);
+		transform.parent.audio.clip = AttackSounds[rand];
+		transform.parent.audio.Play();
+	}
 	
 	
 }

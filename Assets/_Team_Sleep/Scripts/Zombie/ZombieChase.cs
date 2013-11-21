@@ -13,7 +13,9 @@ public class ZombieChase : MonoBehaviour {
 	public int _speed1 = 52;
 	public int _speed2 = 58;
 	public int _speed3 = 70;
-	
+
+	public AudioClip[] Sounds;
+
 	public bool AlwaysChase = false;
 	
 	
@@ -73,6 +75,7 @@ public class ZombieChase : MonoBehaviour {
 						_outsideDetectionRange = false;
 						Player = other.transform;
 						_state.curState = ZombieSM.ZombieState.Chase;
+						PlayRandomSound();
 						CalculateChase();					
 					}			
 					/*
@@ -230,6 +233,14 @@ public class ZombieChase : MonoBehaviour {
 			_stopChaseTimer = Time.time + _stopChaseDelay;	
 			_outsideDetectionRange = true;
 		}
-		
+	}
+
+	void PlayRandomSound(){
+		if(Random.value < 0.4f){
+			int rand = Random.Range(0, Sounds.Length);
+			//Sounds[rand]
+			transform.parent.audio.clip = Sounds[rand];
+			transform.parent.audio.Play();
+		}
 	}
 }

@@ -9,7 +9,7 @@ public class ZombieSpawner2 : MonoBehaviour {
 	public int ZombieCount = 0;	
 	
 	private int ColliderCount = 0;
-	private int ZombieMax = 22;
+	private int ZombieMax = 25;
 	private int NumSpawners = 3;	
 	private Vector3[] SpawnPositions;
 	
