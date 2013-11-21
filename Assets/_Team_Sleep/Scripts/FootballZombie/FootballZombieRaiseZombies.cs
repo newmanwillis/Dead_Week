@@ -14,11 +14,9 @@ public class FootballZombieRaiseZombies : MonoBehaviour {
 	private int ZombieCount = 0;
 	
 	private FootballZombieSM FZSM;
-	private tk2dSpriteAnimator curAnim;
 
 	void Start () {
 		FZSM = GetComponent<FootballZombieSM>();
-		curAnim = GetComponent<tk2dSpriteAnimator>();
 
 		RaiseZombieZone = GameObject.Find("RaiseZombieZone").transform;
 		ZoneMaxX = (int)RaiseZombieZone.collider.bounds.max.x;
@@ -26,18 +24,26 @@ public class FootballZombieRaiseZombies : MonoBehaviour {
 		ZoneMaxY = (int)RaiseZombieZone.collider.bounds.max.y;
 		ZoneMinY = (int)RaiseZombieZone.collider.bounds.min.y;
 
+		print ("MAX: " + RaiseZombieZone.collider.bounds.max);
+		print ("MIN: " + RaiseZombieZone.collider.bounds.min);
+
 		// StartCoroutine(RaiseZombie());
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	
 	}
 
 	public void BeginRaisingZombies(){
 		// play animation
 		StartCoroutine(RaiseZombie());
-		curAnim.Play("raiseZombies");
+
 	}
 
 	IEnumerator RaiseZombie(){
 		//RaiseZombieZone.collider.bounds.
-		yield return new WaitForSeconds(0.8f);
+		yield return new WaitForSeconds(1);
 
 		int xPos = Random.Range(ZoneMinX, ZoneMaxX);
 		int yPos = Random.Range(ZoneMinY, ZoneMaxY);
@@ -45,19 +51,13 @@ public class FootballZombieRaiseZombies : MonoBehaviour {
 		Instantiate(AscensionZombie, pos, Quaternion.identity);
 
 		ZombieCount++;
-		if(ZombieCount <= 8){
+		if(ZombieCount <= 10){
 			StartCoroutine(RaiseZombie());
 		}
 		else{
 			ZombieCount = 0;
-			StartCoroutine(WaitBeforeSwitchingToChase());
+			//FZSM.SetStateToChase();
 		}
-	}
-
-	IEnumerator WaitBeforeSwitchingToChase(){
-		yield return new WaitForSeconds(3.5f);
-		curAnim.Stop();
-		FZSM.SetStateToChase();
 	}
 
 

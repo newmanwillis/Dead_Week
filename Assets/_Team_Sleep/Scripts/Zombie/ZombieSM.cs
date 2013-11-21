@@ -38,10 +38,6 @@ public class ZombieSM : MonoBehaviour {
 		_chase = transform.FindChild("ZombieDetectionRange").GetComponent<ZombieChase>();
 		
 		// Do the wander change in here, then add a "changeStateToWander" Function
-
-		// Start and stop animation so it doesn't glitch if interacting before animating starts
-		curAnim.Play();
-		curAnim.Stop();
 	}
 	
 	// Update is called once per frame

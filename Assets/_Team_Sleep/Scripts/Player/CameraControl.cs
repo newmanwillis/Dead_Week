@@ -142,7 +142,7 @@ public class CameraControl : MonoBehaviour {
 		if (boss) {
 			FootballZombieHealth bossHealth = boss.GetComponent<FootballZombieHealth>();
 			float percent = bossHealth.health / (float)bossHealth.maxHealth;
-			drawPercentBar(100, Screen.height - 75, Screen.width - 200, 50, percent, redBox, "Boss Health", false);
+			drawPercentBar(100, Screen.height - 100, Screen.width - 200, 50, percent, redBox, "Boss Health", false);
 		}
 	}
 	
