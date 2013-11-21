@@ -295,10 +295,10 @@ public class ZombieHealth : MonoBehaviour {
 
 	private void PlayDeathSound(HitTypes source, bool stam){
 		if(source == HitTypes.sword){
-			if(Random.value < 0.4f){
+			//if(Random.value < 0.4f){
 				audio.clip = DeathSounds[0];
 				audio.Play();
-			}
+			//}
 		}
 		else if(source == HitTypes.burstLaser && stam){
 			audio.clip = DeathSounds[1];
