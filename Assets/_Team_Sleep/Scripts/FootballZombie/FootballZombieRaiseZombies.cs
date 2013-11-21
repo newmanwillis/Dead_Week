@@ -26,9 +26,6 @@ public class FootballZombieRaiseZombies : MonoBehaviour {
 		ZoneMaxY = (int)RaiseZombieZone.collider.bounds.max.y;
 		ZoneMinY = (int)RaiseZombieZone.collider.bounds.min.y;
 
-		print ("MAX: " + RaiseZombieZone.collider.bounds.max);
-		print ("MIN: " + RaiseZombieZone.collider.bounds.min);
-
 		// StartCoroutine(RaiseZombie());
 	}
 
