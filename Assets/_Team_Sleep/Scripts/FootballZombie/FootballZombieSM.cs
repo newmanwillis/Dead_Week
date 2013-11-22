@@ -3,8 +3,8 @@ using System.Collections;
 
 public class FootballZombieSM : MonoBehaviour {
 
-	public enum BossStates {Chase, RaiseZombies};
-	private BossStates bState = BossStates.Chase;
+	public enum BossStates {Chase, RaiseZombies, Stop};
+	private BossStates bState = BossStates.Stop;
 
 	// Boss Scripts
 	private FootballZombieRaiseZombies RZ;
