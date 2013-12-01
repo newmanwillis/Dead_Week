@@ -10,10 +10,13 @@ using System.Collections;
 public class ZombieChase : MonoBehaviour {
 	
 	int _speed = 52;
-	public int _speed1 = 52;
-	public int _speed2 = 58;
-	public int _speed3 = 70;
+	//public int _speed1 = 52;
+	//public int _speed2 = 58;
+	//public int _speed3 = 70;
 
+	public int[] _chaseSpeeds = {52, 58, 70};
+	public float _xOffset = 7f;
+	public float _yOffset = 13f;
 	public AudioClip[] Sounds;
 
 	public bool AlwaysChase = false;
@@ -23,9 +26,6 @@ public class ZombieChase : MonoBehaviour {
 	private float _lookForPause = 0.5f;
 	private float _stopChaseTimer = 0;
 	private float _stopChaseDelay = 3.0f; 
-	private float _xOffset = 7f;
-	private float _yOffset = 13f;
-
 
 	private bool _foundPlayer = false;
 	private bool _outsideDetectionRange = true;
@@ -39,9 +39,9 @@ public class ZombieChase : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		int[] chaseSpeeds = {_speed1, _speed2, _speed3};
-		int speedIndex = Random.Range(0, chaseSpeeds.Length);
-		_speed = chaseSpeeds[speedIndex];
+		//int[] chaseSpeeds = {_speed1, _speed2, _speed3};
+		int speedIndex = Random.Range(0, _chaseSpeeds.Length);
+		_speed = _chaseSpeeds[speedIndex];
 		//_speed = 72;
 		//_speed = Random.Range(35, 52);
 		

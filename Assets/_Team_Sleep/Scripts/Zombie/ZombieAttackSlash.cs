@@ -13,12 +13,14 @@ public class ZombieAttackSlash : MonoBehaviour {
 	private tk2dSpriteAnimator curAnim;
 	private ZombieSM _state;
 	private ZombieHealth zombieHealth;
+	private enum direction {up, down, left, right};
 	
-	
-	public float _attackDelay = 1f;
+	private float _attackDelay = 1f;
 	private bool _readyToAttack = false;
 	private float _timeSinceLastAttack = 0;
-	
+
+	private Vector3 playerAttackedPosition;
+	private Transform Player;
 
 	void Start () {
 		Zombie = transform.parent;
@@ -30,9 +32,13 @@ public class ZombieAttackSlash : MonoBehaviour {
 	void OnTriggerStay(Collider other){
 		// print ("in Attack Collider");
 		if(other.tag == "Player"  &&  _state.curState == ZombieSM.ZombieState.Chase && _timeSinceLastAttack < Time.time){
-			
+
 			_state.curState = ZombieSM.ZombieState.Attack;					// switch to Attack State
-			
+
+			//StartCoroutine(AttackPause());
+			// Call coroutine
+
+
 			Transform Player = other.transform;
 			Vector3 posDifference = Player.position - Zombie.position;
 			if(posDifference.x < 0){	// Left Attack 
@@ -57,12 +63,7 @@ public class ZombieAttackSlash : MonoBehaviour {
 		}
 		
 	}
-	
-	//IEnumerator PauseBeforeAttack(){
-			
-	//}
-	
-	
+
 	IEnumerator RemoveAttackAnimation(){
 		//print ("in removeattackanimation");
 		while(AttackAnim.Playing){
@@ -74,9 +75,34 @@ public class ZombieAttackSlash : MonoBehaviour {
 			yield return null;	
 		}
 		Destroy(Attack.gameObject);
-		//_state.curState = ZombieSM.ZombieState.Chase;
-		
+		//_state.curState = ZombieSM.ZombieState.Chase;	
 	}
+
+	/*IEnumerator AttackPause(){
+
+
+
+		print ("first");
+		//
+		curAnim.Stop();
+		yield return new WaitForSeconds(0.2f);
+
+		direction facing = FindDirection();
+		ChooseAttackAnimation(facing);
+		print ("second");
+
+
+
+		yield return new WaitForSeconds(0.4f);
+
+
+
+
+
+		print ("thrid");
+	}*/
+
+
 	
 	IEnumerator MovementPause(float standTime){
 		float totalTime = Time.time + standTime;
@@ -112,6 +138,34 @@ public class ZombieAttackSlash : MonoBehaviour {
 		transform.parent.audio.clip = AttackSounds[rand];
 		transform.parent.audio.Play();
 	}
-	
-	
+
+	private direction FindDirection(){
+		string clipName = curAnim.CurrentClip.name;
+		if(clipName.Contains("Down") || clipName.Contains("Forward"))
+			return direction.down;
+		else if(clipName.Contains("Up") || clipName.Contains("Backward"))
+			return direction.up;		
+		else if(clipName.Contains("Left"))
+			return direction.left;
+		else
+			return direction.right;			
+	}
+
+	private void ChooseAttackAnimation(direction facing){
+		switch(facing){
+		case direction.up:
+			curAnim.Play("attackUp");
+			break;
+		case direction.down:
+			curAnim.Play("attackDown");
+			break;
+		case direction.left:
+			curAnim.Play("attackLeft");
+			break;
+		case direction.right:
+			curAnim.Play("attackRight");
+			break;
+		}	
+	}
+
 }

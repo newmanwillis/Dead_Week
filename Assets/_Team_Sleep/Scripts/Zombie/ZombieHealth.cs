@@ -6,7 +6,7 @@ public class ZombieHealth : MonoBehaviour {
 	public Transform[] Drops;
 	public AudioClip[] DeathSounds;
 	public AudioClip[] HitSounds;
-	public float DropChance = 0.0f;
+	public float DropChance = 0.13f;
 	public float hitPauseTime = 0.5f;
 	
 	public bool CountDeath = false;
@@ -20,7 +20,7 @@ public class ZombieHealth : MonoBehaviour {
 	public float LastHitTime { get; private set; }
 	// float stunEnd;
 	
-	public enum direction {up, down, left, right};
+	private enum direction {up, down, left, right};
 	public bool isDead = false;
 	
 	private bool hitMultipleTimes = false;
@@ -217,7 +217,7 @@ public class ZombieHealth : MonoBehaviour {
 		transform.position = newPos;
 	}
 	
-	public direction FindDirection(){
+	private direction FindDirection(){
 		//int facing;
 		string clipName = curAnim.CurrentClip.name;
 		if(clipName.Contains("Down") || clipName.Contains("Forward"))
@@ -230,7 +230,7 @@ public class ZombieHealth : MonoBehaviour {
 			return direction.right;			
 	}
 	
-	public void ChooseGotHitAnimation(direction facing){
+	private void ChooseGotHitAnimation(direction facing){
 		switch(facing){
 			case direction.up:
 				curAnim.Play("GotHitUp");
@@ -248,7 +248,7 @@ public class ZombieHealth : MonoBehaviour {
 	}
 	
 	
-	public void ChooseDeathAnimation(direction facing){
+	private void ChooseDeathAnimation(direction facing){
 		switch(facing){
 			case direction.up:
 				if (lastHitType == HitTypes.burstLaser) {
