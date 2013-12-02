@@ -62,7 +62,7 @@ public class ZombieHealth : MonoBehaviour {
 
 			// Just for Boss Zombie
 			if(damage != 1007)
-				StartCoroutine( TurnOffCharacterController(0.5f) );
+				StartCoroutine( TurnOffCharacterController(0.4f) );
 			else
 				CC.enabled = false;
 			
