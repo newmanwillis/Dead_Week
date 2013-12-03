@@ -29,6 +29,10 @@ public class Button : MonoBehaviour {
 		if ((!noTimeLimit) && currentlyPowered && unpowerTime < Time.time) {
 			childObj.SetActive(!enableChildWhenPowered);
 			GetComponent<tk2dSprite>().SetSprite("laserbuttonOFFcropped");
+			RepeatedlySpawn spawner = GetComponent<RepeatedlySpawn>();
+			if (spawner != null) {
+				spawner.spawning = !enableChildWhenPowered;
+			}
 		}
 	}
 	
@@ -36,11 +40,19 @@ public class Button : MonoBehaviour {
 		childObj.SetActive(enableChildWhenPowered);
 		currentlyPowered = true;
 		GetComponent<tk2dSprite>().SetSprite("laserbuttonONcropped");
+		RepeatedlySpawn spawner = GetComponent<RepeatedlySpawn>();
+		if (spawner != null) {
+			spawner.spawning = enableChildWhenPowered;
+		}
 		unpowerTime = Time.time + poweredTime;
 	}
 	
 	public void powerForever() {
 		childObj.SetActive(enableChildWhenPowered);
+		RepeatedlySpawn spawner = GetComponent<RepeatedlySpawn>();
+		if (spawner != null) {
+			spawner.spawning = enableChildWhenPowered;
+		}
 		currentlyPowered = true;
 		noTimeLimit = true;
 	}

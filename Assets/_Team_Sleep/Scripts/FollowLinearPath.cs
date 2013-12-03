@@ -15,6 +15,7 @@ public class FollowLinearPath : MonoBehaviour {
 	}
 
 	public void setPath(string pathName, bool setPosAndIndex = true) {
+		Debug.Log("Setting path to : " + pathName);
 		GameObject pathParentObj = GameObject.Find(pathName);
 		int count = pathParentObj.transform.childCount;
 		pathPoints = new Vector3[count];

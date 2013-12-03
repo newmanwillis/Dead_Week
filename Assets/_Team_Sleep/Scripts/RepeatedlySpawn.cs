@@ -23,6 +23,7 @@ public class RepeatedlySpawn : MonoBehaviour {
 			Debug.Log ("name: " + gameObject.name + " nextSpawnTime: " + nextSpawnTime + " time: " + Time.time + " interval: " + spawnInterval);
 			nextSpawnTime = Time.time + spawnInterval;
 			GameObject obj = ((Transform)Instantiate(transformToSpawn, transform.position, Quaternion.identity)).gameObject;
+			obj.GetComponent<FollowLinearPath>().defaultPathName = pathName;
 			obj.GetComponent<FollowLinearPath>().setPath(pathName);
 		}
 	}
