@@ -70,9 +70,9 @@ public class PlayerAttackHitbox : MonoBehaviour {
 		ArrayList deadZombies = new ArrayList();
 		foreach (Collider col in zombies.Keys) {
 			if (col) {
-				hitZombie = true;
 				ZombieHealth zombie = col.GetComponent<ZombieHealth>();
 				if (zombie.LastHitTime < attackStart) {
+					hitZombie = true;
 					zombie.TakeDamage(damage, ZombieHealth.HitTypes.sword);
 				}
 			} else {
