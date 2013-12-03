@@ -43,6 +43,7 @@ public class CameraControl : MonoBehaviour {
 		if (!isCutscene) {
 			playerObject = GameObject.Find("Player");
 			player = playerObject.GetComponent<Player>();
+			controlKeysPosition = new Rect(50, Screen.height - 15 - controlKeys.height, controlKeys.width, controlKeys.height);
 		}
 		
 		isPaused = false;
@@ -57,9 +58,7 @@ public class CameraControl : MonoBehaviour {
 		redWhiteSwitchTime = Time.time + 1;
 		
 		boss = GameObject.Find("FootballZombie");
-		
-		controlKeysPosition = new Rect(50, Screen.height - 15 - controlKeys.height, controlKeys.width, controlKeys.height);
-	}
+}
 	
 	// Update is called once per frame
 	void Update () {
@@ -75,13 +74,12 @@ public class CameraControl : MonoBehaviour {
 			if (isPaused) {
 				isPaused = false;
 				Time.timeScale = 1;
-			}// else {
-			//	isPaused = true;
-			//	currentMessage = "You paused the game!";
-			//	Time.timeScale = 0;
-			//}
-		}
-		
+			} else {
+				isPaused = true;
+				currentMessage = "You paused the game!";
+				Time.timeScale = 0;
+			}
+		}	
 		if (isPaused) {
 			if (currentMessage != null) {
 				drawTextMessage(currentMessage);
@@ -191,6 +189,7 @@ public class CameraControl : MonoBehaviour {
 	}
 	
 	public void pauseAndDrawTextMessage(string message) {
+		Debug.Log ("TM Called with: " + message);
 		currentMessage = message;
 		isPaused = true;
 		Time.timeScale = 0;
@@ -198,6 +197,7 @@ public class CameraControl : MonoBehaviour {
 	}
 	
 	public void pauseAndDrawInfoCard(Texture infoCard) {
+		Debug.Log ("IF Called with: " + infoCard);
 		currentMessage = null;
 		isPaused = true;
 		Time.timeScale = 0;
@@ -205,6 +205,7 @@ public class CameraControl : MonoBehaviour {
 	}
 	
 	public void pauseAndDrawTextMessage(string message, Texture face, bool faceToTheLeft) {
+		Debug.Log ("TM Called with: " + message + ", " + face + ", " + faceToTheLeft);
 		pauseAndDrawTextMessage(message);
 		currentSpeakerFace = face;
 		faceIsToTheLeft = faceToTheLeft;
