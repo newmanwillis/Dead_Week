@@ -74,11 +74,11 @@ public class CameraControl : MonoBehaviour {
 			if (isPaused) {
 				isPaused = false;
 				Time.timeScale = 1;
-			} else {
-				isPaused = true;
-				currentMessage = "You paused the game!";
-				Time.timeScale = 0;
-			}
+			}// else {
+			//	isPaused = true;
+			//	currentMessage = "You paused the game!";
+			//	Time.timeScale = 0;
+			//}
 		}	
 		if (isPaused) {
 			if (currentMessage != null) {
@@ -86,6 +86,13 @@ public class CameraControl : MonoBehaviour {
 			} else if (currentInfoCard != null) {
 				drawInfoCard(currentInfoCard);
 			}
+		} else {
+			/* 
+			 * Some unknown force is setting this to zero if a scene starts without an
+			 * initial info card. 
+			 * I don't know what it is, but this fixes the symptoms.
+			 */
+			Time.timeScale = 1;
 		}
 		
 		if (!isCutscene) {
