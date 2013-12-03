@@ -14,6 +14,10 @@ public class LaserRoomTurnOnButton : MonoBehaviour {
 			transform.FindChild("ButtonOn").gameObject.SetActive(true);
 			GameObject.Find("Door1").GetComponent<LaserRoomSlidingDoor>().TurnPowerOn();
 			GameObject.Find("Door2").GetComponent<LaserRoomSlidingDoor>().TurnPowerOn();
+
+			foreach (RepeatedlySpawn spawner in GetComponents<RepeatedlySpawn>()) {
+				spawner.spawning = true;
+			}
 		}
 	}
 }
