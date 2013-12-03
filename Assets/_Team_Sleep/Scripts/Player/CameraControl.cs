@@ -19,6 +19,7 @@ public class CameraControl : MonoBehaviour {
 	public Texture blueBox;
 	public Texture redBox;
 	public Texture greenBox;
+	public Texture yellowBox;
 	public Texture textMessageBox;
 	
 	private bool isPaused;
@@ -35,6 +36,9 @@ public class CameraControl : MonoBehaviour {
 	public bool isCutscene;
 	
 	private GameObject boss;
+
+	private float lastHealthPercent = 0;
+	private float lastEnergyPercent = 0;
 	
 	// Use this for initialization
 	void Start () {
@@ -100,11 +104,12 @@ public class CameraControl : MonoBehaviour {
 			float health = playerHealth();
 			float healthPercent = health / player.maxHealth;
 			GUI.DrawTexture(new Rect(0, 0, healthBar.width, healthBar.height), healthBar);
-			drawPercentBar(5, 33, 234, 25, healthPercent, redBox);
-			
+			drawPercentBar(5, 33, 234, 25, healthPercent, redBox, null, lastHealthPercent);
+			lastHealthPercent = Mathf.Max(healthPercent, lastHealthPercent - 0.001F);
+
 			float stamPercent = player.curStamina / (float) player.maxStamina;
 			GUI.DrawTexture(new Rect(0, 58, staminaBar.width, staminaBar.height), staminaBar);
-			drawPercentBar(7, 2*33 + 24, 232, 25, stamPercent, greenBox, null, false);
+			drawPercentBar(7, 2*33 + 24, 232, 25, stamPercent, greenBox, null, 0, false);
 			
 			drawEnergyBar();
 			
@@ -117,7 +122,7 @@ public class CameraControl : MonoBehaviour {
 				// 200 wide, centered
 				// 40 high, starting 3/4 down the screen
 				string msg = hacking.isGenerator ? "Restarting..." : "Hacking...";
-				drawPercentBar(Screen.width/2 - 100, (int)(Screen.height * (3.0/4.0)), 200, 40, percent, blueBox, msg, false);
+				drawPercentBar(Screen.width/2 - 100, (int)(Screen.height * (3.0/4.0)), 200, 40, percent, blueBox, msg, 0, false);
 			}
 			
 			GUI.DrawTexture(controlKeysPosition, blackBox);
@@ -140,24 +145,26 @@ public class CameraControl : MonoBehaviour {
 		float energyMax = player.maxPhoneCharge;
 		float percent = energy / energyMax;
 		GUI.DrawTexture(new Rect(Screen.width - 289, 10, energyBarLabel.width, energyBarLabel.height), energyBarLabel);
-		drawPercentBar(Screen.width - 284, 10+energyBarLabel.height, 234, 25, percent);
+		drawPercentBar(Screen.width - 284, 10+energyBarLabel.height, 234, 25, percent, null, null, lastEnergyPercent);
+		lastEnergyPercent = Mathf.Max(percent, lastEnergyPercent - 0.001F);
 	}
 	
 	void drawBossHealth() {
 		if (boss) {
 			FootballZombieHealth bossHealth = boss.GetComponent<FootballZombieHealth>();
 			float percent = bossHealth.health / (float)bossHealth.maxHealth;
-			drawPercentBar(100, Screen.height - 75, Screen.width - 200, 50, percent, redBox, "Boss Health", false);
+			drawPercentBar(100, Screen.height - 75, Screen.width - 200, 50, percent, redBox, "Boss Health", 0, false);
 		}
 	}
 	
-	void drawPercentBar(int topLeftX, int topLeftY, int length, int height, float percent, Texture color = null, string text = null, bool flashIfLow = true, int margin = 5) {
+	void drawPercentBar(int topLeftX, int topLeftY, int length, int height, float percent, Texture color = null, string text = null, float oldPercent = 0f, bool flashIfLow = true, int margin = 5) {
 		color = color == null ? blueBox : color;
 		if (percent < .25 && currentlyRedIfLow && flashIfLow) {
 			GUI.DrawTexture(new Rect(topLeftX, topLeftY, length, height), redBox);
 		} else {
 			GUI.DrawTexture(new Rect(topLeftX, topLeftY, length, height), whiteBox);
 		}
+		GUI.DrawTexture(new Rect(topLeftX + margin, topLeftY + margin, (length - (margin*2))*oldPercent, height - margin*2), yellowBox);
 		GUI.DrawTexture(new Rect(topLeftX + margin, topLeftY + margin, (length - (margin*2))*percent, height - margin*2), color);
 		if (text != null) {
 			myStyle.alignment = TextAnchor.MiddleCenter;
