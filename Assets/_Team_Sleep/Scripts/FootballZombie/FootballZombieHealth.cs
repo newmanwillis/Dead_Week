@@ -40,6 +40,7 @@ public class FootballZombieHealth : MonoBehaviour {
 			health -= damage;
 			if (health <= 0) {
 				// start death animation
+				GetComponent<FootballZombieSM>().SetStateToDead();
 				anim.Play("bossDeath");
 				StartCoroutine(waitForAnimationAndDie());
 				//Destroy(gameObject);
