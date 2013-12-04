@@ -14,6 +14,8 @@ public class Destructible : MonoBehaviour {
 	
 	public int[] dropChances;
 	public Transform[] drops;
+
+	public bool isVendingMachine = false;
 	
 	private float[] dropCutoffs;
 	/*public int healthDropChance;
@@ -93,7 +95,11 @@ public class Destructible : MonoBehaviour {
 		}
 		
 		if (drops[index] != null) {
-			Instantiate(drops[index], transform.position, Quaternion.identity);
+			Vector3 dropPos = transform.position;
+			if (isVendingMachine) {
+				dropPos += new Vector3(0, -20, 0);
+			}
+			Instantiate(drops[index], dropPos, Quaternion.identity);
 		} // else, drop nothing
 	}
 	
@@ -103,7 +109,9 @@ public class Destructible : MonoBehaviour {
 		}
 		
 		spawnPickups();
-		Destroy(GetComponent<BoxCollider>());
+		if (!isVendingMachine) {
+			Destroy(GetComponent<BoxCollider>());
+		}
 		Destroy(transform.FindChild("ColliderForBullet").gameObject);
 		if (!wasDisintigrated && animator.GetClipByName("smashed_flashing") != null) {
 			animator.Play("smashed_flashing");
