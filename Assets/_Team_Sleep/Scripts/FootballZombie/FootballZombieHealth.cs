@@ -40,8 +40,9 @@ public class FootballZombieHealth : MonoBehaviour {
 			health -= damage;
 			if (health <= 0) {
 				// start death animation
-				//StartCoroutine(waitForAnimationAndDie());
-				Destroy(gameObject);
+				anim.Play("bossDeath");
+				StartCoroutine(waitForAnimationAndDie());
+				//Destroy(gameObject);
 			}
 		}
 	}
