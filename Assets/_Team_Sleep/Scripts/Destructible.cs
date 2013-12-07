@@ -95,11 +95,13 @@ public class Destructible : MonoBehaviour {
 		}
 		
 		if (drops[index] != null) {
-			Vector3 dropPos = transform.position;
 			if (isVendingMachine) {
-				dropPos += new Vector3(0, -20, 0);
+				for (int i = 0; i < 3; i++) {
+					Instantiate(drops[index], transform.position + new Vector3(8*(i-1), -20, 0), Quaternion.identity);
+				}
+			} else {
+				Instantiate(drops[index], transform.position, Quaternion.identity);
 			}
-			Instantiate(drops[index], dropPos, Quaternion.identity);
 		} // else, drop nothing
 	}
 	
