@@ -39,7 +39,11 @@ public class ZombieAttackSlash : MonoBehaviour {
 			// Call coroutine
 
 
-			Transform Player = other.transform;
+			//Transform Player = other.transform;
+			Player = other.transform;
+
+			StartCoroutine(BeginAttack());
+			/*
 			Vector3 posDifference = Player.position - Zombie.position;
 			if(posDifference.x < 0){	// Left Attack 
 				Attack = (Transform)Instantiate(LeftAttack, Player.position, Quaternion.identity);
@@ -60,10 +64,45 @@ public class ZombieAttackSlash : MonoBehaviour {
 			StartCoroutine(RemoveAttackAnimation());						// Remove attack animation when finished
 			//print ("between 2 coroutines");
 			StartCoroutine(MovementPause(1f));								// FIX, stop when out of detection range, but in chase mode.
+			*/
 		}
 		
 	}
 
+	IEnumerator BeginAttack(){
+		direction facing = FindDirection();
+		ChooseAttackAnimation(facing);
+
+		Vector3 posDifference = Player.position - Zombie.position;
+
+		yield return new WaitForSeconds(0.2f);
+		if(_state.curState != ZombieSM.ZombieState.Attack){
+			yield break;
+		}
+
+		if(posDifference.x < 0){	// Left Attack 
+			Attack = (Transform)Instantiate(LeftAttack, Player.position, Quaternion.identity);
+		}
+		else{						// RightAttack
+			Attack = (Transform)Instantiate(RightAttack, Player.position, Quaternion.identity);
+		}
+		Attack.transform.position += new Vector3(0, 0, -1);
+		Attack.parent = transform;
+		AttackAnim = Attack.GetComponent<tk2dSpriteAnimator>();
+		
+		// call coroutine to pause before attack
+		// check in ontriggerstay when its sone if play is in range
+		
+		PlayRandomAttackSound();
+		AttackAnim.Play();
+		_timeSinceLastAttack = Time.time + _attackDelay;				// Delays attack
+		StartCoroutine(RemoveAttackAnimation());						// Remove attack animation when finished
+		//print ("between 2 coroutines");
+		StartCoroutine(MovementPause(1f));								// FIX, stop when out of detection range, but in chase mode.
+		
+	}
+	
+	
 	IEnumerator RemoveAttackAnimation(){
 		//print ("in removeattackanimation");
 		while(AttackAnim.Playing){
