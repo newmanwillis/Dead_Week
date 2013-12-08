@@ -35,10 +35,6 @@ public class ZombieAttackSlash : MonoBehaviour {
 
 			_state.curState = ZombieSM.ZombieState.Attack;					// switch to Attack State
 
-			//StartCoroutine(AttackPause());
-			// Call coroutine
-
-
 			//Transform Player = other.transform;
 			Player = other.transform;
 
@@ -89,9 +85,7 @@ public class ZombieAttackSlash : MonoBehaviour {
 		Attack.transform.position += new Vector3(0, 0, -1);
 		Attack.parent = transform;
 		AttackAnim = Attack.GetComponent<tk2dSpriteAnimator>();
-		
-		// call coroutine to pause before attack
-		// check in ontriggerstay when its sone if play is in range
+
 		
 		PlayRandomAttackSound();
 		AttackAnim.Play();
@@ -116,33 +110,8 @@ public class ZombieAttackSlash : MonoBehaviour {
 		Destroy(Attack.gameObject);
 		//_state.curState = ZombieSM.ZombieState.Chase;	
 	}
-
-	/*IEnumerator AttackPause(){
-
-
-
-		print ("first");
-		//
-		curAnim.Stop();
-		yield return new WaitForSeconds(0.2f);
-
-		direction facing = FindDirection();
-		ChooseAttackAnimation(facing);
-		print ("second");
-
-
-
-		yield return new WaitForSeconds(0.4f);
-
-
-
-
-
-		print ("thrid");
-	}*/
-
-
 	
+
 	IEnumerator MovementPause(float standTime){
 		float totalTime = Time.time + standTime;
 		while(Time.time < totalTime){

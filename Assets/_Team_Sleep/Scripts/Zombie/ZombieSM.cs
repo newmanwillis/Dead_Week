@@ -3,10 +3,11 @@ using System.Collections;
 
 public class ZombieSM : MonoBehaviour {
 	
-	public enum ZombieState {Wander, Chase, Attack, TakingDamage, Die, ControlledMovement, Stop, EnumeratedMovement};
+	public enum ZombieState {Wander, Chase, Attack, TakingDamage, Die, ControlledMovement, Stop, EnumeratedMovement, Cutscene};
 	// public ZombieState StartState; // = ZombieState.Wander;
 	public ZombieState curState;
 	public bool Stoppable = true;
+	public bool Cutscene = false;
 	
 	private tk2dSprite sprite;
 	private tk2dSpriteAnimator curAnim;
@@ -22,6 +23,8 @@ public class ZombieSM : MonoBehaviour {
 	void Awake(){
 		if(Stoppable)
 			curState = ZombieState.Stop;
+		else if(Cutscene)
+			curState = ZombieState.Cutscene;
 		else
 			curState = ZombieState.Wander;
 		//curState = StartState;
@@ -33,10 +36,12 @@ public class ZombieSM : MonoBehaviour {
 		curAnim = GetComponent<tk2dSpriteAnimator>();
 		CC = GetComponent<CharacterController>();
 		
-		//Debug.Log("in Zombie Start");		
-		_wander = transform.GetComponent<ZombieWander>();
-		_chase = transform.FindChild("ZombieDetectionRange").GetComponent<ZombieChase>();
-		
+		//Debug.Log("in Zombie Start");	
+
+		if(curState != ZombieState.Cutscene){
+			_wander = transform.GetComponent<ZombieWander>();
+			_chase = transform.FindChild("ZombieDetectionRange").GetComponent<ZombieChase>();
+		}
 		// Do the wander change in here, then add a "changeStateToWander" Function
 
 		// Start and stop animation so it doesn't glitch if interacting before animating starts
