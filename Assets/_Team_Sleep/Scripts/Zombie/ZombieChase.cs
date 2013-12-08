@@ -14,14 +14,18 @@ public class ZombieChase : MonoBehaviour {
 	//public int _speed2 = 58;
 	//public int _speed3 = 70;
 
+	public int _maxSpeed = 105;
 	public int[] _chaseSpeeds = {52, 58, 70};
+	public float _accelerationRate = 1.7f;
+
 	public float _xOffset = 7f;
 	public float _yOffset = 13f;
 	public AudioClip[] Sounds;
 
 	public bool AlwaysChase = false;
 	
-	
+	private int _startSpeed;
+
 	private float _lookForPlayerTimer = 0;	
 	private float _lookForPause = 0.5f;
 	private float _stopChaseTimer = 0;
@@ -42,6 +46,7 @@ public class ZombieChase : MonoBehaviour {
 		//int[] chaseSpeeds = {_speed1, _speed2, _speed3};
 		int speedIndex = Random.Range(0, _chaseSpeeds.Length);
 		_speed = _chaseSpeeds[speedIndex];
+		_startSpeed = _speed;
 		//_speed = 72;
 		//_speed = Random.Range(35, 52);
 		
@@ -65,7 +70,7 @@ public class ZombieChase : MonoBehaviour {
 																												// Temp change from .Stunned
 				int layerMask = ~(1 << 0);
 				RaycastHit hit;
-				if(Physics.Raycast(Zombie.position, other.transform.position - Zombie.position, out hit, 80, layerMask)){
+				if(Physics.Raycast(Zombie.position, other.transform.position - Zombie.position, out hit, 70, layerMask)){
 					
 					if(hit.transform.tag == "Wall"){
 						_lookForPlayerTimer = Time.time + _lookForPause;					
@@ -76,6 +81,7 @@ public class ZombieChase : MonoBehaviour {
 						Player = other.transform;
 						_state.curState = ZombieSM.ZombieState.Chase;
 						PlayRandomSound();
+						StartCoroutine(AccelerateSpeed());
 						CalculateChase();					
 					}			
 					/*
@@ -98,6 +104,7 @@ public class ZombieChase : MonoBehaviour {
 		if(_outsideDetectionRange){
 			_outsideDetectionRange = false;
 		}
+		StartCoroutine(AccelerateSpeed());
 		CalculateChase();		
 	}
 	
@@ -105,6 +112,7 @@ public class ZombieChase : MonoBehaviour {
 		if(_outsideDetectionRange && _stopChaseTimer < Time.time && !AlwaysChase){		// Stops Chasing player after they have gone out of detection range for long enough
 			_state.curState = ZombieSM.ZombieState.Wander;
 			_foundPlayer = false;
+			_speed = _startSpeed;
 			curAnim.Stop();
 		}
 		else{															// TO DO: CODE NEEDS ESSENTIAL RESTRUCTURING
@@ -185,7 +193,7 @@ public class ZombieChase : MonoBehaviour {
 				//  they are equal	
 			}		
 				
-			Vector3 move = direction * _speed;
+			Vector3 move = direction; // * _speed;
 			float chaseTime = Time.time + Random.Range(0.3f, 0.8f);
 			StartCoroutine(Chase(move, chaseTime));
 		}	
@@ -200,7 +208,8 @@ public class ZombieChase : MonoBehaviour {
 					_currentlyMoving = false;
 					yield break;	
 				}
-				CC.Move(move * Time.deltaTime);			
+				CC.Move((move * _speed)  * Time.deltaTime);
+				// print ("move * speed: " + move * _speed);
 				yield return null;
 			}
 			_currentlyMoving = false;
@@ -243,4 +252,32 @@ public class ZombieChase : MonoBehaviour {
 			transform.parent.audio.Play();
 		}
 	}
+
+	IEnumerator AccelerateSpeed(){
+
+		// float startSpeed = _speed;
+		//float fullSpeed = 105f;
+		//float lerpTime = 1.7f;
+
+		float fullTime = Time.time + _accelerationRate;
+		
+		while(Time.time < fullTime){
+			if(_state.curState != ZombieSM.ZombieState.Chase){
+
+				_speed = _startSpeed;
+				yield break;
+			}
+
+			float curTime = fullTime - Time.time;
+			_speed = (int) Mathf.Lerp(((float)_startSpeed), ((float)_maxSpeed), 1 - (curTime/_accelerationRate));
+
+			yield return null;
+		}
+
+
+	}
+
+
+
+
 }

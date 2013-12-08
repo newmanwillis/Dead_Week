@@ -20,7 +20,7 @@ public class RepeatedlySpawn : MonoBehaviour {
 	
 	void FixedUpdate() {
 		if (spawning && nextSpawnTime < Time.time) {
-			Debug.Log ("name: " + gameObject.name + " nextSpawnTime: " + nextSpawnTime + " time: " + Time.time + " interval: " + spawnInterval);
+			// Debug.Log ("name: " + gameObject.name + " nextSpawnTime: " + nextSpawnTime + " time: " + Time.time + " interval: " + spawnInterval);
 			nextSpawnTime = Time.time + spawnInterval;
 			GameObject obj = ((Transform)Instantiate(transformToSpawn, transform.position, Quaternion.identity)).gameObject;
 			obj.GetComponent<FollowLinearPath>().defaultPathName = pathName;
