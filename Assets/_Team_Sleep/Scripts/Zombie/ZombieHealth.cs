@@ -13,8 +13,9 @@ public class ZombieHealth : MonoBehaviour {
 	
 	public enum HitTypes {sword, burstLaser, stun, laser}
 	private HitTypes lastHitType;
-	
-	public int health = 100;
+
+	public int[] Healths = {100};
+	private int health = 100;
 
 	// public bool IsStunned { get; private set; }
 	public float LastHitTime { get; private set; }
@@ -38,6 +39,9 @@ public class ZombieHealth : MonoBehaviour {
 		sprite = GetComponent<tk2dSprite>();
 		_state = GetComponent<ZombieSM>();
 		CC = GetComponent<CharacterController>();
+
+		int healthIndex = Random.Range(0, Healths.Length);
+		health = Healths[healthIndex];
 	}
 	
 	public void TakeDamage(int damage, HitTypes source, bool generateStamina = true){		// perhaps change parameters to get enum of what attack killed it to determine death animation
