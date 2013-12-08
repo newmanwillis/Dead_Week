@@ -153,7 +153,8 @@ public class CameraControl : MonoBehaviour {
 		if (boss) {
 			FootballZombieHealth bossHealth = boss.GetComponent<FootballZombieHealth>();
 			float percent = bossHealth.health / (float)bossHealth.maxHealth;
-			drawPercentBar(100, Screen.height - 75, Screen.width - 200, 50, percent, redBox, "Boss Health", 0, false);
+			int ctrlKeysOffset = (int)controlKeysPosition.xMax;
+			drawPercentBar(100 + ctrlKeysOffset, Screen.height - 75, Screen.width - 200 - ctrlKeysOffset, 50, percent, redBox, "Boss Health", 0, false);
 		}
 	}
 	
@@ -164,8 +165,10 @@ public class CameraControl : MonoBehaviour {
 		} else {
 			GUI.DrawTexture(new Rect(topLeftX, topLeftY, length, height), whiteBox);
 		}
-		GUI.DrawTexture(new Rect(topLeftX + margin, topLeftY + margin, (length - (margin*2))*oldPercent, height - margin*2), yellowBox);
-		GUI.DrawTexture(new Rect(topLeftX + margin, topLeftY + margin, (length - (margin*2))*percent, height - margin*2), color);
+		float oldPercentWidth = Mathf.Max((length - (margin*2))*oldPercent, 0);
+		float newPercentWidth = Mathf.Max((length - (margin*2))*percent, 0);
+		GUI.DrawTexture(new Rect(topLeftX + margin, topLeftY + margin, oldPercentWidth, height - margin*2), yellowBox);
+		GUI.DrawTexture(new Rect(topLeftX + margin, topLeftY + margin, newPercentWidth, height - margin*2), color);
 		if (text != null) {
 			myStyle.alignment = TextAnchor.MiddleCenter;
 			GUI.Label(new Rect(topLeftX + margin, topLeftY + margin, length - margin*2, height - margin*2), text, myStyle);
