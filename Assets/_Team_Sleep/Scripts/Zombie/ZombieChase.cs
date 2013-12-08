@@ -25,12 +25,13 @@ public class ZombieChase : MonoBehaviour {
 	public bool AlwaysChase = false;
 	
 	private int _startSpeed;
-
+	
 	private float _lookForPlayerTimer = 0;	
 	private float _lookForPause = 0.5f;
 	private float _stopChaseTimer = 0;
 	private float _stopChaseDelay = 3.0f; 
 
+	private bool _alertNearbyZombies = false;
 	private bool _foundPlayer = false;
 	private bool _outsideDetectionRange = true;
 	private bool _currentlyMoving = false;
@@ -82,7 +83,9 @@ public class ZombieChase : MonoBehaviour {
 						_state.curState = ZombieSM.ZombieState.Chase;
 						PlayRandomSound();
 						StartCoroutine(AccelerateSpeed());
-						CalculateChase();					
+						StartCoroutine(AlertNearbyZombiesTimer());
+						CalculateChase();
+
 					}			
 					/*
 					if(hit.transform.gameObject.layer == LayerMask.NameToLayer( "Wall" )){
@@ -91,6 +94,16 @@ public class ZombieChase : MonoBehaviour {
 					if(hit.transform.gameObject.layer == LayerMask.NameToLayer( "Player" )){
 						print("hit player layer");
 					}	*/		
+				}
+			}
+		}
+		else if(_alertNearbyZombies){	// Alerts other zombies to player
+			if(other.tag == "Zombie"){
+				// print("found nearby zombie");
+				ZombieSM zsm = other.GetComponent<ZombieSM>();
+				if(zsm.curState == ZombieSM.ZombieState.Wander || zsm.curState == ZombieSM.ZombieState.ControlledMovement || zsm.curState == ZombieSM.ZombieState.EnumeratedMovement){
+					zsm.SetStateToChase();
+					// print("set nearby zombie to chase");
 				}
 			}
 		}
@@ -267,17 +280,21 @@ public class ZombieChase : MonoBehaviour {
 				_speed = _startSpeed;
 				yield break;
 			}
-
 			float curTime = fullTime - Time.time;
 			_speed = (int) Mathf.Lerp(((float)_startSpeed), ((float)_maxSpeed), 1 - (curTime/_accelerationRate));
 
 			yield return null;
 		}
-
-
 	}
 
+	// Makes other zombies near a zombie that found player also get alerted to player
+	IEnumerator AlertNearbyZombiesTimer(){
 
+		yield return new WaitForSeconds(0.2f);
+		_alertNearbyZombies = true;
+		yield return new WaitForSeconds(0.2f);
+		_alertNearbyZombies = false;
+	}
 
 
 }
