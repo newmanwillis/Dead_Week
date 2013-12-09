@@ -103,6 +103,7 @@ public class ZombieChase : MonoBehaviour {
 				ZombieSM zsm = other.GetComponent<ZombieSM>();
 				if(zsm.curState == ZombieSM.ZombieState.Wander || zsm.curState == ZombieSM.ZombieState.ControlledMovement || zsm.curState == ZombieSM.ZombieState.EnumeratedMovement){
 					zsm.SetStateToChase();
+					other.transform.FindChild("ZombieDetectionRange").GetComponent<ZombieChase>().PlayRandomSound(); //.GetComponents<ZombieChase>().PlayRandomSound();
 					// print("set nearby zombie to chase");
 				}
 			}
@@ -257,8 +258,8 @@ public class ZombieChase : MonoBehaviour {
 		}
 	}
 
-	void PlayRandomSound(){
-		if(Random.value < 0.4f){
+	public void PlayRandomSound(){
+		if(Random.value < 0.7f){
 			int rand = Random.Range(0, Sounds.Length);
 			//Sounds[rand]
 			transform.parent.audio.clip = Sounds[rand];

@@ -71,7 +71,7 @@ public class ZombieAttackSlash : MonoBehaviour {
 
 		Vector3 posDifference = Player.position - Zombie.position;
 
-		yield return new WaitForSeconds(0.2f);
+		yield return new WaitForSeconds(0.1f);
 		if(_state.curState != ZombieSM.ZombieState.Attack){
 			yield break;
 		}
