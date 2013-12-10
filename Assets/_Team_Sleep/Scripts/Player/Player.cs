@@ -574,7 +574,7 @@ public class Player : MonoBehaviour {
 			invulnerable = true;
 			curHealth -= damage;
 			if (curHealth > 0) {
-				float timeInvulnerable = 1.5f;	// the function "Invulnerable currently assumes this being 1.5f
+				float timeInvulnerable = 1f;	// the function "Invulnerable currently assumes this being 1.5f
 				takingDamageAudio.Play();
 				StartCoroutine(Invulnerable(Time.time + timeInvulnerable, Time.time));
 			} else {
@@ -604,7 +604,7 @@ public class Player : MonoBehaviour {
 		while(Time.time < timeInvulnerable){
 			float curTime = Time.time - startTime;
 			
-			if( (curTime < 0.1) || (curTime > 0.3f && curTime < 0.4f) || (curTime > 0.7f && curTime < 0.8f) || (curTime > 1.05f && curTime < 1.15f) || (curTime > 1.4f && curTime < 1.5f)){
+			if( (curTime < 0.1) || (curTime > 0.25f && curTime < 0.35f) || (curTime > 0.6f && curTime < 0.7f) || (curTime > 0.9f && curTime < 1f)){
 				playerSprite.renderer.enabled = false;
 			}
 			else
