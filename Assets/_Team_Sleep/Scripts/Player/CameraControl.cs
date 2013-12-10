@@ -9,8 +9,16 @@ public class CameraControl : MonoBehaviour {
 	public Texture healthBar;
 	public Texture staminaBar;
 	public Texture energyBarLabel;
-	public Texture controlKeys;
-	private Rect controlKeysPosition;
+	//public Texture controlKeys;
+	public Texture swordKey;
+	private Rect swordKeyPosition;
+	public Texture lazerKey;
+	private Rect lazerKeyPosition;
+	public Texture stunKey;
+	private Rect stunKeyPosition;
+	public Texture flashlightKey;
+	private Rect flashlightKeyPosition;
+	//private Rect controlKeysPosition;
 	
 	public Texture winMessage;
 	public Texture loseMessage;
@@ -39,7 +47,15 @@ public class CameraControl : MonoBehaviour {
 
 	private float lastHealthPercent = 0;
 	private float lastEnergyPercent = 0;
-	
+
+	private Rect rectForSprite(float topLeftX, float topLeftY, Texture sprite, bool yIsFromBottom = false) {
+		if (yIsFromBottom) {
+			return new Rect(topLeftX, Screen.height - topLeftY - sprite.height, sprite.width, sprite.height);
+		} else {
+			return new Rect(topLeftX, topLeftY, sprite.width, sprite.height);
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
 		//camera.orthographic = true;
@@ -47,11 +63,15 @@ public class CameraControl : MonoBehaviour {
 		if (!isCutscene) {
 			playerObject = GameObject.Find("Player");
 			player = playerObject.GetComponent<Player>();
-			controlKeysPosition = new Rect(50, Screen.height - 15 - controlKeys.height, controlKeys.width, controlKeys.height);
+			//controlKeysPosition = new Rect(50, Screen.height - 15 - controlKeys.height, controlKeys.width, controlKeys.height);
+			flashlightKeyPosition = rectForSprite(30, 15, flashlightKey, true);
+			swordKeyPosition = rectForSprite(flashlightKeyPosition.xMax - 10, 15, swordKey, true);
+			lazerKeyPosition = rectForSprite(swordKeyPosition.xMax + 5, 15, lazerKey, true);
+			stunKeyPosition = rectForSprite(lazerKeyPosition.xMax + 5, 15, stunKey, true);
 		}
 		
 		isPaused = false;
-		
+
 		GameObject[] computers = GameObject.FindGameObjectsWithTag("ComputerTerminal");
 		computerTerminals = new HackableComputer[computers.Length];
 		for (int i = 0; i < computers.Length; i++) {
@@ -125,8 +145,9 @@ public class CameraControl : MonoBehaviour {
 				drawPercentBar(Screen.width/2 - 100, (int)(Screen.height * (3.0/4.0)), 200, 40, percent, blueBox, msg, 0, false);
 			}
 			
-			GUI.DrawTexture(controlKeysPosition, blackBox);
-			GUI.DrawTexture(controlKeysPosition, controlKeys);
+			//GUI.DrawTexture(controlKeysPosition, blackBox);
+			//GUI.DrawTexture(controlKeysPosition, controlKeys);
+			drawControlKeys();
 		
 			if (GameObject.FindGameObjectsWithTag("LevelExit").Length == 0 && (!boss)) {
 				Rect position = new Rect(Screen.width/2-winMessage.width/2, Screen.height/2-winMessage.height/2, winMessage.width, winMessage.height);
@@ -138,6 +159,19 @@ public class CameraControl : MonoBehaviour {
 				//GUI.DrawTexture(position, loseMessage);
 			}
 		}
+	}
+
+	void drawControlKeys() {
+		if (player.hasSword) {
+			GUI.DrawTexture(swordKeyPosition, swordKey, ScaleMode.ScaleAndCrop);
+		}
+		if (player.hasPhoneBullet) {
+			GUI.DrawTexture(lazerKeyPosition, lazerKey, ScaleMode.ScaleAndCrop);
+		}
+		if (player.hasPhoneStun) {
+			GUI.DrawTexture(stunKeyPosition, stunKey, ScaleMode.ScaleAndCrop);
+		}
+		GUI.DrawTexture(flashlightKeyPosition, flashlightKey, ScaleMode.ScaleAndCrop);
 	}
 	
 	void drawEnergyBar() {
@@ -153,7 +187,7 @@ public class CameraControl : MonoBehaviour {
 		if (boss) {
 			FootballZombieHealth bossHealth = boss.GetComponent<FootballZombieHealth>();
 			float percent = bossHealth.health / (float)bossHealth.maxHealth;
-			int ctrlKeysOffset = (int)controlKeysPosition.xMax;
+			int ctrlKeysOffset = (int)stunKeyPosition.xMax;
 			drawPercentBar(100 + ctrlKeysOffset, Screen.height - 75, Screen.width - 200 - ctrlKeysOffset, 50, percent, redBox, "Boss Health", 0, false);
 		}
 	}
