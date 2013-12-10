@@ -14,6 +14,11 @@ public class CutsceneUtil : MonoBehaviour {
 	void Update () {
 	
 	}
+
+	void unlockLevel(string levelName) {
+		PlayerPrefs.SetString(levelName, "Unlocked");
+		PlayerPrefs.Save();
+	}
 	
 	//void printText(string text) {
 	//	printText(text, 0, false);

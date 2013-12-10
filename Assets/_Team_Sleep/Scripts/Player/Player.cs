@@ -618,6 +618,7 @@ public class Player : MonoBehaviour {
 	
 	public void ReloadPlayerAfterDeath(){
 		if (hasCheckpoint) {
+			Destroy(GameObject.Find("Black Background(Clone)"));
 			transform.position = currentCheckpoint;
 			curHealth = maxHealth;
 			curPhoneCharge = maxPhoneCharge;

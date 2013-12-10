@@ -22,7 +22,37 @@ public class TitleMenuSelect : MonoBehaviour {
 		
 	}
 
+	string latestLevel() {
+		if (PlayerPrefs.GetString("Level4.1") == "Unlocked") {
+			return "Level4.1";
+		}
+		if (PlayerPrefs.GetString("Level3.1") == "Unlocked") {
+			return "Level3.1";
+		}
+		if (PlayerPrefs.GetString("Level2-Generator") == "Unlocked") {
+			return "Level2-Generator";
+		}
+		if (PlayerPrefs.GetString("Level1.1") == "Unlocked") {
+			return "Level1.1";
+		}
+		return null;
+	}
+
 	void Update () {
+		Debug.Log ("LOGG");
+		//Debug.Log("Level1.1: " + (PlayerPrefs.GetString("Level1.1") == null? "null" : "notnull"));
+		Debug.Log("Level1.1: " + PlayerPrefs.GetString("Level1.1"));
+		Debug.Log("Level2-Generator: " + PlayerPrefs.GetString("Level2-Generator"));
+		Debug.Log("Level3.1: " + PlayerPrefs.GetString("Level3.1"));
+		Debug.Log("Level4.1: " + PlayerPrefs.GetString("Level4.1"));
+
+		if (Input.GetKeyDown(KeyCode.A)) {
+			PlayerPrefs.DeleteAll();
+			PlayerPrefs.Save();
+		}
+
+		//if (Input.GetKeyDown(KeyCode.A)) {
+		//}
 		
 		if(!subMenu){
 			if (Input.GetKeyDown(KeyCode.UpArrow)) {
@@ -44,8 +74,13 @@ public class TitleMenuSelect : MonoBehaviour {
 					 	Application.LoadLevel("IntroCutScene");
 						break;
 					case TitleButtons.Continue:
-						NoSaveDataPopUp.SetActive(true);
-						subMenu = true;
+						string levelName = latestLevel();
+						if (levelName == null) {
+							NoSaveDataPopUp.SetActive(true);
+							subMenu = true;
+						} else {
+							Application.LoadLevel(levelName);
+						}
 						break;
 					case TitleButtons.Quit:
 						Application.Quit();
