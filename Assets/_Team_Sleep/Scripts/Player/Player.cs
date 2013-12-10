@@ -71,6 +71,7 @@ public class Player : MonoBehaviour {
 	private Transform phoneLazerBeam;
 	private Transform phoneStunBullet;
 	private Transform phoneStunExplosion;
+	private Transform phoneStunLight;
 	
 	public bool hasSword;
 	public bool hasPhoneBullet;
@@ -88,7 +89,7 @@ public class Player : MonoBehaviour {
 	
 	public bool startInCutscene;
 	public Texture initialInfoCard;
-	
+
 	// Use this for initialization
 	void Start () {
 		if (initialInfoCard != null) {
@@ -104,6 +105,7 @@ public class Player : MonoBehaviour {
 			phoneLazerBeam = ((GameObject) Resources.Load("Phone Attacks/LazerBeam")).transform;
 			phoneStunBullet = ((GameObject) Resources.Load("Phone Attacks/StunBullet")).transform;
 			phoneStunExplosion = ((GameObject) Resources.Load("Phone Attacks/StunExplosion")).transform;
+			phoneStunLight = ((GameObject) Resources.Load("Phone Attacks/StunLight")).transform;
 		
 			playerSprite = transform.FindChild("PlayerSprite");
 			flashLight = GetComponent<FlashlightControl>();
@@ -341,7 +343,6 @@ public class Player : MonoBehaviour {
 			Debug.Log("Not enough battery");
 		} else {
 			Transform shootingBullet = (Transform)Instantiate(bulletTypeToFire, transform.position, Quaternion.identity);
-			
 			shootingBullet.Rotate(0, 0, (int)curDirection - 270);
 			if (!dropInsteadOfFire) {
 				shootingBullet.rigidbody.AddForce(directionToVector(curDirection) * 8000);
@@ -451,6 +452,12 @@ public class Player : MonoBehaviour {
 		case PhonePower.Stun:
 			//fireBullet(phoneStunBullet);
 			fireBullet(phoneStunExplosion, true);
+
+			// Creates a Light when shooting the stun
+			Vector3 stunLightPos = transform.position;
+			stunLightPos.z -= 100;
+			Instantiate(phoneStunLight, stunLightPos, Quaternion.identity);
+
 			break;
 		case PhonePower.Bullet:
 			fireBullet(phoneBullet);
@@ -567,7 +574,7 @@ public class Player : MonoBehaviour {
 			invulnerable = true;
 			curHealth -= damage;
 			if (curHealth > 0) {
-				float timeInvulnerable = 1.5f;	// the function "Invulnerable currently assumes this being 1.5f
+				float timeInvulnerable = 1f;	// the function "Invulnerable currently assumes this being 1.5f
 				takingDamageAudio.Play();
 				StartCoroutine(Invulnerable(Time.time + timeInvulnerable, Time.time));
 			} else {
@@ -597,7 +604,7 @@ public class Player : MonoBehaviour {
 		while(Time.time < timeInvulnerable){
 			float curTime = Time.time - startTime;
 			
-			if( (curTime < 0.1) || (curTime > 0.3f && curTime < 0.4f) || (curTime > 0.7f && curTime < 0.8f) || (curTime > 1.05f && curTime < 1.15f) || (curTime > 1.4f && curTime < 1.5f)){
+			if( (curTime < 0.1) || (curTime > 0.25f && curTime < 0.35f) || (curTime > 0.6f && curTime < 0.7f) || (curTime > 0.9f && curTime < 1f)){
 				playerSprite.renderer.enabled = false;
 			}
 			else
