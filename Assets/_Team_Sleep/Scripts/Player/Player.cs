@@ -14,6 +14,7 @@ public class Player : MonoBehaviour {
 	
 	private bool hasCheckpoint = false;
 	private Vector3 currentCheckpoint;
+	public Transform checkpointNotification;
 	
 	public enum PlayerState {PlayerInput, SwordAttack, PhoneAttack, TakingDamage, Dead, Cutscene, Menu, chargingLazer, firingLazer, KnockedBack};
 	public enum PhonePower {Bullet, Beam, Stun};
@@ -525,7 +526,8 @@ public class Player : MonoBehaviour {
 		if ((checkpointPos - currentCheckpoint).magnitude > 10) {
 			hasCheckpoint = true;
 			currentCheckpoint = checkpointPos;
-			Camera.main.GetComponent<CameraControl>().gotCheckpoint();
+			//Camera.main.GetComponent<CameraControl>().gotCheckpoint();
+			Instantiate(checkpointNotification, transform.position, Quaternion.identity);
 		}
 	}
 	

@@ -201,9 +201,9 @@ public class CameraControl : MonoBehaviour {
 		return new Vector2(x, y);
 	}
 	
-	public void gotCheckpoint() {
-		pauseAndDrawTextMessage("Checkpoint!!");
-	}
+	//public void gotCheckpoint() {
+	//	pauseAndDrawTextMessage("Checkpoint!!");
+	//}
 	
 	public void pauseAndDrawTextMessage(string message) {
 		Debug.Log ("TM Called with: " + message);
