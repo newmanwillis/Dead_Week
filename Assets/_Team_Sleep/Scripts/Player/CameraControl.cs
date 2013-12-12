@@ -5,11 +5,27 @@ public class CameraControl : MonoBehaviour {
 	public GUIStyle myStyle;
 	GameObject playerObject;
 	Player player;
-	
-	public Texture healthBar;
-	public Texture staminaBar;
-	public Texture energyBarLabel;
+
+	private class MegaBarBar {
+		public Texture color;
+		public Rect pos;
+		public float maxLength;
+		public float lastPercent;
+	}
+
+	//public Texture healthBar;
+	//public Texture staminaBar;
+	//public Texture energyBarLabel;
 	//public Texture controlKeys;
+	public Texture megaBar;
+	private Rect megaBarPosition;
+	public Texture megaBarRed;
+	public Texture megaBarBlue;
+	public Texture megaBarGreen;
+	private MegaBarBar healthBar;
+	private MegaBarBar energyBar;
+	private MegaBarBar staminaBar;
+
 	public Texture swordKey;
 	private Rect swordKeyPosition;
 	public Texture lazerKey;
@@ -68,6 +84,21 @@ public class CameraControl : MonoBehaviour {
 			swordKeyPosition = rectForSprite(flashlightKeyPosition.xMax - 10, 15, swordKey, true);
 			lazerKeyPosition = rectForSprite(swordKeyPosition.xMax + 5, 15, lazerKey, true);
 			stunKeyPosition = rectForSprite(lazerKeyPosition.xMax + 5, 15, stunKey, true);
+
+			megaBarPosition = new Rect(10, 10, megaBar.width, megaBar.height);
+			Debug.Log ("megabar width: " + megaBar.width + " height: " + megaBar.height);
+			healthBar = new MegaBarBar();
+			healthBar.color = megaBarRed;
+			healthBar.pos = new Rect(megaBarPosition.xMin + 108, megaBarPosition.yMin + 24, 110, 36);
+			healthBar.maxLength = healthBar.pos.width;
+			energyBar = new MegaBarBar();
+			energyBar.color = megaBarBlue;
+			energyBar.pos = new Rect(healthBar.pos.xMin, healthBar.pos.yMax-2, 110, 22);
+			energyBar.maxLength = healthBar.pos.width;
+			staminaBar = new MegaBarBar();
+			staminaBar.color = megaBarGreen;
+			staminaBar.pos = new Rect(healthBar.pos.xMin, energyBar.pos.yMax-2, 110, 15);
+			staminaBar.maxLength = healthBar.pos.width;
 		}
 		
 		isPaused = false;
@@ -91,6 +122,11 @@ public class CameraControl : MonoBehaviour {
 			currentlyRedIfLow = !currentlyRedIfLow;
 		}
 	}
+
+	void drawMegaBarBar(MegaBarBar bar, float percent) {
+		drawPercentBar((int)bar.pos.xMin, (int)bar.pos.yMin, (int)bar.maxLength, (int)bar.pos.height, percent, bar.color, null, bar.lastPercent, true, 2);
+		bar.lastPercent = Mathf.Max(percent, bar.lastPercent - 0.001F);
+	}
 	
 	// called for GRAPHICS frames and not physics timesteps. GUI methods are only allowed in here.
 	void OnGUI() {
@@ -98,11 +134,7 @@ public class CameraControl : MonoBehaviour {
 			if (isPaused) {
 				isPaused = false;
 				Time.timeScale = 1;
-			}// else {
-			//	isPaused = true;
-			//	currentMessage = "You paused the game!";
-			//	Time.timeScale = 0;
-			//}
+			}
 		}	
 		if (isPaused) {
 			if (currentMessage != null) {
@@ -120,16 +152,20 @@ public class CameraControl : MonoBehaviour {
 		}
 		
 		if (!isCutscene) {
+			GUI.DrawTexture(megaBarPosition, megaBar);
+
 			GUI.depth = 0;
 			float health = playerHealth();
 			float healthPercent = health / player.maxHealth;
-			GUI.DrawTexture(new Rect(0, 0, healthBar.width, healthBar.height), healthBar);
-			drawPercentBar(5, 40, 234, 27, healthPercent, redBox, null, lastHealthPercent);
-			lastHealthPercent = Mathf.Max(healthPercent, lastHealthPercent - 0.001F);
+			drawMegaBarBar(healthBar, healthPercent);
+			//GUI.DrawTexture(new Rect(0, 0, healthBar.width, healthBar.height), healthBar);
+			//drawPercentBar(5, 40, 234, 27, healthPercent, redBox, null, lastHealthPercent);
+			//lastHealthPercent = Mathf.Max(healthPercent, lastHealthPercent - 0.001F);
 
 			float stamPercent = player.curStamina / (float) player.maxStamina;
-			GUI.DrawTexture(new Rect(0, 66, staminaBar.width, staminaBar.height), staminaBar);
-			drawPercentBar(7, 2*33 + 26, 232, 27, stamPercent, greenBox, null, 0, false);
+			drawMegaBarBar(staminaBar, stamPercent);
+			//GUI.DrawTexture(new Rect(0, 66, staminaBar.width, staminaBar.height), staminaBar);
+			//drawPercentBar(7, 2*33 + 26, 232, 27, stamPercent, greenBox, null, 0, false);
 			
 			drawEnergyBar();
 			
@@ -178,9 +214,10 @@ public class CameraControl : MonoBehaviour {
 		float energy = player.curPhoneCharge;
 		float energyMax = player.maxPhoneCharge;
 		float percent = energy / energyMax;
-		GUI.DrawTexture(new Rect(Screen.width - 289, 10, energyBarLabel.width, energyBarLabel.height), energyBarLabel);
-		drawPercentBar(Screen.width - 284, 10+energyBarLabel.height, 234, 25, percent, null, null, lastEnergyPercent);
-		lastEnergyPercent = Mathf.Max(percent, lastEnergyPercent - 0.001F);
+		drawMegaBarBar(energyBar, percent);
+		//GUI.DrawTexture(new Rect(Screen.width - 289, 10, energyBarLabel.width, energyBarLabel.height), energyBarLabel);
+		//drawPercentBar(Screen.width - 284, 10+energyBarLabel.height, 234, 25, percent, null, null, lastEnergyPercent);
+		//lastEnergyPercent = Mathf.Max(percent, lastEnergyPercent - 0.001F);
 	}
 	
 	void drawBossHealth() {
