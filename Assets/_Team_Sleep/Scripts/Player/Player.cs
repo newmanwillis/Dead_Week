@@ -515,7 +515,9 @@ public class Player : MonoBehaviour {
 			itemPickupAudio.Play();
 		} else if (other.tag == "TextMessage") {
 			TextMessage message = other.GetComponent<TextMessage>();
-			if (message.message != null && message.message != "") {
+			if(message.talkSprite != null && message.message != null && message.message != "") {
+				Camera.main.GetComponent<CameraControl>().pauseAndDrawTextMessage(message.message, message.talkSprite, true);
+			} else if (message.message != null && message.message != "") {
 				Camera.main.GetComponent<CameraControl>().pauseAndDrawTextMessage(message.message);
 			} else {
 				Camera.main.GetComponent<CameraControl>().pauseAndDrawInfoCard(message.infocard);
