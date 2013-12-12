@@ -81,7 +81,7 @@ public class CameraControl : MonoBehaviour {
 			player = playerObject.GetComponent<Player>();
 			//controlKeysPosition = new Rect(50, Screen.height - 15 - controlKeys.height, controlKeys.width, controlKeys.height);
 			flashlightKeyPosition = rectForSprite(30, 15, flashlightKey, true);
-			swordKeyPosition = rectForSprite(flashlightKeyPosition.xMax - 10, 15, swordKey, true);
+			swordKeyPosition = rectForSprite(flashlightKeyPosition.xMax - 15, 15, swordKey, true);
 			lazerKeyPosition = rectForSprite(swordKeyPosition.xMax + 5, 15, lazerKey, true);
 			stunKeyPosition = rectForSprite(lazerKeyPosition.xMax + 5, 15, stunKey, true);
 
