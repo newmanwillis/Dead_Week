@@ -45,6 +45,7 @@ public class CameraControl : MonoBehaviour {
 	public Texture greenBox;
 	public Texture yellowBox;
 	public Texture textMessageBox;
+	public Texture Credits;
 	
 	private bool isPaused;
 	private string currentMessage;
@@ -63,6 +64,10 @@ public class CameraControl : MonoBehaviour {
 
 	private float lastHealthPercent = 0;
 	private float lastEnergyPercent = 0;
+
+	private bool credits;
+	private bool switchToCredits = false;
+	private bool showCredits = false;
 
 	private Rect rectForSprite(float topLeftX, float topLeftY, Texture sprite, bool yIsFromBottom = false) {
 		if (yIsFromBottom) {
@@ -198,12 +203,30 @@ public class CameraControl : MonoBehaviour {
 				Rect position = new Rect(Screen.width/2-winMessage.width/2, Screen.height/2-winMessage.height/2, winMessage.width, winMessage.height);
 				GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), blackBox);
 				GUI.DrawTexture(position, winMessage);
+
+				if(!switchToCredits && Credits != null){
+					switchToCredits = true;
+					StartCoroutine(TransitionToCredits());
+				}
+				else if(showCredits){
+					GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), Credits);
+					if(Input.GetKey(KeyCode.Escape)){
+						Application.LoadLevel("TitleMenu");
+					}
+				}
+
+
 			} else if (playerHealth() <= 0) {
 				//Rect position = new Rect(Screen.width/2-loseMessage.width/2, Screen.height/2-loseMessage.height/2, loseMessage.width, loseMessage.height);
 				//GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), blackBox);
 				//GUI.DrawTexture(position, loseMessage);
 			}
 		}
+	}
+
+	IEnumerator TransitionToCredits(){
+		yield return new WaitForSeconds(2.5f);
+		showCredits = true;
 	}
 
 	void drawControlKeys() {
