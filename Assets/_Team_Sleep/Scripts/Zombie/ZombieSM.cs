@@ -64,9 +64,9 @@ public class ZombieSM : MonoBehaviour {
 	
 	void FixedUpdate(){
 	
-		if(transform.position.z != -0.01){
+		if(transform.position.z != -0.1f){
 			Vector3 newPos = transform.position; //new Vector3(transform.position.x, transform.position.y, 0);
-			newPos.z = 0;
+			newPos.z = -0.1f;
 			transform.position = newPos;
 			GetComponent<Rigidbody>().velocity = Vector3.zero;
 		}

@@ -57,7 +57,7 @@ public class CameraControl : MonoBehaviour {
 	private bool currentlyRedIfLow;
 	private float redWhiteSwitchTime;
 	
-	public bool isCutscene;
+	public bool isCutscene {get; set;}
 	
 	private GameObject boss;
 
@@ -76,7 +76,7 @@ public class CameraControl : MonoBehaviour {
 	void Start () {
 		//camera.orthographic = true;
 		//camera.orthographicSize = Screen.height/4;
-		if (!isCutscene) {
+		//if (!isCutscene) {
 			playerObject = GameObject.Find("Player");
 			player = playerObject.GetComponent<Player>();
 			//controlKeysPosition = new Rect(50, Screen.height - 15 - controlKeys.height, controlKeys.width, controlKeys.height);
@@ -99,7 +99,7 @@ public class CameraControl : MonoBehaviour {
 			staminaBar.color = megaBarGreen;
 			staminaBar.pos = new Rect(healthBar.pos.xMin, energyBar.pos.yMax-2, 110, 15);
 			staminaBar.maxLength = healthBar.pos.width;
-		}
+		//}
 		
 		isPaused = false;
 

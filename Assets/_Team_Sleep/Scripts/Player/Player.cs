@@ -90,6 +90,10 @@ public class Player : MonoBehaviour {
 	public bool startInCutscene;
 	public Texture initialInfoCard;
 
+	void Awake(){
+		curState = PlayerState.PlayerInput;
+	}
+
 	// Use this for initialization
 	void Start () {
 		if (initialInfoCard != null) {
@@ -122,9 +126,8 @@ public class Player : MonoBehaviour {
 			swordAudioChannel.loop = false;
 			takingDamageAudio.loop = false;
 			itemPickupAudio.loop = false;
-			
-		
-			curState = PlayerState.PlayerInput;
+
+
 			curDirection = FacingDirection.Down;
 			curAnim = transform.FindChild("PlayerSprite").GetComponent<tk2dSpriteAnimator>();
 			curHealth = maxHealth;
@@ -164,10 +167,10 @@ public class Player : MonoBehaviour {
 	
 	void FixedUpdate () {
 		// Keep player at 0 in Z-zone
-		if(transform.position.z != -0.01){
+		if(transform.position.z != -0.1f){
 			if(curState != PlayerState.Dead){
 				Vector3 newPos = transform.position;
-				newPos.z = 0;
+				newPos.z = -0.1f;
 				transform.position = newPos;
 				playerSprite.GetComponent<Rigidbody>().velocity = Vector3.zero;
 			}
@@ -347,6 +350,12 @@ public class Player : MonoBehaviour {
 			if (!dropInsteadOfFire) {
 				shootingBullet.rigidbody.AddForce(directionToVector(curDirection) * 8000);
 			}
+			else{
+				// Creates a Light when shooting the stun
+				Vector3 stunLightPos = transform.position;
+				stunLightPos.z -= 100;
+				Instantiate(phoneStunLight, stunLightPos, Quaternion.identity);
+			}
 			curPhoneCharge -= cost;
 		}
 	}
@@ -380,11 +389,12 @@ public class Player : MonoBehaviour {
 		if (Input.GetKeyUp(KeyCode.LeftShift) || (curStamina < 1)) {
 			isSprinting = false;
 		}
-
+		/*
 		//TODO remove this
 		if (Input.GetKeyDown(KeyCode.G)) {
 			knockBack(new Vector3(1, 0, 0));
-		}
+
+		}*/
 		
 		// change to enum/switch 
 		if(Input.GetKeyDown(KeyCode.S)){			// Phone bullet
@@ -452,12 +462,6 @@ public class Player : MonoBehaviour {
 		case PhonePower.Stun:
 			//fireBullet(phoneStunBullet);
 			fireBullet(phoneStunExplosion, true);
-
-			// Creates a Light when shooting the stun
-			Vector3 stunLightPos = transform.position;
-			stunLightPos.z -= 100;
-			Instantiate(phoneStunLight, stunLightPos, Quaternion.identity);
-
 			break;
 		case PhonePower.Bullet:
 			fireBullet(phoneBullet);
@@ -511,7 +515,9 @@ public class Player : MonoBehaviour {
 			itemPickupAudio.Play();
 		} else if (other.tag == "TextMessage") {
 			TextMessage message = other.GetComponent<TextMessage>();
-			if (message.message != null && message.message != "") {
+			if(message.talkSprite != null && message.message != null && message.message != "") {
+				Camera.main.GetComponent<CameraControl>().pauseAndDrawTextMessage(message.message, message.talkSprite, true);
+			} else if (message.message != null && message.message != "") {
 				Camera.main.GetComponent<CameraControl>().pauseAndDrawTextMessage(message.message);
 			} else {
 				Camera.main.GetComponent<CameraControl>().pauseAndDrawInfoCard(message.infocard);

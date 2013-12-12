@@ -57,12 +57,7 @@ public class Generator : MonoBehaviour {
 	
 	public void shutdown() {
 
-		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ElectronicDoor2")) {
-			//Debug.Log("opening left");
-			//obj.animation.Play("ElectronicDoorOpenLeft");
-			obj.GetComponent<ElectronicDoor2>().MakeOpenable();
-		}
-
+		/*
 		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ElectronicDoorLeft")) {
 			Debug.Log("opening left");
 			obj.animation.Play("ElectronicDoorOpenLeft");
@@ -72,7 +67,17 @@ public class Generator : MonoBehaviour {
 			Debug.Log("opening right");
 			obj.animation.Play("ElectronicDoorOpenRight");
 		}
-		
+		*/
+
+		transform.FindChild("AfterShutdownZombies").gameObject.SetActive(true);
+		//GameObject.Find("AfterShutdownZombies").SetActive(true);
+
+		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ElectronicDoor2")) {
+			//Debug.Log("opening left");
+			//obj.animation.Play("ElectronicDoorOpenLeft");
+			obj.GetComponent<ElectronicDoor2>().MakeOpenable();
+		}
+
 		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("DestroyOnGeneratorShutdown")) {
 			Destroy(obj);
 		}

@@ -9,8 +9,20 @@ public class RandomizeColor : MonoBehaviour {
 	private float timeMod;
 	private tk2dSprite Sprite;
 	private Color[] Colors;
-	
+
+	private tk2dSpriteAnimator curAnim;
+	//private tk2dSprite sprite;
+	private ZombieSM _state;
+	private CharacterController CC;
+
+	private enum direction {up, down, left, right};
+
 	void Start () {
+
+		curAnim = GetComponent<tk2dSpriteAnimator>();
+		_state = GetComponent<ZombieSM>();
+		CC = GetComponent<CharacterController>();
+
 		Sprite = GetComponent<tk2dSprite>();
 		
 		timeMod = time;
@@ -20,9 +32,25 @@ public class RandomizeColor : MonoBehaviour {
 		StartCoroutine(ChangeColor(trueTime));
 	}
 	
-	/*void FixedUpdate () {
-		Sprite.color = ChooseColor();
-	}*/
+	void FixedUpdate () {
+		if(_state.curState == ZombieSM.ZombieState.TakingDamage){
+			direction dir = FindDirection();
+			switch(dir){
+				case direction.up:
+					CC.Move(Vector3.down);
+					break;
+				case direction.down:
+					CC.Move(Vector3.up);
+					break;
+				case direction.left:
+					CC.Move(Vector3.right);
+					break;
+				case direction.right:
+					CC.Move(Vector3.left);
+					break;
+			}
+		}
+	}
 	
 	IEnumerator ChangeColor(float colorTime){
 		Color startColor = Sprite.color;
@@ -44,4 +72,18 @@ public class RandomizeColor : MonoBehaviour {
 		}
 		return randColor;
 	}
+
+	private direction FindDirection(){
+		//int facing;
+		string clipName = curAnim.CurrentClip.name;
+		if(clipName.Contains("Down") || clipName.Contains("Forward"))
+			return direction.down;
+		else if(clipName.Contains("Up") || clipName.Contains("Backward"))
+			return direction.up;		
+		else if(clipName.Contains("Left"))
+			return direction.left;
+		else
+			return direction.right;			
+	}
+
 }
