@@ -90,6 +90,10 @@ public class Player : MonoBehaviour {
 	public bool startInCutscene;
 	public Texture initialInfoCard;
 
+	void Awake(){
+		curState = PlayerState.PlayerInput;
+	}
+
 	// Use this for initialization
 	void Start () {
 		if (initialInfoCard != null) {
@@ -122,9 +126,8 @@ public class Player : MonoBehaviour {
 			swordAudioChannel.loop = false;
 			takingDamageAudio.loop = false;
 			itemPickupAudio.loop = false;
-			
-		
-			curState = PlayerState.PlayerInput;
+
+
 			curDirection = FacingDirection.Down;
 			curAnim = transform.FindChild("PlayerSprite").GetComponent<tk2dSpriteAnimator>();
 			curHealth = maxHealth;
