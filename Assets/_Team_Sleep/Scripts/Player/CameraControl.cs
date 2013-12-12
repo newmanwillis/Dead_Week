@@ -128,8 +128,12 @@ public class CameraControl : MonoBehaviour {
 		}
 	}
 
-	void drawMegaBarBar(MegaBarBar bar, float percent) {
-		drawPercentBar((int)bar.pos.xMin, (int)bar.pos.yMin, (int)bar.maxLength, (int)bar.pos.height, percent, bar.color, null, bar.lastPercent, true, 2);
+	void drawMegaBarBar(MegaBarBar bar, float percent, bool lowFlashAndTrailingYellow = true) {
+		if (lowFlashAndTrailingYellow) {
+			drawPercentBar((int)bar.pos.xMin, (int)bar.pos.yMin, (int)bar.maxLength, (int)bar.pos.height, percent, bar.color, null, bar.lastPercent, true, 2);
+		} else {
+			drawPercentBar((int)bar.pos.xMin, (int)bar.pos.yMin, (int)bar.maxLength, (int)bar.pos.height, percent, bar.color, null, 0, false, 2);
+		}
 		bar.lastPercent = Mathf.Max(percent, bar.lastPercent - 0.001F);
 	}
 	
@@ -168,7 +172,7 @@ public class CameraControl : MonoBehaviour {
 			//lastHealthPercent = Mathf.Max(healthPercent, lastHealthPercent - 0.001F);
 
 			float stamPercent = player.curStamina / (float) player.maxStamina;
-			drawMegaBarBar(staminaBar, stamPercent);
+			drawMegaBarBar(staminaBar, stamPercent, false);
 			//GUI.DrawTexture(new Rect(0, 66, staminaBar.width, staminaBar.height), staminaBar);
 			//drawPercentBar(7, 2*33 + 26, 232, 27, stamPercent, greenBox, null, 0, false);
 			
