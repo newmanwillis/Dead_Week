@@ -386,11 +386,12 @@ public class Player : MonoBehaviour {
 		if (Input.GetKeyUp(KeyCode.LeftShift) || (curStamina < 1)) {
 			isSprinting = false;
 		}
-
+		/*
 		//TODO remove this
 		if (Input.GetKeyDown(KeyCode.G)) {
 			knockBack(new Vector3(1, 0, 0));
-		}
+
+		}*/
 		
 		// change to enum/switch 
 		if(Input.GetKeyDown(KeyCode.S)){			// Phone bullet
