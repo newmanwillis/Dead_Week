@@ -540,7 +540,8 @@ public class Player : MonoBehaviour {
 			hasCheckpoint = true;
 			currentCheckpoint = checkpointPos;
 			//Camera.main.GetComponent<CameraControl>().gotCheckpoint();
-			Instantiate(checkpointNotification, transform.position, Quaternion.identity);
+			Transform trans = (Transform)Instantiate(checkpointNotification, transform.position, Quaternion.identity);
+			trans.parent = transform;
 		}
 	}
 	
