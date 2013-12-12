@@ -86,7 +86,7 @@ public class CameraControl : MonoBehaviour {
 			stunKeyPosition = rectForSprite(lazerKeyPosition.xMax + 5, 15, stunKey, true);
 
 			megaBarPosition = new Rect(10, 10, megaBar.width, megaBar.height);
-			Debug.Log ("megabar width: " + megaBar.width + " height: " + megaBar.height);
+			//Debug.Log ("megabar width: " + megaBar.width + " height: " + megaBar.height);
 			healthBar = new MegaBarBar();
 			healthBar.color = megaBarRed;
 			healthBar.pos = new Rect(megaBarPosition.xMin + 108, megaBarPosition.yMin + 24, 110, 36);
@@ -300,7 +300,7 @@ public class CameraControl : MonoBehaviour {
 	}
 	
 	void drawInfoCard(Texture infoCard) {
-		Debug.Log("width: " + infoCard.width + " height: " + infoCard.height);
+		//Debug.Log("width: " + infoCard.width + " height: " + infoCard.height);
 		Rect pos = new Rect((Screen.width - infoCard.width)/2, (Screen.height - infoCard.height)/2, infoCard.width, infoCard.height);
 		//Rect pos = new Rect((Screen.width - 630)/2, (Screen.height - 380)/2, 630, 380);
 		GUI.DrawTexture(pos, infoCard);
