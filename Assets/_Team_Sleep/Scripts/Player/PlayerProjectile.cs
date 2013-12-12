@@ -48,7 +48,7 @@ public class PlayerProjectile : MonoBehaviour {
 			other.GetComponent<Button>().power();
 		}
 		
-		string[] barrierTags = { "FootballZombie", "Zombie", "Wall", "Destructible", "Door", "Button" };
+		string[] barrierTags = { "FootballZombie", "Zombie", "Wall", "Destructible", "Door", "Button", "ElectronicDoor2" };
 		//if (Array.IndexOf(barrierTags, other.tag) != -1) {
 		if (System.Array.Exists(barrierTags, other.tag.Equals)) {
 			if (disappearOnCollide) {
