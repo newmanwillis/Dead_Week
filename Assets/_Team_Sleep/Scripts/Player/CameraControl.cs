@@ -86,18 +86,19 @@ public class CameraControl : MonoBehaviour {
 			stunKeyPosition = rectForSprite(lazerKeyPosition.xMax + 5, 15, stunKey, true);
 
 			megaBarPosition = new Rect(10, 10, megaBar.width, megaBar.height);
-			//Debug.Log ("megabar width: " + megaBar.width + " height: " + megaBar.height);
+			//megaBarPosition = new Rect(10, 10, 276, 172);
+			Debug.Log ("megabar width: " + megaBar.width + " height: " + megaBar.height);
 			healthBar = new MegaBarBar();
 			healthBar.color = megaBarRed;
-			healthBar.pos = new Rect(megaBarPosition.xMin + 108, megaBarPosition.yMin + 24, 110, 36);
+			healthBar.pos = new Rect(megaBarPosition.xMin + 117, megaBarPosition.yMin + 33, 118, 47);
 			healthBar.maxLength = healthBar.pos.width;
 			energyBar = new MegaBarBar();
 			energyBar.color = megaBarBlue;
-			energyBar.pos = new Rect(healthBar.pos.xMin, healthBar.pos.yMax-2, 110, 22);
+			energyBar.pos = new Rect(healthBar.pos.xMin, healthBar.pos.yMax, 110, 28);
 			energyBar.maxLength = healthBar.pos.width;
 			staminaBar = new MegaBarBar();
 			staminaBar.color = megaBarGreen;
-			staminaBar.pos = new Rect(healthBar.pos.xMin, energyBar.pos.yMax-2, 110, 15);
+			staminaBar.pos = new Rect(healthBar.pos.xMin, energyBar.pos.yMax, 110, 15);
 			staminaBar.maxLength = healthBar.pos.width;
 		//}
 		
