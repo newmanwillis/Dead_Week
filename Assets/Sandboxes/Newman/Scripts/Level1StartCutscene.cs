@@ -69,6 +69,7 @@ public class Level1StartCutscene : MonoBehaviour {
 			yield return null;
 		}
 
+		Camera.main.GetComponent<CameraControl>().init();
 		Camera.main.GetComponent<CameraControl>().isCutscene = false;
 
 		StartCoroutine(ReturnToPlayerControl());
