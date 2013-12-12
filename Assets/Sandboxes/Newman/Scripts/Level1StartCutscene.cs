@@ -5,6 +5,9 @@ public class Level1StartCutscene : MonoBehaviour {
 
 	//public Texture OneSemesterLater;
 	//public Texture BlackBox;
+	public AudioClip CellPhoneRing;
+	public Texture MysteryTalkSprite;
+	public Texture HeroTalkSprite;
 	public Texture InfoCard;
 
 	//private float StartTime;
@@ -75,6 +78,18 @@ public class Level1StartCutscene : MonoBehaviour {
 	IEnumerator ReturnToPlayerControl(){
 
 		yield return new WaitForSeconds(1.5f);
+		audio.clip = CellPhoneRing;
+		audio.Play();
+
+		yield return new WaitForSeconds(1f);
+		string message = "Anonymous:  Hello? Is anyone there? I need help. I'm on the 2nd floor. I'm tra...AAHHHH";
+		Camera.main.GetComponent<CameraControl>().pauseAndDrawTextMessage(message, MysteryTalkSprite, true);
+
+		yield return new WaitForSeconds(0.5f);
+		message = "Hero:  Hello? HELLO?....Dang it";
+		Camera.main.GetComponent<CameraControl>().pauseAndDrawTextMessage(message, HeroTalkSprite, true);
+
+		yield return new WaitForSeconds(1f);
 		Camera.main.GetComponent<CameraControl>().pauseAndDrawInfoCard(InfoCard);
 		Player.GetComponent<Player>().exitCutscene();
 	}
