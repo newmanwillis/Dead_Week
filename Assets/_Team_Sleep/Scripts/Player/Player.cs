@@ -583,6 +583,11 @@ public class Player : MonoBehaviour {
 			invulnerable = true;
 			curHealth -= damage;
 			if (curHealth > 0) {
+
+				/*
+				curState = PlayerState.TakingDamage;
+				curAnim.Play("gotHit");
+				*/
 				float timeInvulnerable = 1f;	// the function "Invulnerable currently assumes this being 1.5f
 				takingDamageAudio.Play();
 				StartCoroutine(Invulnerable(Time.time + timeInvulnerable, Time.time));
@@ -609,9 +614,13 @@ public class Player : MonoBehaviour {
 	}
 	
 	public IEnumerator Invulnerable(float timeInvulnerable, float startTime){
+		/*
+		yield return new WaitForSeconds(0.07f);
+		curState = PlayerState.PlayerInput;
+		*/
 		Transform playerSprite = transform.FindChild("PlayerSprite");
 		while(Time.time < timeInvulnerable){
-			float curTime = Time.time - startTime;
+			float curTime = Time.time - (startTime/* + 0.1f*/);
 			
 			if( (curTime < 0.1) || (curTime > 0.25f && curTime < 0.35f) || (curTime > 0.6f && curTime < 0.7f) || (curTime > 0.9f && curTime < 1f)){
 				playerSprite.renderer.enabled = false;

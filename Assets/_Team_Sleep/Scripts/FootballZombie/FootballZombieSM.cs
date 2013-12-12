@@ -17,9 +17,9 @@ public class FootballZombieSM : MonoBehaviour {
 	}
 
 	void FixedUpDate(){
-		if(transform.position.z != -0.02){
+		if(transform.position.z != -0.1f){
 			Vector3 newPos = transform.position; //new Vector3(transform.position.x, transform.position.y, 0);
-			newPos.z = 0;
+			newPos.z = -0.1f;
 			transform.position = newPos;
 			GetComponent<Rigidbody>().velocity = Vector3.zero;
 		}
