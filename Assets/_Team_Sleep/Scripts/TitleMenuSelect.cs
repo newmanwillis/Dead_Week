@@ -51,6 +51,26 @@ public class TitleMenuSelect : MonoBehaviour {
 			PlayerPrefs.Save();
 		}
 
+		RaycastHit hitInfo;
+		bool mouseOnButton = false;
+		if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo)) {
+			mouseOnButton = true;
+			MakeButtonWhite();
+			switch (hitInfo.transform.name) {
+			case "ContinueButton":
+				curButton = 1;
+				break;
+			case "NewGameButton":
+				curButton = 0;
+				break;
+			case "QuitGameButton":
+				curButton = 2;
+				break;
+			}
+			CheckCurrentButton();
+			MakeButtonRed();
+		}
+
 		//if (Input.GetKeyDown(KeyCode.A)) {
 		//}
 		
@@ -67,7 +87,7 @@ public class TitleMenuSelect : MonoBehaviour {
 				CheckCurrentButton();
 				MakeButtonRed();			
 			}
-			else if (Input.GetKeyDown(KeyCode.Return)) {
+			else if (Input.GetKeyDown(KeyCode.Return) || (mouseOnButton && Input.GetMouseButtonDown(0))) {
 				
 				switch( (TitleButtons)curButton ){
 					case TitleButtons.NewGame:
@@ -89,7 +109,7 @@ public class TitleMenuSelect : MonoBehaviour {
 			}
 		}
 		else{
-			if (Input.GetKeyDown(KeyCode.Return)) {
+			if (Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0)) {
 				NoSaveDataPopUp.SetActive(false);
 				subMenu = false;
 			}
