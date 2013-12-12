@@ -78,7 +78,7 @@ public class Level1StartCutscene : MonoBehaviour {
 
 	IEnumerator ReturnToPlayerControl(){
 
-		yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSeconds(1.2f);
 		audio.clip = CellPhoneRing;
 		audio.Play();
 
@@ -86,8 +86,8 @@ public class Level1StartCutscene : MonoBehaviour {
 		string message = "Anonymous:  Hello? Is anyone there? I need help. I'm on the 2nd floor. I'm tra...AAHHHH";
 		Camera.main.GetComponent<CameraControl>().pauseAndDrawTextMessage(message, MysteryTalkSprite, true);
 
-		yield return new WaitForSeconds(0.5f);
-		message = "Hero:  Hello? HELLO?....Dang it";
+		yield return new WaitForSeconds(0.2f);
+		message = "Hero:  Hello? HELLO?....Dang it.";
 		Camera.main.GetComponent<CameraControl>().pauseAndDrawTextMessage(message, HeroTalkSprite, true);
 
 		yield return new WaitForSeconds(1f);

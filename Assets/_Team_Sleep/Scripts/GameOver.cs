@@ -62,7 +62,26 @@ public class GameOver : MonoBehaviour {
 	
 	IEnumerator HoldDeathScreen(){
 		//AudioListen.enabled = false;
-		yield return new WaitForSeconds(6);
+
+		yield return new WaitForSeconds(2.2f);
+
+		BlackScreenCopy.GetChild(0).gameObject.SetActive(true);
+
+		/*
+		float lerpTime = 2f;
+		float fullTime = Time.time + lerpTime;
+		Color colorVector = TextSprite.color;
+		
+		while(Time.time < fullTime){
+			float curTime = fullTime - Time.time;
+			colorVector.a = Mathf.Lerp(1, 0, 1 - (curTime/lerpTime));
+			TextSprite.color = colorVector;
+			yield return null;
+		}*/
+
+
+
+		yield return new WaitForSeconds(4f);
 		// print ("called reload on player");
 		GetComponent<Player>().ReloadPlayerAfterDeath();
 		//AudioListen.enabled = true;

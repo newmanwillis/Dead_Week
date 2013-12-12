@@ -45,7 +45,7 @@ public class BossTrigger : MonoBehaviour {
 		transform.FindChild("LeftFanSection").FindChild("ZombieFansTop1").GetComponent<tk2dSpriteAnimator>().Play();
 		transform.FindChild("LeftFanSection").FindChild("ZombieFansTop2").GetComponent<tk2dSpriteAnimator>().Play();
 
-		yield return new WaitForSeconds(1.1f);
+		yield return new WaitForSeconds(1f);
 		transform.FindChild("RightFanSection").FindChild("ZombieFansTop1").GetComponent<tk2dSpriteAnimator>().Play();
 		transform.FindChild("RightFanSection").FindChild("ZombieFansTop2").GetComponent<tk2dSpriteAnimator>().Play();
 
