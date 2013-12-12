@@ -57,7 +57,7 @@ public class CameraControl : MonoBehaviour {
 	private bool currentlyRedIfLow;
 	private float redWhiteSwitchTime;
 	
-	public bool isCutscene {get; set;}
+	public bool isCutscene;
 	
 	private GameObject boss;
 
@@ -76,31 +76,9 @@ public class CameraControl : MonoBehaviour {
 	void Start () {
 		//camera.orthographic = true;
 		//camera.orthographicSize = Screen.height/4;
-		//if (!isCutscene) {
-			playerObject = GameObject.Find("Player");
-			player = playerObject.GetComponent<Player>();
-			//controlKeysPosition = new Rect(50, Screen.height - 15 - controlKeys.height, controlKeys.width, controlKeys.height);
-			flashlightKeyPosition = rectForSprite(30, 15, flashlightKey, true);
-			swordKeyPosition = rectForSprite(flashlightKeyPosition.xMax - 15, 15, swordKey, true);
-			lazerKeyPosition = rectForSprite(swordKeyPosition.xMax + 5, 15, lazerKey, true);
-			stunKeyPosition = rectForSprite(lazerKeyPosition.xMax + 5, 15, stunKey, true);
-
-			megaBarPosition = new Rect(10, 10, megaBar.width, megaBar.height);
-			//megaBarPosition = new Rect(10, 10, 276, 172);
-			Debug.Log ("megabar width: " + megaBar.width + " height: " + megaBar.height);
-			healthBar = new MegaBarBar();
-			healthBar.color = megaBarRed;
-			healthBar.pos = new Rect(megaBarPosition.xMin + 117, megaBarPosition.yMin + 33, 118, 47);
-			healthBar.maxLength = healthBar.pos.width;
-			energyBar = new MegaBarBar();
-			energyBar.color = megaBarBlue;
-			energyBar.pos = new Rect(healthBar.pos.xMin, healthBar.pos.yMax, 110, 28);
-			energyBar.maxLength = healthBar.pos.width;
-			staminaBar = new MegaBarBar();
-			staminaBar.color = megaBarGreen;
-			staminaBar.pos = new Rect(healthBar.pos.xMin, energyBar.pos.yMax, 110, 15);
-			staminaBar.maxLength = healthBar.pos.width;
-		//}
+		if (!isCutscene) {
+			init();
+		}
 		
 		isPaused = false;
 
@@ -114,7 +92,33 @@ public class CameraControl : MonoBehaviour {
 		redWhiteSwitchTime = Time.time + 1;
 		
 		boss = GameObject.Find("FootballZombie");
-}
+	}
+
+	public void init() {
+		playerObject = GameObject.Find("Player");
+		player = playerObject.GetComponent<Player>();
+		//controlKeysPosition = new Rect(50, Screen.height - 15 - controlKeys.height, controlKeys.width, controlKeys.height);
+		flashlightKeyPosition = rectForSprite(30, 15, flashlightKey, true);
+		swordKeyPosition = rectForSprite(flashlightKeyPosition.xMax - 15, 15, swordKey, true);
+		lazerKeyPosition = rectForSprite(swordKeyPosition.xMax + 5, 15, lazerKey, true);
+		stunKeyPosition = rectForSprite(lazerKeyPosition.xMax + 5, 15, stunKey, true);
+		
+		megaBarPosition = new Rect(10, 10, megaBar.width, megaBar.height);
+		//megaBarPosition = new Rect(10, 10, 276, 172);
+		Debug.Log ("megabar width: " + megaBar.width + " height: " + megaBar.height);
+		healthBar = new MegaBarBar();
+		healthBar.color = megaBarRed;
+		healthBar.pos = new Rect(megaBarPosition.xMin + 117, megaBarPosition.yMin + 33, 118, 47);
+		healthBar.maxLength = healthBar.pos.width;
+		energyBar = new MegaBarBar();
+		energyBar.color = megaBarBlue;
+		energyBar.pos = new Rect(healthBar.pos.xMin, healthBar.pos.yMax, 110, 28);
+		energyBar.maxLength = healthBar.pos.width;
+		staminaBar = new MegaBarBar();
+		staminaBar.color = megaBarGreen;
+		staminaBar.pos = new Rect(healthBar.pos.xMin, energyBar.pos.yMax, 110, 15);
+		staminaBar.maxLength = healthBar.pos.width;
+	}
 	
 	// Update is called once per frame
 	void Update () {
