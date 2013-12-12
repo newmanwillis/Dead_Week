@@ -549,7 +549,10 @@ public class Player : MonoBehaviour {
 			setCheckpoint(other.gameObject.transform.position);
 		}
 		if (other.tag == "ChargingStation") {
-			batteryChargingAudio.Play();
+			if (curPhoneCharge < maxPhoneCharge) {
+				Debug.Log("Playing charging station sound");
+				batteryChargingAudio.Play();
+			}
 		}
 	}
 	
