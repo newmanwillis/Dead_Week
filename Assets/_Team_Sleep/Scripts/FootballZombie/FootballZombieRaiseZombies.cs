@@ -40,7 +40,7 @@ public class FootballZombieRaiseZombies : MonoBehaviour {
 
 	IEnumerator RaiseZombie(){
 		//RaiseZombieZone.collider.bounds.
-		yield return new WaitForSeconds(0.8f);
+		yield return new WaitForSeconds(1f);
 
 		int xPos = Random.Range(ZoneMinX, ZoneMaxX);
 		int yPos = Random.Range(ZoneMinY, ZoneMaxY);
