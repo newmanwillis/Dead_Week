@@ -84,6 +84,7 @@ public class HackableComputer : MonoBehaviour {
 				// We will use this script to power on generators as well
 				if (isGenerator) {
 					transform.parent.GetComponent<Generator>().IsRunning = true;
+					transform.parent.GetComponent<tk2dSpriteAnimator>().Play("GeneratorON");
 				}
 			}
 		}

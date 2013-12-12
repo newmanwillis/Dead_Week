@@ -16,6 +16,7 @@ public class Destructible : MonoBehaviour {
 	public Transform[] drops;
 
 	public bool isVendingMachine = false;
+	public bool isGenerator = false;
 	
 	private float[] dropCutoffs;
 	/*public int healthDropChance;
@@ -38,7 +39,13 @@ public class Destructible : MonoBehaviour {
 	}
 	
 	public void smash() {
-		if (numHits < maxHits && (!animator.Playing)) {
+		if (isGenerator && numHits < maxHits) {
+			numHits++;
+			destructionSound.Play();
+			Debug.Log ("Playing sound: " + destructionSound.name);
+			animator.Play("GeneratorOFF");
+			StartCoroutine(waitForAnimationAndDie());
+		} else if (numHits < maxHits && (!animator.Playing)) {
 			string clipname = "smashed" + (++numHits);
 			if (animator.GetClipByName(clipname) != null) {
 				animator.Play(clipname);
@@ -111,7 +118,7 @@ public class Destructible : MonoBehaviour {
 		}
 		
 		spawnPickups();
-		if (!isVendingMachine) {
+		if (!(isVendingMachine || isGenerator)) {
 			Destroy(GetComponent<BoxCollider>());
 		}
 		Destroy(transform.FindChild("ColliderForBullet").gameObject);
