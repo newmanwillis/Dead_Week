@@ -56,6 +56,13 @@ public class Generator : MonoBehaviour {
 	}
 	
 	public void shutdown() {
+
+		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ElectronicDoor2")) {
+			//Debug.Log("opening left");
+			//obj.animation.Play("ElectronicDoorOpenLeft");
+			obj.GetComponent<ElectronicDoor2>().MakeOpenable();
+		}
+
 		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ElectronicDoorLeft")) {
 			Debug.Log("opening left");
 			obj.animation.Play("ElectronicDoorOpenLeft");
