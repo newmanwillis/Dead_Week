@@ -164,10 +164,10 @@ public class Player : MonoBehaviour {
 	
 	void FixedUpdate () {
 		// Keep player at 0 in Z-zone
-		if(transform.position.z != -0.01){
+		if(transform.position.z != -0.1f){
 			if(curState != PlayerState.Dead){
 				Vector3 newPos = transform.position;
-				newPos.z = 0;
+				newPos.z = -0.1f;
 				transform.position = newPos;
 				playerSprite.GetComponent<Rigidbody>().velocity = Vector3.zero;
 			}
@@ -347,6 +347,12 @@ public class Player : MonoBehaviour {
 			if (!dropInsteadOfFire) {
 				shootingBullet.rigidbody.AddForce(directionToVector(curDirection) * 8000);
 			}
+			else{
+				// Creates a Light when shooting the stun
+				Vector3 stunLightPos = transform.position;
+				stunLightPos.z -= 100;
+				Instantiate(phoneStunLight, stunLightPos, Quaternion.identity);
+			}
 			curPhoneCharge -= cost;
 		}
 	}
@@ -452,12 +458,6 @@ public class Player : MonoBehaviour {
 		case PhonePower.Stun:
 			//fireBullet(phoneStunBullet);
 			fireBullet(phoneStunExplosion, true);
-
-			// Creates a Light when shooting the stun
-			Vector3 stunLightPos = transform.position;
-			stunLightPos.z -= 100;
-			Instantiate(phoneStunLight, stunLightPos, Quaternion.identity);
-
 			break;
 		case PhonePower.Bullet:
 			fireBullet(phoneBullet);
