@@ -17,6 +17,8 @@ public class RandomizeColor : MonoBehaviour {
 
 	private enum direction {up, down, left, right};
 
+
+
 	void Start () {
 
 		curAnim = GetComponent<tk2dSpriteAnimator>();
@@ -37,15 +39,30 @@ public class RandomizeColor : MonoBehaviour {
 			direction dir = FindDirection();
 			switch(dir){
 				case direction.up:
-					CC.Move(Vector3.down);
+					float rand = Random.value;
+					if(rand <= 0.3)
+						CC.Move(Vector3.down);
+					else if(rand > 0.3 && rand < 0.7)
+						CC.Move(Vector3.down + Vector3.right);
+					else
+						CC.Move(Vector3.down + Vector3.left);
 					break;
 				case direction.down:
-					CC.Move(Vector3.up);
+					//CC.Move(Vector3.up);
+					float rand2 = Random.value;
+					if(rand2 <= 0.3)
+						CC.Move(Vector3.up);
+					else if(rand2 > 0.3 && rand2 < 0.7)
+						CC.Move(Vector3.up + Vector3.right);
+					else
+						CC.Move(Vector3.up + Vector3.left);
 					break;
 				case direction.left:
 					CC.Move(Vector3.right);
 					break;
 				case direction.right:
+					//transform.position = transform.position - Vector3.right;
+				print ("in here");
 					CC.Move(Vector3.left);
 					break;
 			}

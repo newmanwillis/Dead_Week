@@ -89,9 +89,8 @@ public class ZombieWander : MonoBehaviour {
 	private void PlayRandomSound(){
 
 
-		if(Random.value < 0.3f){
+		if(Random.value < 0.35f){
 			int rand = Random.Range(0, Sounds.Length);
-			//Sounds[rand]
 			audio.clip = Sounds[rand];
 			audio.Play();
 		}
